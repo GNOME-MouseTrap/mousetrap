@@ -1,0 +1,75 @@
+MouseTrap v0.3
+
+Introduction
+========================================================================
+
+MouseTrap is a free Open Source mouse pointer controller by using a low
+cost web cam and good face points to track.
+
+MouseTrap works with applications and toolkits that support the assistive
+technology service provider interface (AT-SPI), which is the primary
+assistive technology infrastructure for the Solaris and Linux
+operating environments.  Applications and toolkits supporting the
+AT-SPI include the GNOME GTK+ toolkit, the Java platform's Swing
+toolkit, OpenOffice, and Mozilla.  AT-SPI support for the KDE Qt
+toolkit is currently being pursued.
+
+See also http://live.gnome.org/MouseTrap for detailed English and Spanish
+information on MouseTrap, including how to run MouseTrap, how to communicate
+with the MouseTrap user community, and where to log bugs and feature
+requests.
+
+
+Build Requirements
+========================================================================
+
+Building MouseTrap also requires the development modules for the following
+to be installed:
+
+
+* Python  >= 2.4              - Python platform
+* pyorbit >= 2.14.0           - Python bindings for ORBit2
+* pygtk   >= 2.8.4            - GTK+ Python bindings
+* Opencv  >= 0.9.9            - Open Computer Vision Library
+
+YOU ALSO NEED THE LATEST AT-SPI, ATK, AND GAIL FOR THE GNOME 2.23.x
+DEVELOPMENT RELEASES.  THEY CONTAIN VERY IMPORTANT BUG FIXES!
+
+NOTE: If you have multiple versions of the python interpreter installed
+on your machine, you should set the PYTHON environment variable when 
+configuring MouseTrap.  For example:
+
+   PYTHON=/usr/bin/python2.4 ./autogen.sh
+
+or
+
+   PYTHON=/usr/bin/python2.4 ./configure
+
+NOTE FOR BRLTTY USERS:
+
+Running MouseTrap
+========================================================================
+
+To run MouseTrap, you have several options:
+
+1) Enable accessibility and the screen reader via the
+   "System->Preferences->Assistive Technology Preferences"
+   dialog box (also available as the 'gnome-at-properties'
+   application).  As of GNOME 2.16, this will cause MouseTrap to
+   be automatically launched when you log in.
+
+3) Select "MouseTrap" from the 
+   Applications->Accessibility launch menu (also available as
+   the 'mousetrap' application).  This will run MouseTrap once.
+
+4) Press Alt+F2 to bring up the "Run Application" dialog
+   box.  Enter "mousetrap" and press Return.  This will run
+   MouseTrap once.
+
+5) Run the "mousetrap" command from a virtual console or 
+   gnome-terminal window.  This will run MouseTrap once.
+
+More details are available on the MouseTrap WIKI:
+
+http://live.gnome.org/MouseTrap
+

@@ -1,0 +1,4 @@
+2008-08-30  Flavio Percoco Premoli  <flaper87@r4-p17>
+
+	* src/mouseTrap/mouseTrap.py: Fixed Ticket 11 http://mousetrap.flaper87.org/trac/ticket/11 
+

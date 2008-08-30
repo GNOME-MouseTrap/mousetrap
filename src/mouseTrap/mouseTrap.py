@@ -48,7 +48,6 @@ try:
     import shutil
     import getopt
     import gobject
-    import mTDbus as dbus
     import mouseTrapPref as mTPref
 except ImportError, e:
     dialogs.errorDialog( 
@@ -181,6 +180,22 @@ def startEventsHandler():
     except:
         debug.log( debug.LOAD, _( "Highest" ) )
         
+def startDBus( ):
+    """
+    This will start the mouseTraps dbus service
+    """
+
+    global dbus
+    
+    try:
+        dbus = __import__("mTDbus", 
+                                    globals(), 
+                                    locals(), 
+                                    [''])   
+        dbus.start()
+    except:
+        debug.log( debug.LOAD, _( "Highest" ) )
+
 def loadSettings( ):
     """
     This function loads the mouseTrap's settings
@@ -301,7 +316,7 @@ def start( ):
         usage()
         quit(2)
 
-    dbus.start()
+    startDBus()
     showMainGui()
     startCam()
     startEventsHandler()

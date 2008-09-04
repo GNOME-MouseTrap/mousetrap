@@ -28,6 +28,7 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import gtk
+import time
 import mouseTrap.events as events
 import mouseTrap.environment as env
 import mouseTrap.mouseTrap as mouseTrap
@@ -62,6 +63,7 @@ class Profile:
         self.settings = mouseTrap.settings
         self.gui = gui
 
+        self.last = time.time()
         self.mpClick = [ 0, 0, 0, 0, 0, 0 ]
         
         self._loadSettings()
@@ -113,7 +115,10 @@ class Profile:
         
         events.registerMapperEvent( "screeMode", [ self.vScreen["startX"], self.vScreen["startY"] ],
                 [ self.vScreen["endX"], self.vScreen["endY"] ], True, ["moveMode:screen"], self._moveScreenMode, 0)
-
+        
+        events.registerMapperEvent( "timeupdate", [ self.vScreen["startX"], self.vScreen["startY"] ],
+                [ self.vScreen["endX"], self.vScreen["endY"] ], False, ["moveMode:screen"], self._timeUpdate, 0)
+    
     def mouseClick( self, widget, event, mapper ):
         """
         This is the callback function for the mouse clicks in the
@@ -166,7 +171,18 @@ class Profile:
             self.gui.mapper.drawRectangle( context, self.mpClick[0], self.mpClick[1], self.mpClick[4], self.mpClick[5], (10, 0.8, 0.1))
         else:
             self.gui.mapper.drawRectangle( context, self.mpClick[2], self.mpClick[3], self.mpClick[4], self.mpClick[5], (10, 0.8, 0.1))
-            
+    
+    def _timeUpdate( self, *args ):
+        """
+        This function updates the self.last time so the mouse
+        pointer wont be sticked to the desktop when the mapper
+        pointer is not inside the virtual screen.
+
+        Arguments:
+        - self: The main object pointer
+        """
+        self.last = time.time()
+
     def _moveScreenMode( self, *args ):
         """
         Perform the movements of the pointer using the 'REAL MOUSE' mode.
@@ -176,8 +192,14 @@ class Profile:
         """
 
         if not mouseTrap.getModVar( "cam", "forehead" ):
+            self.last = time.time()
             return
-       
+        
+        diff = mouseTrap.getModVar( "cam", "foreheadDiff")
+        
+        if time.time() - self.last >= 0.2 and not abs(diff.x) >= 3 and not abs(diff.y) >= 3:
+           return
+        
         curX, curY = mouseTrap.mice( "position" )
         pointer = mouseTrap.getModVar( "cam", "mpPointer" )
         
@@ -190,6 +212,7 @@ class Profile:
                                                       (self.vScreen["height"]/2) - ( vScreenCenter[1] - pointer.y ) ])]
        
         if not curX == newX or not curY == newY:
+            self.last = time.time()
             mouseTrap.mice( "move", newX, newY )
 
     def prefTab( self, prefGui ):

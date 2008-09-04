@@ -107,6 +107,36 @@ class ocvfw:
                           cv.cvPoint( int((r.x+r.width)*self.imageScale), int((r.y+r.height)*self.imageScale) )] \
                           for r in points]
             return matches
+
+    def cmGetHaarROIPoints( self, haarCascade, rect, origSize = (0,0), method = cv.CV_HAAR_DO_CANNY_PRUNING ):
+        """
+        Search for points matching the haarcascade selected.
+        
+        Arguments:
+        - self: The main object pointer.
+        - haarCascade: The selected cascade.
+        - methode: The search method to use. DEFAULT: cv.CV_HAAR_DO_CANNY_PRUNING.
+        
+        Returns a list with the matches.
+        """
+
+        cascade = cv.cvLoadHaarClassifierCascade( haarCascade, self.imgSize )
+        
+        cv.cvClearMemStorage( self.storage )
+
+        imageROI = cv.cvGetSubRect( self.img, rect )
+        
+        if cascade:
+            points = cv.cvHaarDetectObjects( imageROI, cascade, self.storage,
+                                    1.2, 2, method, cv.cvSize(20,20) )
+        else:
+            debug.log( debug.ACTIONS, _( "Required" ) )
+
+        if points:
+            matches = [ [ cv.cvPoint( int(r.x+origSize[0]), int(r.y+origSize[1])), \
+                          cv.cvPoint( int(r.x+r.width+origSize[0]), int(r.y+r.height+origSize[1] ))] \
+                          for r in points]
+            return matches
             
     def cmSetLKPoints( self, label, point):
         """

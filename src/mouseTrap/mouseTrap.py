@@ -228,7 +228,16 @@ def loadSettings( ):
         except:
             debug.log( debug.LOAD, _( "Highest" ) )
             
-            
+
+def calcPoint():
+    """
+    Allow users to recalculate the forehead point 
+    if needed.
+    """
+    
+    if settings.startCam:
+        modules["cam"].cmCleanLKPoints()
+
 # For Profiling pourpouse uncoment the next line
 # The profile file will be saved in the user config folder
 # as profiling.data

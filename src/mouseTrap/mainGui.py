@@ -137,8 +137,12 @@ class MainGui( gtk.Window ):
         hBox.pack_start( showCapture, False, False )
         
         flipButton = gtk.Button( _("Flip Image") )
-        flipButton.connect("clicked", self.enaDisFlip )
+        flipButton.connect("clicked", self.recalcPoint, "flip" )
         hBox.pack_start( flipButton, False, False )
+        
+        recalcButton = gtk.Button( _("Recalc Point") )
+        recalcButton.connect("clicked", self.recalcPoint )
+        hBox.pack_start( recalcButton, False, False )
         
         self.vBox.pack_end(hBox, False, False )
 
@@ -147,7 +151,7 @@ class MainGui( gtk.Window ):
         self.add(self.vBox)
         self.show()
     
-    def enaDisFlip( self, *args ):
+    def recalcPoint( self, widget, flip = ''):
         """
         Enables the Flip of the Image in the X axis
         
@@ -157,9 +161,11 @@ class MainGui( gtk.Window ):
         - self: The main object pointer.
         - *args: Widget related arguments.
         """
+       
+        if flip:
+            self.settings.flipImage = not self.settings.flipImage
         
-        self.settings.flipImage = not self.settings.flipImage
-        #mouseTrap.modExec( "cam", "cmCleanLKPoints" )
+        mouseTrap.calcPoint()
         
     def updateView( self, img ):
         """

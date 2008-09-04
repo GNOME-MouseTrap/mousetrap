@@ -126,7 +126,7 @@ class Camera( ocvfw.ocvfw ):
             self.cmStartCamera( self.settings.inputDevIndex )
             
             if( self.capture ):
-                gobject.timeout_add(10, self._checkImg)
+                gobject.timeout_add(100, self._checkImg)
                 
         except:
             debug.log( debug.MODULES, _( "Highest" ) )
@@ -146,7 +146,7 @@ class Camera( ocvfw.ocvfw ):
 
         #if not self.foreheadOrig and not self.forehead:
         if not self.imgLKPoints["last"]:
-            self._setForehead( self.cmGetHaarPoints( self.haarCds['Eyes'] ) )
+            self._setForehead( self.cmGetHaarPoints( self.haarCds['Face'] ) )
 
         if len(self.imgLKPoints["last"]) > 0:
             self.cmShowLKPoints()
@@ -169,7 +169,7 @@ class Camera( ocvfw.ocvfw ):
         return self.run
 
 
-    def _setForehead( self, points ):
+    def _setForehead( self, face ):
         """
         Detect the forehead point and set it.
         
@@ -180,11 +180,27 @@ class Camera( ocvfw.ocvfw ):
         
         self.cmAddMessage("Getting Forehead!!!")
 
-        if points:
-            areas = [ (pt[1].x - pt[0].x)*(pt[1].y - pt[0].y) for pt in points]
+        if face:
+            areas = [ (pt[1].x - pt[0].x)*(pt[1].y - pt[0].y) for pt in face]
             
-            point1   = points[areas.index(max(areas))][0]
-            point2   = points[areas.index(max(areas))][1]
+            startF   = face[areas.index(max(areas))][0]
+            endF     = face[areas.index(max(areas))][1]
+
+        #eyes = self.cmGetHaarPoints( self.haarCds['Eyes'] )
+
+        if not face:
+            return True
+
+        rec  = cv.cvRect( startF.x, startF.y,  endF.x - startF.x, endF.y - startF.y )
+
+        eyes = self.cmGetHaarROIPoints( self.haarCds['Eyes'], rec, (startF.x, startF.y) )
+
+        if eyes:
+            areas = [ (pt[1].x - pt[0].x)*(pt[1].y - pt[0].y) for pt in eyes ]
+                    #if pt[0].x in range(startF.x, endF.x) and pt[0].y in range(startF.y, endF.y) ]
+
+            point1   = eyes[areas.index(max(areas))][0]
+            point2   = eyes[areas.index(max(areas))][1]
 
             X = ( (point1.x + point2.x) / 2 )
             Y = ( point1.y + ( (point1.y + point2.y) / 2 ) ) / 2

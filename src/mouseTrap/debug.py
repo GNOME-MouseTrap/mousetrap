@@ -28,62 +28,130 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import sys
+import logging 
 import traceback
+import mouseTrap
 import environment as env
 
-##
-# This debug level is used to know when a feature fails,
-# normaly that feature doesn't make mouseTrap crash.
-ACTIONS = 600
 
-##
-# This debug level is used to know when a module fails while
-# loading.
-MODULES = 400
-
-##
-# This debug level is used to know when mouseTrap crashes while starting.
-LOAD	= 200
-
-##
-# It will show all debugging errors.
-ALL 	= 0
-
-##
-# This is just for tracing out all the executed code.
-EXTREME = 100*100
-
-##
-# The starter debugLevel. Should be defined in the settings file.
-debugLevel	 = ALL
-
-def log( level, priority, Trace = None ):
+def checkModule( module ):
     """
-    Write the logs in debug file and print them in the terminal.
-    
+    Get's a new logger for modules.
+
     Arguments:
-    - level: The debug level
-    - priority: The log priority.
-    - Trace: if True: The Trace will replace the log.
+    - module: The module requesting a logger.
+    """
+  
+    if module == "mousetrap":
+        level = logging.DEBUG
+    else:
+        level = mouseTrap.settings.debugLevel
+
+    formatter = logging.Formatter("%(levelname)s: %(name)s -> %(message)s")
+
+    cli = logging.StreamHandler()
+    cli.setLevel( level )
+    cli.setFormatter(formatter)
+
+    file = logging.FileHandler( env.debugFile )
+    file.setLevel( level )
+    file.setFormatter(formatter)
+
+    modules[module] = logging.getLogger( module )
+    modules[module].setLevel( level  )
+    modules[module].addHandler(cli)
+    modules[module].addHandler(file)
+
+
+def debug( module, message ):
+    """
+    Print DEBUG level log messages.
+
+    Arguments:
+    - module: The module sending the message
+    - message: The message
     """
 
+    if module not in modules:
+        checkModule(module)
 
-    debugFile = open(env.debugFile, "a")
+    modules[module].debug(message)
 
-    log = ''.join(traceback.format_exception(*sys.exc_info()))
 
-    if Trace: log = Trace
-                          
-    priority = '='*30 + '\nPriority:' + priority + '\n' + '='*30 + '\n'
-                          
-    if level >= debugLevel:
-        debugFile.write(priority)
-        debugFile.writelines([log, "\n"])
-        print priority
-        print log
+def info( module, message ):
+    """
+    Print INFO level log messages.
 
-    debugFile.close()
-		
+    Arguments:
+    - module: The module sending the message
+    - message: The message
+    """
+
+    if module not in modules:
+        checkModule(module)
+
+    modules[module].info(message)
+
+
+def warning( module, message ):
+    """
+    Print WARNING level log messages.
+
+    Arguments:
+    - module: The module sending the message
+    - message: The message
+    """
+
+    if module not in modules:
+        checkModule(module)
+
+    modules[module].warning(message)
+
+
+def error( module, message ):
+    """
+    Print ERROR level log messages.
+
+    Arguments:
+    - module: The module sending the message
+    - message: The message
+    """
+
+    if module not in modules:
+        checkModule(module)
+
+    modules[module].error(message)
+
+
+def critical( module, message ):
+    """
+    Print CRITICAL level log messages.
+
+    Arguments:
+    - module: The module sending the message
+    - message: The message
+    """
+
+    if module not in modules:
+        checkModule(module)
+
+    modules[module].critical(message)
+
+
+def exception( module, message ):
+    """
+    Print EXCEPTION level log messages.
+
+    Arguments:
+    - module: The module sending the message
+    - message: The message
+    """
+
+    if module not in modules:
+        checkModule(module)
+
+    modules[module].exception(message)
+
 # The following code has been borrowed from the following URL:
 # 
 # http://www.dalkescientific.com/writings/diary/archive/ \
@@ -122,5 +190,5 @@ def traceit(frame, event, arg):
         log(ALL, "Trace", "TRACE %s:%s: %s" % (name, lineno, line.rstrip()))
     return traceit
     
-if debugLevel == EXTREME:
-    sys.settrace(traceit)
+#if debugLevel == EXTREME:
+#    sys.settrace(traceit)

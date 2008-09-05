@@ -59,7 +59,7 @@ def _loadThirdProfiles():
             modes[prof.setName] = prof.Profile
             env.mouseModes.update( prof.modes )
         except:
-            debug.log( debug.MODULES, _( "Highest" ) )
+            debug.exception( "mouseTrap.scripts", _( "The Profile load failed" ) )
 
 def loadProfile( gui ):
     """

@@ -186,6 +186,7 @@ main()
         mouseTrap &
         mouseTrap_pid=$!
         wait $mouseTrap_pid
+        echo pasa
 
         RUN=$?  # quit on a normal exit status from mouseTrap
 

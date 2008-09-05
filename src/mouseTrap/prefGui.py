@@ -314,7 +314,7 @@ class preffGui( gtk.Window ):
         levellabel.show()
         levelHbox.pack_start( levellabel, False, False )
         
-        adj = gtk.Adjustment( self.settings.debugLevel, 0, 1000, 200, 1, 0)
+        adj = gtk.Adjustment( self.settings.debugLevel, 10, 50, 10, 1, 0)
         levelSpin = gtk.SpinButton( adj, 0.0, 0 )
         levelSpin.set_wrap( True )
         levelHbox.pack_start( levelSpin, False, False )

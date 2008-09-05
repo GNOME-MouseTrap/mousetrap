@@ -129,7 +129,7 @@ class Camera( ocvfw.ocvfw ):
                 gobject.timeout_add(100, self._checkImg)
                 
         except:
-            debug.log( debug.MODULES, _( "Highest" ) )
+            debug.exception( "mouseTrap.cam", _( "The Camera Module load failed." ) )
  
           
     def _checkImg( self ):
@@ -141,6 +141,7 @@ class Camera( ocvfw.ocvfw ):
         """
         
         self.cmQueryCapture( flip = self.settings.flipImage )
+        
         # create a self.gray version of the self.img
         cv.cvCvtColor (self.img, self.grey, cv.CV_BGR2GRAY)
 
@@ -165,7 +166,6 @@ class Camera( ocvfw.ocvfw ):
         
         # handle events
         c = self.cmWaitKey(10)
-        #highgui.cvDestroyAllWindows()
         return self.run
 
 

@@ -259,7 +259,7 @@ class MainGui( gtk.Window ):
         except ImportError:
             dialogs.errorDialog( 
             "mouseTrap needs <b>gnome</b> module to show the help. Please install gnome-python and try again.", None )
-            debug.log( debug.ACTIONS, _( "Highest" ) )
+            debug.exception( "mousetrap.mainGui", _( "The help load failed" ) )
             
     def close( self, *args ):
         """

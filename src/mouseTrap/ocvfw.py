@@ -100,7 +100,7 @@ class ocvfw:
             points = cv.cvHaarDetectObjects( self.smallImg, cascade, self.storage,
                                     1.2, 2, method, cv.cvSize(20,20) )
         else:
-            debug.log( debug.ACTIONS, _( "Required" ) )
+            debug.exception( "mouseTrap.ocvfw", _("The Haar Classifier Cascade load failed") )
 
         if points:
             matches = [ [ cv.cvPoint( int(r.x*self.imageScale), int(r.y*self.imageScale)), \
@@ -130,7 +130,7 @@ class ocvfw:
             points = cv.cvHaarDetectObjects( imageROI, cascade, self.storage,
                                     1.2, 2, method, cv.cvSize(20,20) )
         else:
-            debug.log( debug.ACTIONS, _( "Required" ) )
+            debug.exception( "mouseTrap.ocvfw", _( "The Haar Classifier Cascade load Failed (ROI)" ) )
 
         if points:
             matches = [ [ cv.cvPoint( int(r.x+origSize[0]), int(r.y+origSize[1])), \

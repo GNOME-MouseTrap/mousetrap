@@ -79,7 +79,7 @@ def start():
     try:
         dbusserver = mTDbusServer() 
     except:
-        debug.log( debug.LOAD, _( "Warning" ) )
+        debug.exception( "mouseTrap.mTDbus", _( "The dbus server load failed" ) )
     
     
 def shutdown():

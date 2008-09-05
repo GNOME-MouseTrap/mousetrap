@@ -65,7 +65,6 @@ except:
 
 sys.argv[0] = "mouseTrap"
 
-
 ## Global MainLoop
 loop = gobject.MainLoop()
 
@@ -146,7 +145,7 @@ def showMainGui( ):
         if settings.showMainGui:                     
             modules["gui"] = gui.showMainGui( )
     except:
-        debug.log( debug.LOAD, _( "Highest" ) )
+        debug.exception( "mosuetrap", _( "Main Gui load failed" )  )
 
 def startCam( ):
     """
@@ -165,7 +164,7 @@ def startCam( ):
         if settings.startCam:
             modules["cam"].start()
     except:
-        debug.log( debug.LOAD, _( "Highest" ) )
+        debug.exception( "mousetrap", _( "Camera Module load failed" ) )
 
 def startEventsHandler():
     global modules
@@ -178,7 +177,7 @@ def startEventsHandler():
         if settings.startCam:
             modules["events"].startMapperListener( modules["gui"].mapper )
     except:
-        debug.log( debug.LOAD, _( "Highest" ) )
+        debug.exception( "mosuetrap", _( "Events Handler Load Failed" ) )
         
 def startDBus( ):
     """
@@ -194,7 +193,7 @@ def startDBus( ):
                                     [''])   
         dbus.start()
     except:
-        debug.log( debug.LOAD, _( "Highest" ) )
+        debug.exception( "mousetrap", _( "DBus Service Load Failed" ) )
 
 def loadSettings( ):
     """
@@ -216,7 +215,7 @@ def loadSettings( ):
             os.chdir(env.configPath)
             settings = __import__( "userSettings" )
         except:
-            debug.log( debug.LOAD, _( "Highest" ) )
+            debug.exception( "mousetrap", _( "Mousetrap Settings load failed." ) )
             sys.exit(0)
     else:
         try:
@@ -226,7 +225,7 @@ def loadSettings( ):
                 if getattr( modules[mod], "restart" ):
                     modules[mod].restart()
         except:
-            debug.log( debug.LOAD, _( "Highest" ) )
+            debug.exception( "mousetrap", _("Mousetrap Settings reload failed") )
             
 
 def calcPoint():
@@ -337,7 +336,7 @@ def start( ):
         print "KeyboardInterrupt"
         quit(0)
     except:
-        debug.log( debug.LOAD, _( "Highest" ) )
+        debug.exception( "mousetrap", "Mousetrap failed starting the loops" )
 
                
 def usage( ):

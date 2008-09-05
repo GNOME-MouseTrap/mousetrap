@@ -1,4 +1,20 @@
-2008-09-04  Flavio Percoco Premoli  <flaper87@r4-p17>
+2008-09-05  Flavio Percoco Premoli  <flaper87@gnome.org>
+
+	* src/mouseTrap/cam.py: New Debug Implementation
+	* src/mouseTrap/debug.py: Changed old debug module, for the python logging
+	module
+
+	* src/mouseTrap/events.py: New Debug Implementation
+	* src/mouseTrap/mTDbus.py: New Debug Implementation
+	* src/mouseTrap/mainGui.py: New Debug Implementation
+	* src/mouseTrap/mouseTrap.py: New Debug Implementation
+	* src/mouseTrap/mouseTrapPref.py: New Debug Implementation
+	* src/mouseTrap/mousetrap.in: New Debug Implementation
+	* src/mouseTrap/ocvfw.py: New Debug Implementation
+	* src/mouseTrap/prefGui.py: New Debug Implementation
+	* src/mouseTrap/scripts.py: New Debug Implementation
+
+2008-09-04  Flavio Percoco Premoli  <flaper87@gnome.org>
 
 	* src/mouseTrap/cam.py: Implemented face detection before eyes detection
 	* src/mouseTrap/haarcascade/allmen7pos1000neg7000eye.xml: deleted
@@ -8,7 +24,7 @@
 	* src/mouseTrap/scripts/profiles/screenProfile.py: Implemented sticky
 	mouse.
 
-2008-08-30  Flavio Percoco Premoli  <flaper87@r4-p17>
+2008-08-30  Flavio Percoco Premoli  <flaper87@gnome.org>
 
 	* src/mouseTrap/mouseTrap.py: Fixed Ticket 11 http://mousetrap.flaper87.org/trac/ticket/11 
 

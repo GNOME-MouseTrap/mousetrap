@@ -115,7 +115,7 @@ def startMapperListener( mapperObj ):
     try:
         gobject.timeout_add( 10, _checkMapperEvents )
     except:
-        debug.log( debug.MODULES, _( "Highest" ) )
+        debug.exception( "mouseTrap.events", _( "The events module load failed" ) )
         
     
 def _checkMapperEvents():

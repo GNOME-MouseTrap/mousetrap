@@ -112,7 +112,7 @@ def writeFirstConf():
     prefFile.write("inputDevIndex = 0\n")
 
     prefFile.write("\n#debugLevel\n")
-    prefFile.write("debugLevel = 1000\n")
+    prefFile.write("debugLevel = 10\n")
 
     prefFile.write("\n#defClick\n")
     prefFile.write("defClick = 'b1c'\n")

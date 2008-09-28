@@ -83,7 +83,7 @@ class Camera( ocvfw.ocvfw ):
         #  MOTION RELATED VARIABLES  #
         ##############################        
         
-        self.step         = self.settings.stepSpeed
+        self.step         = self.settings.getint( "mouse", "stepSpeed" )
         self.forehead     = None
         self.foreheadLast = None
         self.foreheadOrig = None
@@ -123,13 +123,13 @@ class Camera( ocvfw.ocvfw ):
         """
         
         try:
-            self.cmStartCamera( self.settings.inputDevIndex )
+            self.cmStartCamera( self.settings.getint( "cam", "inputDevIndex" ) )
             
             if( self.capture ):
                 gobject.timeout_add(100, self._checkImg)
                 
         except:
-            debug.exception( "mouseTrap.cam", _( "The Camera Module load failed." ) )
+            debug.exception( "mouseTrap.cam", "The Camera Module load failed." )
  
           
     def _checkImg( self ):
@@ -140,7 +140,7 @@ class Camera( ocvfw.ocvfw ):
         - self: The main object pointer.
         """
         
-        self.cmQueryCapture( flip = self.settings.flipImage )
+        self.cmQueryCapture( flip = self.settings.getboolean( "cam", "flipImage" ) )
         
         # create a self.gray version of the self.img
         cv.cvCvtColor (self.img, self.grey, cv.CV_BGR2GRAY)
@@ -229,7 +229,7 @@ class Camera( ocvfw.ocvfw ):
         
         self.mpPointer = cv.cvPoint( 100 - (self.forehead.x - self.foreheadOrig.x),
                                         80 + (self.forehead.y - self.foreheadOrig.y))
-            
+
         #if abs(self.foreheadLast.x - self.forehead.x) >= 15 or \
          #       abs(self.foreheadLast.y - self.forehead.y) >= 15:
             

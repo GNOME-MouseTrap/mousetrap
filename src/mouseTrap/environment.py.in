@@ -72,7 +72,7 @@ scriptsPath = "%s/scripts/" % configPath
 profilesPath = "%s/profiles/" % scriptsPath
 
 ## The config file
-configFile = configPath + "userSettings.py"
+configFile = configPath + "userSettings.cfg"
 
 ## The debug file
 debugFile = configPath + "mouseTrap_DEBUG.log"
@@ -98,3 +98,15 @@ screen       = { 'width'  : gtk.gdk.screen_width(),
 
 ## Mose Movement Modes
 mouseModes = { }
+
+###################################################
+#                                                 #
+#          MOUSETRAP'S STATES DEFINITION          #
+#                                                 #
+###################################################
+
+## Mousetrap is active and the mouse pointer can be moved
+ACTIVE = "active"
+
+## Mousetrap is active and the click dialog is not hidden.
+CLKDLG = "clk-dialog"

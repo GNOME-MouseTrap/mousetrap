@@ -148,8 +148,8 @@ class preffGui( gtk.Window ):
         mainGuiBox = gtk.VBox( spacing = 6 )
         
         mWindowActive = gtk.CheckButton( _("Show main window") )
-        mWindowActive.set_active( self.settings.showMainGui )
-        self.preffWidgets['showMainGui'] = mWindowActive
+        mWindowActive.set_active( self.settings.getboolean( "gui", "showMainGui" ) )
+        mWindowActive.connect( "toggled", self._checkToggled, "gui", "showMainGui" )
         
         mainGuiBox.pack_start( mWindowActive, False, False )
 
@@ -173,30 +173,30 @@ class preffGui( gtk.Window ):
         camBox = gtk.VBox( spacing = 6 )
         
         cAmActive = gtk.CheckButton( _("Activate Camera module") )
-        cAmActive.set_active( self.settings.startCam )
-        self.preffWidgets['startCam'] = cAmActive
+        cAmActive.set_active( self.settings.getboolean( "main", "startCam" ) )
+        cAmActive.connect( "toggled", self._checkToggled, "main", "startCam" )
         
         camBox.pack_start( cAmActive, False, False )
         
         flipImage = gtk.CheckButton( _("Flip Image") )
-        flipImage.set_active( self.settings.flipImage )
-        self.preffWidgets['flipImage'] = flipImage
+        flipImage.set_active( self.settings.getboolean( "cam",  "flipImage" ) )
+        flipImage.connect( "toggled", self._checkToggled, "cam", "flipImage" )
         
         camBox.pack_start( flipImage, False, False )
         
         mapperActive = gtk.CheckButton( _("Show Point Mapper") )
-        mapperActive.set_active( self.settings.showPointMapper )
-        self.preffWidgets['showPointMapper'] = mapperActive
+        mapperActive.set_active( self.settings.getboolean( "gui", "showPointMapper" ) )
+        mapperActive.connect( "toggled", self._checkToggled, "gui", "showPointMapper" )
         
         camBox.pack_start( mapperActive, False, False )
         
         showCapture = gtk.CheckButton( _("Show Capture") )
-        showCapture.set_active( self.settings.showCapture )
-        self.preffWidgets['showCapture'] = showCapture
+        showCapture.set_active( self.settings.getboolean( "gui", "showCapture" ) )
+        showCapture.connect( "toggled", self._checkToggled, "gui", "showCapture" )
         
         camBox.pack_start( showCapture, False, False )
          
-        inputDevIndex = self.addSpin( _("Input Video Device Index: "), "inputDevIndex", self.settings.inputDevIndex, 0)
+        inputDevIndex = self.addSpin( _("Input Video Device Index: "), "inputDevIndex", self.settings.getint( "cam", "inputDevIndex" ), "cam", "inputDevIndex", 0)
         camBox.pack_start( inputDevIndex, False, False )
         
         camBox.show_all()
@@ -218,7 +218,7 @@ class preffGui( gtk.Window ):
 
         camBox = gtk.VBox( spacing = 6 )
         
-        reqMov = self.addSpin( _("Step Speed: "), "stepSpeed", self.settings.stepSpeed)
+        reqMov = self.addSpin( _("Step Speed: "), "stepSpeed", self.settings.getint( "mouse", "stepSpeed" ), "mouse", "stepSpeed" )
         camBox.pack_start( reqMov, False, False )
 
         defClickF = gtk.Frame( _( "Default Click:" ) )
@@ -231,17 +231,17 @@ class preffGui( gtk.Window ):
         defClicksInv = dict((v,k) for k,v in defClicks.iteritems())
                        
         defClick = gtk.combo_box_new_text()
-        defClick.append_text(defClicks[self.settings.defClick])
+        defClick.append_text(defClicks[self.settings.get( "mouse", "defClick" )])
         
-        defClicklBl = gtk.Label(self.settings.defClick)
+        defClicklBl = gtk.Label(self.settings.get( "mouse", "defClick" ))
         self.preffWidgets['defClick'] = defClicklBl
         
         for mode in defClicks:
-            if mode == self.settings.defClick: 
+            if mode == self.settings.get( "mouse", "defClick" ): 
                 continue
             defClick.append_text( defClicks[mode] )
             
-        defClick.connect('changed', self.comboChanged, 'defClick', defClicksInv)
+        defClick.connect('changed', self._comboChanged, "mouse", "defClick", defClicksInv)
         defClick.set_active(0)
         
         defClickF.add( defClick)
@@ -255,37 +255,21 @@ class preffGui( gtk.Window ):
         mouseModesInv = dict((v,k) for k,v in mouseModes.iteritems())
                        
         mouseMod = gtk.combo_box_new_text()
-        mouseMod.append_text(mouseModes[self.settings.mouseMode])
+        mouseMod.append_text(mouseModes[self.settings.get( "cam", "mouseMode" )])
         
-        mouseModlBl = gtk.Label(self.settings.mouseMode)
+        mouseModlBl = gtk.Label(self.settings.get( "cam", "mouseMode" ))
         self.preffWidgets['mouseMode'] = mouseModlBl
         
         for mode in mouseModes:
-            if mode == self.settings.mouseMode: 
+            if mode == self.settings.get( "cam", "mouseMode" ): 
                 continue
             mouseMod.append_text( mouseModes[mode] )
             
-        mouseMod.connect('changed', self.comboChanged, 'mouseMode', mouseModesInv)
+        mouseMod.connect('changed', self._comboChanged, "cam", "mouseMode", mouseModesInv)
         mouseMod.set_active(0)
         
         mouseModF.add( mouseMod)
         camBox.pack_start( mouseModF, False, False )
-        
-        #hbox = gtk.HBox( spacing = 6 )
-        
-        #startX = self.addSpin( _("Initial X: "), "stepSpeed", self.settings.stepSpeed)
-        #hbox.pack_start( startX, False, False )
-        
-        #startY = self.addSpin( _("Initial Y: "), "stepSpeed", self.settings.stepSpeed)
-        #hbox.pack_start( startY, False, False )
-        
-        #width = self.addSpin( _("Width: "), "stepSpeed", self.settings.stepSpeed)
-        #hbox.pack_start( width, False, False )
-        
-        #height = self.addSpin( _("Height: "), "stepSpeed", self.settings.stepSpeed)
-        #hbox.pack_start( height, False, False )
-        
-        #camBox.pack_start( hbox, False, False )
 
         camBox.show_all()
         
@@ -314,11 +298,11 @@ class preffGui( gtk.Window ):
         levellabel.show()
         levelHbox.pack_start( levellabel, False, False )
         
-        adj = gtk.Adjustment( self.settings.debugLevel, 10, 50, 10, 1, 0)
+        adj = gtk.Adjustment( self.settings.getint( "main", "debugLevel" ), 10, 50, 10, 1, 0)
         levelSpin = gtk.SpinButton( adj, 0.0, 0 )
         levelSpin.set_wrap( True )
         levelHbox.pack_start( levelSpin, False, False )
-        self.preffWidgets['debugLevel'] = levelSpin
+        levelSpin.connect( "value-changed", self._spinChanged, "main", "debugLevel" )
         
         debugBox.pack_start( levelHbox, False, False )
 
@@ -340,14 +324,34 @@ class preffGui( gtk.Window ):
         - *args: The button event arguments
         """
        
-        try:
-            mTPref.userPref.update( scripts.loaded.pref )
-        except:
-            # The loaded profile doesn't have preferences.
-            pass
-
-        mTPref.writePref( self.preffWidgets )
+        self.settings.write( open( env.configPath + "userSettings.cfg", "w" ) )
         self.destroy()
+
+
+    def _checkToggled( self, widget, section, option ):
+        """
+        Sets the new value in the settings object for the toggled checkbox
+
+        Arguments:
+        - self: The main object pointer.
+        - widget: The checkbox.
+        - section: The section of the settings object.
+        - option: The option in the section.
+        """
+        self.settings.set( section, option, str(widget.get_active()))
+
+    def _spinChanged( self, widget, section, option ):
+        """
+        Sets the new value in the settings object for the toggled checkbox
+
+        Arguments:
+        - self: The main object pointer.
+        - widget: The checkbox.
+        - section: The section of the settings object.
+        - option: The option in the section.
+        """
+        self.settings.set( section, option, str(widget.get_value_as_int()))
+                
         
     def applyButtonClick( self, *args):
         """
@@ -357,16 +361,9 @@ class preffGui( gtk.Window ):
         - self: The main object pointer.
         - *args: The button event arguments
         """
+        self.settings.write( open( env.configPath + 'userSettings.cfg', "w" ) )  
         
-        try:
-            mTPref.userPref.update( scripts.loaded.pref )
-        except:
-            # The loaded profile doesn't have preferences.
-            pass
-
-        mTPref.writePref( self.preffWidgets )
-        
-    def comboChanged( self, widget, var, modes ):
+    def _comboChanged( self, widget, section, option, modes ):
         """
         On combo change. This function is the callback for the on_change
         event.
@@ -377,15 +374,16 @@ class preffGui( gtk.Window ):
         Arguments:
         - self: The main object pointer.
         - widget: The widget pointer.
-        - var: The variable corresponding to the widget.
+        - section: The section of the settings object.
+        - option: The option in the section.
         - modes: The new value.
         """
         
         model = widget.get_model()
         index = widget.get_active()
-        self.preffWidgets[var].set_text( modes[model[index][0]] )
+        self.settings.set( section, option, modes[model[index][0]] )
         
-    def addSpin( self, label, var, startValue, min = 1, max = 15):
+    def addSpin( self, label, var, startValue, section, option, min = 1, max = 15):
         """
         Creates a new spin button inside a HBox and return it.
         
@@ -406,8 +404,8 @@ class preffGui( gtk.Window ):
         adj = gtk.Adjustment( startValue, min, max, 1, 1, 0)
         spinButton = gtk.SpinButton( adj, 0.0, 0 )
         spinButton.set_wrap( True )
+        spinButton.connect( "value-changed", self._spinChanged, section, option )
         spinHbox.pack_start( spinButton, False, False )
-        self.preffWidgets[var] = spinButton
         
         spinLbl.set_mnemonic_widget( spinButton )
         

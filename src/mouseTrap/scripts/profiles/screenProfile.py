@@ -33,6 +33,7 @@ import mouseTrap.events as events
 import mouseTrap.environment as env
 import mouseTrap.mouseTrap as mouseTrap
 
+from mouseTrap.mainGui import MapperArea
 from mouseTrap.mTi18n import _
 
 # The name given for the config file
@@ -67,6 +68,10 @@ class Profile:
         self.mpClick = [ 0, 0, 0, 0, 0, 0 ]
         
         self._loadSettings()
+
+        self.area = MapperArea()
+
+        self.area.area( self.vScreen["startX"], self.vScreen["startY"], self.vScreen["endX"], self.vScreen["endY"] )
             
         self._registerMapperEvents()
 
@@ -79,9 +84,11 @@ class Profile:
         """
         
         try:
-            self.vScreen = eval(self.settings.vScreen)
+            self.vScreen = eval(self.settings.get( "screen_profile", "vScreen" ) )
         except:
-            self.vScreen = {'startX': 60, 'startY': 50, 'endY': 110, 'endX': 140, 'height': 60.0, 'width': 80.0}
+            self.settings.add_section( "screen_profile" )
+            self.settings.set( "screen_profile", "vScreen", "{'startX': 60, 'startY': 50, 'endY': 110, 'endX': 140, 'height': 60.0, 'width': 80.0}" )
+            self.vScreen = eval(self.settings.get( "screen_profile", "vScreen" ))
             
     def _checkPref( self ):
         """
@@ -93,7 +100,7 @@ class Profile:
         
         try:
             
-            if self.vScreen != eval(self.settings.vScreen):
+            if self.vScreen != eval(self.settings.get( "screen_profile", "vScreen") ):
                 self._loadSettings()
                 events.registerMapperEvent( "screeMode", [ self.vScreen["startX"], self.vScreen["startY"] ],
                     [ self.vScreen["endX"], self.vScreen["endY"] ], True, ["moveMode:screen"], self._moveScreenMode, 0)
@@ -108,71 +115,11 @@ class Profile:
         - self: The main object pointer.
         """
 
-
-        self.gui.mapper.connect("button_press_event", self.mouseClick, self.gui.mapper )
-        self.gui.mapper.connect("button_release_event", self.mouseClick, self.gui.mapper )
-        self.gui.mapper.connect("motion_notify_event", self.mouseMotion, self.gui.mapper )
+        self.area.connect( "point-move", self._moveScreenMode, out = False )
+        self.area.connect( "point-move", self._timeUpdate, out = True )
+        self.gui.mapper.registerArea( self.area  )
         
-        events.registerMapperEvent( "screeMode", [ self.vScreen["startX"], self.vScreen["startY"] ],
-                [ self.vScreen["endX"], self.vScreen["endY"] ], True, ["moveMode:screen"], self._moveScreenMode, 0)
-        
-        events.registerMapperEvent( "timeupdate", [ self.vScreen["startX"], self.vScreen["startY"] ],
-                [ self.vScreen["endX"], self.vScreen["endY"] ], False, ["moveMode:screen"], self._timeUpdate, 0)
-    
-    def mouseClick( self, widget, event, mapper ):
-        """
-        This is the callback function for the mouse clicks in the
-        mapper.
-
-        Arguments:
-        - self: The main object pointer.
-        - widget: The Drawing area.
-        - event: The event information.
-        """
-
-        if event.button == 1 and event.type.value_name == "GDK_BUTTON_PRESS":
-            self.mpClick[0], self.mpClick[1] = [ int(event.x), int(event.y)]
-        elif event.button == 1 and event.type.value_name == "GDK_BUTTON_RELEASE":
-            self.settings.vScreen = "%s" % {'startX': self.mpClick[0], 
-                                            'startY': self.mpClick[1], 
-                                            'endX': self.mpClick[2], 
-                                            'endY': self.mpClick[3], 
-                                            'width': self.mpClick[4],
-                                            'height': self.mpClick[5] }
-            self.mpClick = [ 0, 0, 0, 0, 0, 0 ]
-
-    def mouseMotion( self, widget, event, mapper ):
-        """
-        This is the calback function for the button1 motion events
-        in the mapper
-        
-        Arguments:
-        - self: The main object pointer.
-        - widget: The Drawing area.
-        - event: The event information.
-        """
-        self.mpClick[2] = int( event.x )
-        self.mpClick[3] = int( event.y )
-        self.mpClick[4] = abs( int(event.x) - self.mpClick[0])
-        self.mpClick[5] = abs( int(event.y) - self.mpClick[1] )
-        self.gui.mapper.updateView()
-    
-    def drawMotionRectangle( self, context ):
-        """
-        This function draws a rectangle during the mouse motion event on the 
-        mapper when the button 1 is pressed.
-        
-        Arguments:
-        - self: The main object pointer
-        - context: Cairo context to draw the rectangle.
-        """
-        
-        if self.mpClick[0] < self.mpClick[2]:
-            self.gui.mapper.drawRectangle( context, self.mpClick[0], self.mpClick[1], self.mpClick[4], self.mpClick[5], (10, 0.8, 0.1))
-        else:
-            self.gui.mapper.drawRectangle( context, self.mpClick[2], self.mpClick[3], self.mpClick[4], self.mpClick[5], (10, 0.8, 0.1))
-    
-    def _timeUpdate( self, *args ):
+    def _timeUpdate( self, *args, **kwds ):
         """
         This function updates the self.last time so the mouse
         pointer wont be sticked to the desktop when the mapper
@@ -183,7 +130,7 @@ class Profile:
         """
         self.last = time.time()
 
-    def _moveScreenMode( self, *args ):
+    def _moveScreenMode( self, *args, **kwds ):
         """
         Perform the movements of the pointer using the 'REAL MOUSE' mode.
         
@@ -268,8 +215,9 @@ class Profile:
         
         tmp = [ spin.get_value_as_int() for spin in self.spins  ]
         
-        self.settings.vScreen = "%s" % {'startX': tmp[0], 'startY': tmp[1], 'endY': tmp[1] + tmp[3],
-                                        'endX': tmp[0] + tmp[2], 'height': tmp[3], 'width': tmp[2]}
+        self.settings.set( "screen_profile", "vScreen",
+                           "%s" % {'startX': tmp[0], 'startY': tmp[1], 'endY': tmp[1] + tmp[3],
+                                   'endX': tmp[0] + tmp[2], 'height': tmp[3], 'width': tmp[2]} )
                                         
         prefGui.preffWidgets["vScreen"].set_text( self.settings.vScreen ) 
 
@@ -303,24 +251,3 @@ class Profile:
         spinLbl.set_mnemonic_widget( spinButton )
         
         return spinHbox
-
-    def drawMapper( self, context ):
-        """
-        Calls the drawing function needed
-
-        Arguments:
-        - self: The main object pointer.
-        - context: The Drawing area context to paint.
-        """
-        
-        self._checkPref()
-        
-        if not 0 in self.mpClick:
-            self.drawMotionRectangle( context )
-            
-        if self.vScreen["startX"] < self.vScreen["endX"]:
-            self.gui.mapper.drawRectangle(context,  self.vScreen["startX"], self.vScreen["startY"], 
-                                                        self.vScreen["width"], self.vScreen["height"], (255, 255, 255))
-        else:
-            self.gui.mapper.drawRectangle(context,  self.vScreen["endX"], self.vScreen["endY"], 
-                                                        self.vScreen["width"], self.vScreen["height"], (255, 255, 255))

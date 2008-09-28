@@ -28,9 +28,7 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import os
-import gtk
 import debug
-import events
 import environment as env
 
 from mouseTrap import settings
@@ -58,8 +56,9 @@ def _loadThirdProfiles():
             prof = __import__( mod, globals(), locals(), [''] )
             modes[prof.setName] = prof.Profile
             env.mouseModes.update( prof.modes )
+            debug.debug( "scripts", "Mousetrap %s Profile has been loaded" % mod )
         except:
-            debug.exception( "mouseTrap.scripts", _( "The Profile load failed" ) )
+            debug.exception( "scripts", "The Profile load failed" )
 
 def loadProfile( gui ):
     """
@@ -73,4 +72,6 @@ def loadProfile( gui ):
     if not modes:
         _loadThirdProfiles()
         
-    loaded = modes[settings.mouseMode.split("|")[0]]( gui )
+    loaded = modes[settings.get( "cam", "mouseMode" ).split("|")[0]]( gui )
+    debug.debug( "scripts", "Profile Started" )
+

@@ -100,12 +100,14 @@ class ocvfw:
             points = cv.cvHaarDetectObjects( self.smallImg, cascade, self.storage,
                                     1.2, 2, method, cv.cvSize(20,20) )
         else:
-            debug.exception( "mouseTrap.ocvfw", _("The Haar Classifier Cascade load failed") )
+            debug.exception( "ocvfw", "The Haar Classifier Cascade load failed" )
 
         if points:
             matches = [ [ cv.cvPoint( int(r.x*self.imageScale), int(r.y*self.imageScale)), \
                           cv.cvPoint( int((r.x+r.width)*self.imageScale), int((r.y+r.height)*self.imageScale) )] \
                           for r in points]
+            
+            debug.debug( "ocvfw", "cmGetHaarPoints: detected some matches" )
             return matches
 
     def cmGetHaarROIPoints( self, haarCascade, rect, origSize = (0,0), method = cv.CV_HAAR_DO_CANNY_PRUNING ):
@@ -130,12 +132,14 @@ class ocvfw:
             points = cv.cvHaarDetectObjects( imageROI, cascade, self.storage,
                                     1.2, 2, method, cv.cvSize(20,20) )
         else:
-            debug.exception( "mouseTrap.ocvfw", _( "The Haar Classifier Cascade load Failed (ROI)" ) )
+            debug.exception( "ocvfw", "The Haar Classifier Cascade load Failed (ROI)" )
 
         if points:
             matches = [ [ cv.cvPoint( int(r.x+origSize[0]), int(r.y+origSize[1])), \
                           cv.cvPoint( int(r.x+r.width+origSize[0]), int(r.y+r.height+origSize[1] ))] \
                           for r in points]
+
+            debug.debug( "ocvfw", "cmGetHaarROIPoints: detected some matches" )
             return matches
             
     def cmSetLKPoints( self, label, point):
@@ -162,6 +166,8 @@ class ocvfw:
             
             if len(self.imgLKPoints["last"]) > 0:
                 self.imgLKPoints["last"].append( self.imgLKPoints["current"][0] )
+
+            debug.debug( "ocvfw", "cmSetLKPoints: New LK Point Added" )
         else:
             self.imgLKPoints["current"] = []
     
@@ -208,6 +214,9 @@ class ocvfw:
             # increment the counter
             counter += 1
 
+        
+        #debug.debug( "ocvfw", "cmShowLKPoints: Showing %d LK Points" % counter )
+        
         # set back the self.imgPoints we keep
         self.imgLKPoints["current"] = new_points
     
@@ -242,6 +251,7 @@ class ocvfw:
         - params: A list with the capture properties. NOTE: Not implemented yet.
         """
         self.capture = highgui.cvCreateCameraCapture( int(input) )
+        debug.debug( "ocvfw", "cmStartCamera: Camera Started" )
     
     def cmQueryCapture( self, bgr = False, flip = False ):
         """

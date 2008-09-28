@@ -35,7 +35,7 @@ import Xlib.ext.xtest as xtest
 from Xlib import X, display
     
 clickVal  = { X.ButtonPress   : 0, 
-              X.ButtonRelease : 5}
+              X.ButtonRelease : 5 }
               
 clickType = { 'p' : [ X.ButtonPress ],
               'r' : [ X.ButtonRelease ],
@@ -53,6 +53,7 @@ xDisplay   = display.Display()
 isGnome = False
 if env.desktop == "gnome":
     isGnome = True
+    debug.debug( "mousetrap.mouse", _( "GNOME desktop has been detected" ) )
     
     ## pyatspi registry for gnome users
     reg = pyatspi.Registry
@@ -60,10 +61,6 @@ if env.desktop == "gnome":
 ## Is the D&D click being used ?
 dragging = False 
         
-def handler( func ):
-    def wrapper( *arg, **kw ):
-        return dsp[arg[0]]( *arg[1:], **kw )
-    return wrapper
     
 def position( *arg ):
     """
@@ -74,7 +71,18 @@ def position( *arg ):
     return list(gtkDisplay.get_pointer()[1:3])
     
 def click( x = None, y = None, button = "bc1" ):
-    
+    """
+    Execute Mouse Clicks. If the mouse is dragging an object
+    then the release click will be performed.
+
+    Arguments:
+    - x: The X coordinate in the screen.
+    - y: The Y coordinate in the screen.
+    - button: The button click that has to be performed.
+
+    Return True
+    """
+
     global isGnome
     global dragging
 
@@ -125,4 +133,26 @@ def move( x, y ):
 # Dictionary Dispatcher
 dsp = { "move"      : move,
         "click"     : click,
-        "position" : position }
+        "position"  : position }
+
+def handler( func ):
+    """
+    Mouse functions decorator.
+
+    Arguments:
+    - func: The function called to access the decorator.
+
+    Return The wrapper
+    """
+
+    def wrapper( *arg, **kw ):
+        """
+        Wrapper function. 
+
+        This functions will execute the required function passing the arguments to it.
+        
+        Return the function executed
+        """
+        return dsp[arg[0]]( *arg[1:], **kw )
+    
+    return wrapper

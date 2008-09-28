@@ -48,13 +48,14 @@ try:
     import shutil
     import getopt
     import gobject
+    import mTSettings
     import mouseTrapPref as mTPref
 except ImportError, e:
     dialogs.errorDialog( 
             "mouseTrap needs <b>%s</b> to work correctly. " % e.message.split()[-1]
             + "\nPlease check if the file exist in "  
             + " the folder or if it is installed.", None )
-    debug.log( debug.LOAD, _( "Highest" ) )
+    debug.exception( "mousetrap", "ImportError: %s" % e.message.split()[-1] )
     sys.exit(0)
     
 # We don't want mouseTrap to fail for it.
@@ -74,10 +75,17 @@ modules = {}
 ## Settings Container
 settings = None
 
+## MouseTrap's state ( Active, clk-mode )
+state = "active"
+
 @mouse.handler
 def mice( *args ):
+    """
+    The mice function pass the args to its decorator. The decorator will
+    execute the required function.
+    """
     pass
-    
+
 def getModVar( module, attr ):
     """
     Allow modules to share variables
@@ -117,7 +125,22 @@ def getModFunc( module, attr ):
         return func
     except:
         return False
-        
+
+def getState():
+    """
+    Gets the current mousetrap's state
+    """
+    return state
+
+def setState( newState ):
+    """
+    Sets a new mousetrap's state
+    """
+    global state
+
+    state = newState
+    debug.debug( "mousetrap", "MouseTrap's state changed")
+    
 def updateView( img ):
     """
     This function calls the gui's updateView function
@@ -142,10 +165,11 @@ def showMainGui( ):
                                     globals(), 
                                     locals(), 
                                     [''])   
-        if settings.showMainGui:                     
+        if settings.getboolean( "gui", "showMainGui" ):
             modules["gui"] = gui.showMainGui( )
+            debug.debug( "mouseTrap", "MainGui has been started" )
     except:
-        debug.exception( "mosuetrap", _( "Main Gui load failed" )  )
+        debug.exception( "mousetrap", "Main Gui load failed"  )
 
 def startCam( ):
     """
@@ -161,12 +185,16 @@ def startCam( ):
                                     
         modules["cam"] = cam.Camera() 
         
-        if settings.startCam:
+        if settings.getboolean( "main", "startCam" ):
             modules["cam"].start()
+            debug.debug( "mouseTrap", "Camera Module has been started" )
     except:
-        debug.exception( "mousetrap", _( "Camera Module load failed" ) )
+        debug.exception( "mousetrap", "Camera Module load failed" )
 
 def startEventsHandler():
+    """
+    Starts the events handlers script
+    """
     global modules
     
     try:
@@ -174,10 +202,11 @@ def startEventsHandler():
                                        globals(), 
                                        locals(), 
                                        [''])
-        if settings.startCam:
+        if settings.getboolean( "main", "startCam"):
             modules["events"].startMapperListener( modules["gui"].mapper )
+            debug.debug( "mouseTrap", "Events handler has been started" )
     except:
-        debug.exception( "mosuetrap", _( "Events Handler Load Failed" ) )
+        debug.exception( "mousetrap", "Events Handler Load Failed" )
         
 def startDBus( ):
     """
@@ -192,8 +221,9 @@ def startDBus( ):
                                     locals(), 
                                     [''])   
         dbus.start()
+        debug.debug( "mouseTrap", "DBus Service has been started" )
     except:
-        debug.exception( "mousetrap", _( "DBus Service Load Failed" ) )
+        debug.exception( "mousetrap", "DBus Service Load Failed" )
 
 def loadSettings( ):
     """
@@ -211,11 +241,13 @@ def loadSettings( ):
             if not os.path.exists( env.scriptsPath ):
                 shutil.copytree( "%s/scripts/" % \
                             env.appPath, env.scriptsPath )
-
-            os.chdir(env.configPath)
-            settings = __import__( "userSettings" )
+            
+            settings = mTSettings.Settings()
+            settings.readfp(open( env.configFile ))
+            
+            debug.debug( "mouseTrap", "Settings have been loaded" )
         except:
-            debug.exception( "mousetrap", _( "Mousetrap Settings load failed." ) )
+            debug.exception( "mousetrap", "Mousetrap Settings load failed." )
             sys.exit(0)
     else:
         try:
@@ -225,7 +257,7 @@ def loadSettings( ):
                 if getattr( modules[mod], "restart" ):
                     modules[mod].restart()
         except:
-            debug.exception( "mousetrap", _("Mousetrap Settings reload failed") )
+            debug.exception( "mousetrap", "Mousetrap Settings reload failed" )
             
 
 def calcPoint():
@@ -234,7 +266,7 @@ def calcPoint():
     if needed.
     """
     
-    if settings.startCam:
+    if settings.get( "main", "startCam" ):
         modules["cam"].cmCleanLKPoints()
 
 # For Profiling pourpouse uncoment the next line
@@ -271,7 +303,7 @@ def start( ):
             
             # This will change the default video device input
             if opt in ("-i"):
-                settings.inputDevIndex = val
+                settings.set( "cam", "inputDevIndex", val )
                 
             if opt in ("-e", "--enable"):
                 value = val.strip()
@@ -279,13 +311,13 @@ def start( ):
                 # This allows us to disable the main window
                 # of mouseTrap to have a clearer desktop.
                 if value == "main-window":
-                    settings.showMainGui = True
+                    settings.set( "gui", "showMainGui", "True" )
 
 
                 # This allows us to enable the webCam
                 # feature in case it has been disabled.
                 elif value == "cam":
-                    settings.startCam = False
+                    settings.set( "main", "startCam", "False" )
                 else:
                     usage()
                     quit(2)
@@ -294,9 +326,9 @@ def start( ):
                 value = val.strip()
 
                 if value == "main-window":
-                    settings.showMainGui = False
+                    settings.set( "gui", "showMainGui", "False" )
                 elif value == "cam":
-                    settings.startCam = False
+                    settings.set( "main", "startCam", "False" )
                 else:
                     usage()
                     quit(2)
@@ -388,4 +420,8 @@ def quit( exitcode=1 ):
     Arguments:
     - exitcode: The exitcode number. It helps to handle some quit events.
     """
+
+    if settings.getboolean( "main", "startCam"): 
+        modules["events"].stopMapperListener()
+
     sys.exit(exitcode)

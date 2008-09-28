@@ -74,7 +74,7 @@ MTP_WATCHDOG=0
 cleanup()
 {
     USERID=`id | cut -f2 -d= | cut -f1 -d\(`
-    PIDS=`ps -eo pid,ruid,args | egrep "mouseTrap[.]mouseTrap" | grep -v grep | awk '{print $1}'`
+    PIDS=`ps -eo pid,ruid,args | grep $USERID | egrep "mouseTrap[.]mouseTrap" | grep -v grep | awk '{print $1}'`
 
     IFS='
     '
@@ -186,7 +186,6 @@ main()
         mouseTrap &
         mouseTrap_pid=$!
         wait $mouseTrap_pid
-        echo pasa
 
         RUN=$?  # quit on a normal exit status from mouseTrap
 
@@ -215,6 +214,10 @@ main()
     kill_watchdog
 }
 
+
+trap kill_mouseTrap QUIT TERM INT ABRT
+trap hup_mouseTrap HUP
+
 if [ "x$RUNONCE" = "xfalse" -a "x$ARGS" = "x" ]
 then
     main
@@ -231,14 +234,14 @@ else
         # erroneously types an illegal command line argument, the
         # help text is emitted and the other mouseTrap is not killed.
         #
-        if [ `egrep -c "\-d|\-e|\-t" <<< $ARGS` -eq 0 ]
+        if [ `egrep -c "\-h|\-d|\-e|\-t" <<< $ARGS` -eq 0 ]
         then
-            #if [ `egrep -c "\-h" <<< $ARGS` -eq 0 ]
-            #then
-            #    mouseTrap "NO_CLEANUP"
-            #else
+            if [ `egrep -c "\-h" <<< $ARGS` -eq 0 ]
+            then
                 mouseTrap "NO_CLEANUP"
-            #fi
+            else
+                mouseTrap 
+            fi
         else
             mouseTrap &
             mouseTrap_pid=$!

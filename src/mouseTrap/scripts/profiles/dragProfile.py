@@ -27,11 +27,15 @@ __date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
+import gtk
+import time
 import mouseTrap.events as events
 import mouseTrap.environment as env
 import mouseTrap.mouseTrap as mouseTrap
 
+from mouseTrap.mainGui import MapperArea
 from mouseTrap.mTi18n import _
+from opencv import cv
 
 # The name given for the config file
 setName = "drag"
@@ -57,10 +61,16 @@ class Profile:
         self.mTp      = mouseTrap
         self.settings = mouseTrap.settings
         
-        self.step     = self.settings.stepSpeed
-        self.active   = False
+        self.active   = True
 
         self._loadSettings()
+
+        self.horArea = MapperArea()
+        self.horArea.area( 0, 60, 100, 80, False )
+
+        self.verArea = MapperArea()
+        self.verArea.area( 100, 0, 120, 160, False )
+
         self._registerMapperEvents()
 
     def _registerMapperEvents( self ):
@@ -71,44 +81,18 @@ class Profile:
         - self: The main object pointer.
         """
 
-        events.registerMapperEvent( "dragHor", [ 0, 60 ], [ 100, 80 ], 
-                                    True, ["moveMode:drag", "clickDlgVisible:False"], 
-                                    self._moveDragDropMode, 0, "hor")
-            
-        events.registerMapperEvent( "dragVer", [100, 0], [ 120, 160], 
-                                    True, ["moveMode:drag", "clickDlgVisible:False"], 
-                                    self._moveDragDropMode, 0, "ver")
-            
-        events.registerMapperEvent( "activeDrag", [98, 80], [ 100, 82], 
-                                    True, ["moveMode:drag", "clickDlgVisible:False"], 
-                                    self._startStopMove, 2)
+        self.horArea.connect( "point-move", self._moveDragDropMode, env.ACTIVE, "hor", out = False )
+        self.verArea.connect( "point-move", self._moveDragDropMode, env.ACTIVE, "ver", out = False )
+        self.gui.mapper.registerTrigger( 100, 80, 4, self._startStopMove )
+        #self.gui.mapper.drawPoint( 30, 100, 3, "orange")
+        self.gui.mapper.registerArea( self.horArea )
+        self.gui.mapper.registerArea( self.verArea )
 
-        events.registerMapperEvent( "clickPanel", [28, 98], [32, 102], 
-                                    True, ["moveMode:drag", "clickDlgVisible:False"], 
-                                    self.gui.clickDlgHandler, 0.5)
-
-        #########################
-        #  CLICK DIALOG EVENTS  #
-        #########################
+        #self.area.connect( "point-move", self._clickDialog, env.CLKDLG, out = True )                                                                 
             
-        events.registerMapperEvent( "clickDlgPrev", [0, 0],
-                                    [ 30 - self.settings.reqMovement, 160], 
-                                    True, ["moveMode:drag", "clickDlgVisible:True"], 
-                                    self.gui.clickDialog.prevBtn, 2)
-                                    
-        events.registerMapperEvent( "clickDlgNext", [30 + self.settings.reqMovement, 0],
-                                    [ 200, 160], True, ["moveMode:drag", "clickDlgVisible:True"], 
-                                    self.gui.clickDialog.nextBtn, 2)
-        
-        events.registerMapperEvent( "clickDlgAccept", [0, 0], 
-                                    [ 200, 100 - self.settings.reqMovement], 
-                                    True, ["moveMode:drag", "clickDlgVisible:True"], 
-                                    self.gui.clickDialog.pressButton, 2)
-        
-        events.registerMapperEvent( "clickDlgCancel", 
-                                    [0, 100 + self.settings.reqMovement],[ 200, 160], 
-                                    True, ["moveMode:drag", "clickDlgVisible:True"], 
-                                    self.gui.clickDialog.hidePanel, 2)
+        ## events.registerMapperEvent( "activeDrag", [98, 80], [ 100, 82], 
+##                                     True, ["moveMode:drag", "clickDlgVisible:False"], 
+##                                     self._startStopMove, 2)
 
     def _loadSettings( self ):
         """
@@ -117,13 +101,16 @@ class Profile:
         Arguments:
         - self: The main object pointer.
         """
-        
         try:
-            getattr( self.settings, "reqMovement")
+            self.reqMovement = self.settings.getint( "access", "reqMovement" )
         except:
-            self.settings.reqMovement = 10
-            
-    def _startStopMove( self, *args ):
+            self.settings.add_section(  "access" )
+            self.settings.set( "access", "reqMovement", "10" )
+            self.reqMovement = self.settings.getint( "access", "reqMovement" )
+
+        self.step = self.settings.getint( "mouse", "stepSpeed" )
+        
+    def _startStopMove( self, *args, **kwds ):
         """
         Allow Users to Enable or Disable the mode.
 
@@ -133,7 +120,7 @@ class Profile:
         """
         self.active = not self.active
 
-    def _moveDragDropMode( self, sense ):
+    def _moveDragDropMode( self, sense, *args, **kwds ):
         """
         Perform the mouse pointer movements based on the 'Drag Drop Mode'
 
@@ -141,11 +128,14 @@ class Profile:
         - self: The main object pointer.
         - sense: The direction of the movement. 
         """
-
+        
         if not self.active:
             return
         
         foreheadDiff = mouseTrap.getModVar( "cam", "foreheadDiff" )
+
+        if not foreheadDiff:
+            return
         
         newX, newY = mouseTrap.mice( "position" )
 
@@ -156,40 +146,6 @@ class Profile:
 
         mouseTrap.mice( "move", newX, newY )
 
-    def drawMapper( self, context ):
-        """
-        Calls the drawing function needed
-
-        Arguments:
-        - self: The main object pointer.
-        - context: The Drawing area context to paint.
-        """
-
-        if self.gui.clickDialog.props.visible:
-            self._clickDlgMapper( context )
-        else:
-            self._drawDragMapper( context )
-
-    def _clickDlgMapper( self, context ): 
-        """
-        Draws the mapper acording to the Click Dialog
-
-        Arguments:
-        - self: The main object pointer.
-        - context: The Drawing area context to paint.
-        """
-
-        reqLim = self.settings.reqMovement
-        
-        context.set_font_size (20)
-        context.set_source_rgb( 255, 255, 255)
-        
-        self.gui.mapper.drawLine(context, 30 - reqLim, 100 - reqLim, 30 + reqLim, 100 - reqLim, (255, 255, 255))
-        self.gui.mapper.drawLine(context, 30 - reqLim, 100 + reqLim, 30 + reqLim, 100 + reqLim, (255, 255, 255))
-        
-        self.gui.mapper.drawLine(context, 30 - reqLim, 100 - reqLim, 30 - reqLim, 100 + reqLim, (255, 255, 255))
-        self.gui.mapper.drawLine(context, 30 + reqLim, 100 - reqLim, 30 + reqLim, 100 + reqLim, (255, 255, 255))
-                
     def prefTab( self, prefGui ):
         """
         This is the preferences tab function for the Drag Mode Profile.

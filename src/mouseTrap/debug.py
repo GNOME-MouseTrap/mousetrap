@@ -34,6 +34,8 @@ import mouseTrap
 import environment as env
 
 
+modules = {}
+
 def checkModule( module ):
     """
     Get's a new logger for modules.
@@ -41,15 +43,17 @@ def checkModule( module ):
     Arguments:
     - module: The module requesting a logger.
     """
-  
-    if module == "mousetrap":
-        level = logging.DEBUG
-    else:
-        level = mouseTrap.settings.debugLevel
+
+    global modules
+
+    level = logging.DEBUG
+
+    if mouseTrap.settings:
+        level = mouseTrap.settings.getint("main", "debugLevel")
 
     formatter = logging.Formatter("%(levelname)s: %(name)s -> %(message)s")
 
-    cli = logging.StreamHandler()
+    cli = logging.StreamHandler( )
     cli.setLevel( level )
     cli.setFormatter(formatter)
 
@@ -58,10 +62,9 @@ def checkModule( module ):
     file.setFormatter(formatter)
 
     modules[module] = logging.getLogger( module )
-    modules[module].setLevel( level  )
     modules[module].addHandler(cli)
     modules[module].addHandler(file)
-
+    modules[module].setLevel( level  )
 
 def debug( module, message ):
     """

@@ -33,6 +33,7 @@ import mouseTrap.events as events
 import mouseTrap.environment as env
 import mouseTrap.mouseTrap as mouseTrap
 
+from mouseTrap.mainGui import MapperArea
 from mouseTrap.mTi18n import _
 from opencv import cv
 
@@ -64,7 +65,7 @@ class Profile:
         self.gui         = gui
         self.mTp         = mouseTrap
         self.settings    = mouseTrap.settings
-        self.step        = self.settings.stepSpeed
+        self.step        = self.settings.get( "mouse", "stepSpeed" )
         self.reqMovement = None
 
         self.stopMove     = None
@@ -76,10 +77,15 @@ class Profile:
         self.pref = { 'reqMovement' : 'spinButton' }
        
         
-        self.clickCorner     = cv.cvPoint( 100 - self.settings.reqMovement, 80 - self.settings.reqMovement)
-        self.scUpCorner      = cv.cvPoint( 100 + self.settings.reqMovement, 80 - self.settings.reqMovement)
-        self.scDownCorner    = cv.cvPoint( 100 + self.settings.reqMovement, 80 + self.settings.reqMovement)
-        self.defClickCorner  = cv.cvPoint( 100 - self.settings.reqMovement, 80 + self.settings.reqMovement)
+        self.clickCorner     = cv.cvPoint( 100 - self.reqMovement, 80 - self.reqMovement)
+        self.scUpCorner      = cv.cvPoint( 100 + self.reqMovement, 80 - self.reqMovement)
+        self.scDownCorner    = cv.cvPoint( 100 + self.reqMovement, 80 + self.reqMovement)
+        self.defClickCorner  = cv.cvPoint( 100 - self.reqMovement, 80 + self.reqMovement)
+
+
+        self.area = MapperArea()
+        self.area.area( 100 - self.reqMovement, 80 - self.reqMovement, 100 + self.reqMovement, 80 + self.reqMovement, True )
+            
         self._registerMapperEvents()
 
     def _loadSettings( self ):
@@ -91,9 +97,11 @@ class Profile:
         """
         
         try:
-            getattr( self.settings, "reqMovement")
+            self.reqMovement = self.settings.getint( "access", "reqMovement" )
         except:
-            self.settings.reqMovement = 10
+            self.settings.add_section(  "access" )
+            self.settings.set( "access", "reqMovement", "10" )
+            self.reqMovement = self.settings.getint( "access", "reqMovement" )
             
 
     def _registerMapperEvents( self ):
@@ -104,62 +112,21 @@ class Profile:
         - self: The main object pointer.
         """
 
-        events.registerMapperEvent( "holdMove", 
-                    [ 100 - self.settings.reqMovement, 80 - self.settings.reqMovement ], 
-                    [ 100 + self.settings.reqMovement, 80 + self.settings.reqMovement ], 
-                    False, ["moveMode:hold", "clickDlgVisible:False"], self._moveHoldMode, 0)
+        
+        self.area.connect( "point-move", self._moveHoldMode, env.ACTIVE, out = True )
+        self.area.connect( "top-left-corner", self.gui.clickDlgHandler, env.ACTIVE )
+        self.area.connect( "top-right-corner", mouseTrap.mice, env.ACTIVE, "click", button = "b4c" )
+        self.area.connect( "bottom-left-corner", mouseTrap.mice, env.ACTIVE, "click", button = "b5c" )
+        self.area.connect( "bottom-right-corner", mouseTrap.mice, env.ACTIVE, "click", button = self.settings.get( "mouse", "defClick" ) )
+        
+	self.gui.mapper.axis = True
+        self.gui.mapper.registerArea( self.area  )
+        
+        ## Click's dialog event.
 
-        events.registerMapperEvent( "clickPanel", 
-                    [self.clickCorner.x, self.clickCorner.y],
-                    [self.clickCorner.x + 2, self.clickCorner.y + 2], 
-                    True, ["moveMode:hold", "clickDlgVisible:False"], 
-                    self.gui.clickDlgHandler , 0.5)
-                                        
-        events.registerMapperEvent( "scrollUp", 
-                    [self.scUpCorner.x - 2, self.scUpCorner.y],
-                    [self.scUpCorner.x, self.scUpCorner.y + 2], 
-                    True, ["moveMode:hold", "clickDlgVisible:False"], 
-                    mouseTrap.mice, 0.5, "click", button = "b4c" )
-                
-        events.registerMapperEvent( "scrollDown", 
-                    [self.scDownCorner.x - 2, self.scDownCorner.y - 2],
-                    [self.scDownCorner.x, self.scDownCorner.y], 
-                    True, ["moveMode:hold", "clickDlgVisible:False"], 
-                    mouseTrap.mice, 0.5, "click", button =  "b5c" )
-            
-        events.registerMapperEvent( "defClick", 
-                    [self.defClickCorner.x, self.scDownCorner.y - 2],
-                    [self.defClickCorner.x + 2, self.scDownCorner.y], 
-                    True, ["moveMode:hold", "clickDlgVisible:False"],  
-                    mouseTrap.mice, 0.5, "click", button = self.settings.defClick )
-             
-        #########################
-        #  CLICK DIALOG EVENTS  #
-        #########################
-            
-        events.registerMapperEvent( "clickDlgPrev", [0, 0],
-                        [ 100 - self.settings.reqMovement, 160], 
-                        True, ["moveMode:hold", "clickDlgVisible:True"], 
-                        self.gui.clickDialog.prevBtn, 2)
-                        
-        events.registerMapperEvent( "clickDlgNext", 
-                        [100 + self.settings.reqMovement, 0], [ 200, 160], 
-                        True, ["moveMode:hold", "clickDlgVisible:True"], 
-                        self.gui.clickDialog.nextBtn, 2)
-                        
-        events.registerMapperEvent( "clickDlgAccept", 
-                        [98, 80 - self.settings.reqMovement - 2 ],
-                        [ 102, 80 - self.settings.reqMovement + 2], 
-                        True, ["moveMode:hold", "clickDlgVisible:True"], 
-                        self.gui.clickDialog.pressButton, 2)
-                        
-        events.registerMapperEvent( "clickDlgCancel", 
-                        [98, 80 + self.settings.reqMovement - 2], 
-                        [ 102, 80 + self.settings.reqMovement - 2 ], 
-                        True, ["moveMode:hold", "clickDlgVisible:True"], 
-                        self.gui.clickDialog.hidePanel, 2)
-
-    def _moveHoldMode( self, *args ):
+        self.area.connect( "point-move", self._clickDialog, env.CLKDLG, out = True )
+    
+    def _moveHoldMode( self, *args, **kwds ):
         """
         Perform the movements using the 'HOLD' mode.
         
@@ -185,7 +152,7 @@ class Profile:
         var = dict( [ ( i, self.step*(v/abs(v))) 
                         for i,v in enumerate( [ forehead.x - foreheadOrig.x,
                                                 forehead.y - foreheadOrig.y] )  
-                        if abs(v) >= self.settings.reqMovement ] )
+                        if abs(v) >= self.settings.getint( "hold_profile", "reqMovement" ) ] )
 
         for i in var:
             if i > 0: newPoss[i] += var[i]; continue
@@ -194,7 +161,7 @@ class Profile:
         newX, newY = newPoss
         
                   
-        if self.settings.mouseMode.endswith("|acc") and self.startMove > self.stopMove:
+        if self.settings.get( "cam", "mouseMode").endswith("|acc") and self.startMove > self.stopMove:
             self.step += ( abs( time.time() - self.startMove) * 3 )
             
         if newPoss != poss:
@@ -205,8 +172,28 @@ class Profile:
         else:
             self.isMoving = False
             self.stopMove = time.time()
-            self.step     = self.settings.stepSpeed
+            self.step     = self.settings.getint( "mouse", "stepSpeed" )
 
+    def _clickDialog( self, *args, **kwds ):
+        """
+        Click's dialog's point-move event callback
+
+        Arguments:
+        - self: The main object pointer.
+        """
+
+        dialog   = mouseTrap.getModVar( "gui", "clickDialog" )  
+        mPointer = mouseTrap.getModVar( "cam", "mpPointer" ) 
+
+        if mPointer.x in xrange( 0, self.area.xInit ):
+            dialog.prevBtn()
+        elif mPointer.x in xrange( self.area.xEnd, 200):
+            dialogs.nextBtn()
+        elif mPointer.y in xrange( 0, self.area.yInit ):
+            dialog.pressButton()
+        elif mPointer.y in xrange( self.area.yEnd, 160):
+            dialog.hidePanel()
+            
     def prefTab( self, prefGui ):
         """
         This is the preferences tab function for Hold Mode Profile.
@@ -219,8 +206,8 @@ class Profile:
 
         holdBox = gtk.VBox( spacing = 6 )
 
-        reqMov = prefGui.addSpin( _("Required Movement: "), "reqMovement", self.settings.reqMovement)
-        reqMov.get_children()[1].connect("value_changed", self.spinChanged )
+        reqMov = prefGui.addSpin( _("Required Movement: "), "reqMovement", self.settings.getint( "hold_profile", "reqMovement" ) )
+        reqMov.get_children()[1].connect("value_changed", self._spinChanged )
         holdBox.pack_start( reqMov, False, False )
 
         holdBox.show_all()
@@ -231,7 +218,7 @@ class Profile:
         prefGui.NoteBook.insert_page(Frame, gtk.Label( _("Hold Mode") ) )
                     
 
-    def spinChanged( self, widget ):
+    def _spinChanged( self, widget ):
         """
         This is the callback function for the spin change event.
         
@@ -240,94 +227,4 @@ class Profile:
         - prefgui: the preferences gui pointer.
         """
         
-        self.settings.reqMovement = widget.get_value_as_int() 
-                                        
-    def drawMapper( self, context ):
-        """
-        Calls the drawing function needed
-
-        Arguments:
-        - self: The main object pointer.
-        - context: The Drawing area context to paint.
-        """
-
-        if self.gui.clickDialog.props.visible:
-            self._clickDlgMapper( context )
-        else:
-            self._drawCartesianPlane( context )
-            
-    def _clickDlgMapper( self, context ):
-        """
-        Draws the mapper acording to the Click Dialog
-
-        Arguments:
-        - self: The main object pointer.
-        - context: The Drawing area context to paint.
-        """
-
-        reqLim = self.settings.reqMovement
-        
-        context.set_font_size (20)
-        context.set_source_rgb( 255, 255, 255)
-        
-        self.gui.mapper.drawLine(context, 100 - reqLim, 80 - reqLim, 100 + reqLim, 80 - reqLim, (255, 255, 255))
-        self.gui.mapper.drawLine(context, 100 - reqLim, 80 + reqLim, 100 + reqLim, 80 + reqLim, (255, 255, 255))
-        
-        self.gui.mapper.drawLine(context, 100 - reqLim, 80 - reqLim, 100 - reqLim, 80 + reqLim, (255, 255, 255))
-        self.gui.mapper.drawLine(context, 100 + reqLim, 80 - reqLim, 100 + reqLim, 80 + reqLim, (255, 255, 255))
-                
-        msgs = { _( "Cancel" ) : { "x" : 80, "y" : 100 + reqLim },
-                 _( "Accept" ) : { "x" : 80, "y" : 70 - reqLim },
-                  "-->"   : { "x" : 100 + reqLim, "y" : 85},
-                 "<--"    : { "x" : 70 - reqLim,  "y" : 85 }
-                }
-                
-        for msg,arr in msgs.iteritems():
-            context.move_to ( arr["x"] , arr["y"] )
-            context.show_text ( msg )    
-            
-        # Accept Point
-        self.gui.mapper.drawPoint( context, 100, 80 - reqLim, 3, "orange")
-        
-        # Cancel Point
-        self.gui.mapper.drawPoint( context, 100, 80 + reqLim, 3, "orange")
-
-    def _drawCartesianPlane( self, context ):
-        """
-        Draws the Cartesian Plane
-        
-        Arguments:
-        - self:  The main object pointer.
-        - context: The Cairo Context.
-        """
-        
-        reqLim = self.settings.reqMovement
-
-
-        #Safe area   
-            
-        # Y Line
-        self.gui.mapper.drawLine(context, 100, 0, 100, 160, (255, 255, 255))
-        
-        # X Line
-        self.gui.mapper.drawLine(context, 0, 80, 200, 80, (255, 255, 255))
-        
-        self.gui.mapper.drawLine(context, 100 - reqLim, 80 - reqLim, 100 + reqLim, 80 - reqLim, (255, 255, 255))
-        self.gui.mapper.drawLine(context, 100 - reqLim, 80 + reqLim, 100 + reqLim, 80 + reqLim, (255, 255, 255))
-        
-        self.gui.mapper.drawLine(context, 100 - reqLim, 80 - reqLim, 100 - reqLim, 80 + reqLim, (255, 255, 255))
-        self.gui.mapper.drawLine(context, 100 + reqLim, 80 - reqLim, 100 + reqLim, 80 + reqLim, (255, 255, 255))
-        
-        # Up/Left ( Click Panel )
-        self.gui.mapper.drawPoint( context, 100 - reqLim, 80 - reqLim, 3, "orange")
-        
-        #Down/Right ( Scroll Button )
-        self.gui.mapper.drawPoint( context, 100 + reqLim, 80 + reqLim, 3, self.gui.mapper.triggers['scD'])
-            
-        #Up/Right ( Scroll Button )
-        self.gui.mapper.drawPoint( context, 100 + reqLim, 80 - reqLim, 3, self.gui.mapper.triggers['scU'])
-            
-        # Down/Left ( Default Click Launcher )
-        self.gui.mapper.drawPoint( context, 100 - reqLim, 80 + reqLim, 3, "orange")
-
-        return True 
+        self.settings.set( "hold_profile", "reqMovement", widget.get_value_as_int() )

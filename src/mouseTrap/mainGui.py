@@ -30,6 +30,7 @@ __license__   = "GPLv2"
 
 import gtk
 import debug
+import events
 import scripts
 import dialogs
 import mouseTrap
@@ -125,13 +126,13 @@ class MainGui( gtk.Window ):
         
         hBox = gtk.HBox()
         showMapper = gtk.CheckButton( _("Start Point Mapper: ") )
-        showMapper.set_active( self.settings.showPointMapper )
+        showMapper.set_active( self.settings.getboolean( "gui", "showPointMapper" ) )
         showMapper.connect("toggled", lambda x: self.mapper.show() 
                                       if x.get_active() else  self.mapper.hide())
         hBox.pack_start( showMapper, False, False )
         
         showCapture = gtk.CheckButton( _("Show Capture: ") )
-        showCapture.set_active( self.settings.showCapture )
+        showCapture.set_active( self.settings.getboolean( "gui", "showCapture" ) )
         showCapture.connect("toggled", lambda x: self.capture.show() 
                                         if x.get_active() else  self.capture.hide())
         hBox.pack_start( showCapture, False, False )
@@ -259,7 +260,7 @@ class MainGui( gtk.Window ):
         except ImportError:
             dialogs.errorDialog( 
             "mouseTrap needs <b>gnome</b> module to show the help. Please install gnome-python and try again.", None )
-            debug.exception( "mousetrap.mainGui", _( "The help load failed" ) )
+            debug.exception( "mainGui", "The help load failed" )
             
     def close( self, *args ):
         """
@@ -295,14 +296,15 @@ class CoordsGui(gtk.DrawingArea):
         self.mTp = mouseTrap
         self.settings = mouseTrap.settings
         
+        self.areas    = []
+	self.axis     = False
         self.context  = None
         self.set_size_request(200, 160)
         self.add_events( gtk.gdk.BUTTON_PRESS_MASK | 
                          gtk.gdk.BUTTON_RELEASE_MASK | 
                          gtk.gdk.BUTTON1_MOTION_MASK )
  
-        self.triggers = { 'scU' : 'orange',
-                          'scD' : 'orange' }
+        self.triggers = []
         
         self.connect("expose_event", self.expose)
 
@@ -310,8 +312,48 @@ class CoordsGui(gtk.DrawingArea):
         self.desp = 0
         
         self.pointer = [ 0, 0 ]
+   
+    def registerArea( self, area ):
+        """
+        Registers a new area.
+
+        Arguments:
+        - self: The main object pointer.
+        - area: The area to register
+        """
+        self.areas.append( area )
+
+    def registerTrigger( self, X, Y, size, callback, *args, **kwds ):
+        """
+        Registers a new trigger.
+
+        Arguments:
+        - self: The main object pointer.
+        - X: The X possition.
+        - Y: The Y possition.
+        - size: The trigger point size.
+        - callback: The callback function
+        - *args: Extra arguments to pass to the callback function.
+        - **kwds: Extra keywords to pass to the callback function.
+        """
+        self.triggers.append( { "X" : X, "Y" : Y, "size" : size } )
+
+        events.registerTrigger( {  "X" : X, "Y" : Y, "size" : size, "last" : 0,
+                                   "callback" : callback, "args" : args, "kwds" : kwds })
     
     def drawRectangle( self, context, initX, initY, width, height, color ):
+        """
+        Draws a rectangle in the DrawingArea.
+
+        Arguments:
+        - context: The Cairo Context.
+        - initX: The initial X possition.
+        - initY: The initial Y possition.
+        - width: The rectangle width.
+        - height: The rectangle height.
+        - color: An RGB color tuple. E.g: ( 255, 255, 255 )
+        """
+        
         r, g, b = color
         context.set_source_rgb(r, g, b)
         context.rectangle( initX, initY, width, height)
@@ -346,37 +388,108 @@ class CoordsGui(gtk.DrawingArea):
                                event.area.width, event.area.height)
         self.context.clip()
 
-        scripts.loaded.drawMapper( self.context )
-       
+        if "clk-dialog" in mouseTrap.getState():
+            self.dialogMapper()
+            return True
+        
+	if self.axis:
+	    self.drawAxis()
+
+        self.drawAreas()
+        self.drawTriggers()
+        
         pointer = mouseTrap.getModVar( "cam", "mpPointer" )
         
         if pointer:
-            self.drawPoint(self.context, pointer.x, pointer.y, 4)
+            self.drawPoint( pointer.x, pointer.y, 4 )
 
         return True
+
+    def drawTriggers( self ):
+        """
+        Draws the registered triggers.
+
+        Arguments:
+        - self: The main object pointer.
+        """
+        for trigger in self.triggers:
+
+            color = "orange"
+
+            if self.pointer[0] in xrange( trigger["X"] - 2, trigger["X"] + 2 ) \
+                   and self.pointer[1] in xrange( trigger["Y"] - 2, trigger["Y"] + 2 ):
+                color = "blue"
+
+            self.drawPoint( trigger["X"], trigger["Y"], trigger["size"], color )
+            
+    def drawAreas( self ):
+        """
+	Draws the areas and the parts requested ( Corner's Points, Axis)
+
+        Arguments:
+        - self: The main object pointer.
+	"""
+        for area in self.areas:
+            self.drawRectangle( self.context,  area.xInit, area.yInit, 
+                                area.width, area.height, (255, 255, 255))
+	    if area.drawCorners:
+		self.drawCorners( area )
+ 		
+
+    def drawAxis( self ):
+	"""
+	Draws the axis of the plane
+
+	Arguments:
+	- self: The main object pointer
+	"""
+
+        self.drawLine( self.context, 100, 0, 100, 160, (255, 255, 255))
         
-    def drawPoint(self, context, X, Y, size, color = 'green'):
+        self.drawLine( self.context, 0, 80, 200, 80, (255, 255, 255))
+
+    def drawCorners( self, area):
+	"""
+	Draw the corner's points for the given area.
+
+	Arguments:
+	- self: The main object pointer.
+	- area: The area requesting the corners
+	"""
+
+        self.drawPoint( area.xInit, area.yInit, 3, "orange")
+        
+        self.drawPoint( area.xEnd, area.yEnd, 3, "orange" )
+            
+        self.drawPoint( area.xEnd, area.yInit, 3, "orange" )
+            
+        self.drawPoint( area.xInit, area.yEnd, 3, "orange" )
+
+    def drawPoint(self, X, Y, size, color = 'green'):
         """
         Draws the point
         
         Arguments:
         - self: The main object pointer.
-        - context: The Cairo Context
+        - X: The X possition.
+        - Y: The Y possition
+        - size: The point diameter.
+        - color: A RGB color tuple. E.g (255,255,255)
         """
-        
+
         self.pointer = [ X, Y ]
-        context.move_to( X, Y)
-        context.arc(X, Y, size, 0, 2 * pi)
+        self.context.move_to( X, Y)
+        self.context.arc(X, Y, size, 0, 2 * pi)
         
         if color == 'green':
-            context.set_source_rgb(0.7, 0.8, 0.1)
+            self.context.set_source_rgb(0.7, 0.8, 0.1)
         elif color == 'blue':
-            context.set_source_rgb(0.5, 0.65, 12)
+            self.context.set_source_rgb(0.5, 0.65, 12)
         else:
-            context.set_source_rgb(10, 0.8, 0.1)
+            self.context.set_source_rgb(10, 0.8, 0.1)
             
-        context.fill_preserve()
-        context.stroke()
+        self.context.fill_preserve()
+        self.context.stroke()
         return True
         
     def drawLine( self, ctx, x1, y1, x2, y2, color ):
@@ -399,7 +512,68 @@ class CoordsGui(gtk.DrawingArea):
         ctx.set_source_rgb( color[0], color[1], color[2])
         ctx.stroke()    
         return True
+
+    def dialogMapper( self ):
+
+        reqLim = 10
+
+        self.context.set_font_size( 20 )
+        self.context.set_source_rgb( 255, 255, 255 )
+
+        self.drawRectangle( self.context, 100 - reqLim, 80 - reqLim, reqLim*2, reqLim*2, (255,255,255))
+
+class MapperArea:
+
+    def __init__( self ):
+
+        self.xInit = None
+        self.yInit = None
+        self.xEnd  = None
+        self.yEnd  = None
+        self.width = None
+        self.height = None
+	self.drawCorners = False
+
+        self.events = None
+
+        self.events    = { "point-move" : [],  
+                      "top-left-corner" : [],
+                     "top-right-corner" : [],
+                   "bottom-left-corner" : [],
+                  "bottom-right-corner" : [] }
+
         
+        self.eventTypes = [ "point-move",  
+                   "top-left-corner",
+                   "top-right-corner",
+                   "bottom-left-corner",
+                   "bottom-right-corner" ]
+
+    def area( self, xInit, yInit, xEnd, yEnd, corners = False ):
+
+        if not int(xInit) or not int(yInit) or not int(xEnd) or not int(yEnd):
+            debug.error( "mainGui", "All arguments must be INT" )
+
+        self.xInit = xInit
+        self.yInit = yInit
+        self.xEnd  = xEnd
+        self.yEnd  = yEnd
+
+        self.width  = xEnd - xInit
+        self.height = yEnd - yInit
+	self.drawCorners = corners
+
+    def connect( self, eventType, callback, state = "active",*args, **kwds ):
+
+        self.events[ eventType ].append( { "callback" : callback,
+                                           "state"    : state,
+                                           "args"     : args,
+                                           "kwds"     : kwds } )
+
+        events.registerArea( self )
+
+        
+
 def showMainGui( ):
     """
     Loads the mainGUI components and launch it.

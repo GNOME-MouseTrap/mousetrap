@@ -302,6 +302,8 @@ class ClicksDialog( gtk.Window ):
         self.set_focus(self.buttons[0])
         self.buttons[0].get_child().modify_bg( gtk.STATE_NORMAL, gtk.gdk.color_parse(self.green))
         self.show_all()
+        
+        mouseTrap.setState( "clk-dialog" )
     
     def hidePanel( self, *args ):
         """
@@ -312,6 +314,7 @@ class ClicksDialog( gtk.Window ):
         - args: The event arguments
         """
         self.hide()
+        mouseTrap.setState( "active" )
         
     def pressButton( self, *args ):
         """
@@ -368,6 +371,7 @@ class ClicksDialog( gtk.Window ):
         """
         
         self.gui.clickDlgHandler( button )
+        self.hidePanel()
         
     def _newImageButton( self, label, image ):
         """

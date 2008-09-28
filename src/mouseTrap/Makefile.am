@@ -20,6 +20,7 @@ mouseTrap_python_PYTHON = \
 	mTi18n.py \
 	mTDbus.py \
 	mTServer.py \
+	mTSettings.py \
 	ocvfw.py \
 	prefGui.py \
 	profiling.py \

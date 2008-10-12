@@ -152,7 +152,7 @@ class Profile:
         var = dict( [ ( i, self.step*(v/abs(v))) 
                         for i,v in enumerate( [ forehead.x - foreheadOrig.x,
                                                 forehead.y - foreheadOrig.y] )  
-                        if abs(v) >= self.settings.getint( "hold_profile", "reqMovement" ) ] )
+                        if abs(v) >= self.settings.getint( "access", "reqMovement" ) ] )
 
         for i in var:
             if i > 0: newPoss[i] += var[i]; continue
@@ -206,7 +206,7 @@ class Profile:
 
         holdBox = gtk.VBox( spacing = 6 )
 
-        reqMov = prefGui.addSpin( _("Required Movement: "), "reqMovement", self.settings.getint( "hold_profile", "reqMovement" ) )
+        reqMov = prefGui.addSpin( _("Required Movement: "), "reqMovement", self.settings.getint( "access", "reqMovement" ) )
         reqMov.get_children()[1].connect("value_changed", self._spinChanged )
         holdBox.pack_start( reqMov, False, False )
 
@@ -227,4 +227,4 @@ class Profile:
         - prefgui: the preferences gui pointer.
         """
         
-        self.settings.set( "hold_profile", "reqMovement", widget.get_value_as_int() )
+        self.settings.set( "access", "reqMovement", widget.get_value_as_int() )

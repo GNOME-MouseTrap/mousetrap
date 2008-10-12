@@ -1,9 +1,11 @@
+2008-10-12  Flavio Percoco Premoli  <flaper87@r4-p17>
+
+	* src/mouseTrap/scripts/profiles/holdProfile.py: BugFix
+
 2008-09-05  Flavio Percoco Premoli  <flaper87@gnome.org>
 
 	* src/mouseTrap/cam.py: New Debug Implementation
-	* src/mouseTrap/debug.py: Changed old debug module, for the python logging
-	module
-
+	* src/mouseTrap/debug.py: Changed old debug module, for the python logging module
 	* src/mouseTrap/events.py: New Debug Implementation
 	* src/mouseTrap/mTDbus.py: New Debug Implementation
 	* src/mouseTrap/mainGui.py: New Debug Implementation
@@ -21,8 +23,7 @@
 	* src/mouseTrap/mainGui.py: Added Recalc Point button
 	* src/mouseTrap/mouseTrap.py: add a function to perform point calculation
 	* src/mouseTrap/ocvfw.py: Add cmGetHaarROIPoints function
-	* src/mouseTrap/scripts/profiles/screenProfile.py: Implemented sticky
-	mouse.
+	* src/mouseTrap/scripts/profiles/screenProfile.py: Implemented sticky mouse.
 
 2008-08-30  Flavio Percoco Premoli  <flaper87@gnome.org>
 

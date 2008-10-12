@@ -164,7 +164,7 @@ class MainGui( gtk.Window ):
         """
        
         if flip:
-            self.settings.flipImage = not self.settings.flipImage
+            self.settings.set( "cam", "flipImage",  str(not self.settings.getboolean( "cam", "flipImage" )) )
         
         mouseTrap.calcPoint()
         

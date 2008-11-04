@@ -1,3 +1,12 @@
+2008-11-04  Flavio Percoco Premoli  <flaper87@r4-p17>
+
+	reviewed by: <delete if not using a buddy>
+
+	* images/AUTHORS: MouseTrap icons added
+	* images/mousetrap-scalable.svg: MouseTrap Icons Added
+	* mousetrap.desktop.in: MouseTrap Icons Added
+	* src/mouseTrap/mainGui.py: MouseTrap icons Added
+
 2008-10-12  Flavio Percoco Premoli  <flaper87@r4-p17>
 
 	* src/mouseTrap/scripts/profiles/holdProfile.py: BugFix

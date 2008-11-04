@@ -71,7 +71,7 @@ class MainGui( gtk.Window ):
         
         icon_theme = gtk.icon_theme_get_default()
         try:
-            icon = icon_theme.load_icon("mouseTrap", 48, 0)
+            icon = icon_theme.load_icon("mousetrap", 48, 0)
         except:
             return
             
@@ -93,7 +93,8 @@ class MainGui( gtk.Window ):
         
         self.set_title( "mouseTrap" )
         self.connect( "destroy", self.close)
-       
+        self.setWindowsIcon()
+        
         self.vBox = gtk.VBox()
 
         self.buttonsBox = gtk.HButtonBox()

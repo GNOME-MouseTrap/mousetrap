@@ -34,7 +34,7 @@ import thread
 import gobject
 import BaseHTTPServer
 
-import debug
+from . import debug
 
 class _HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     """
@@ -70,7 +70,7 @@ class _HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                 print X + " " + Y
                 self.send_response(200, 'OK')
         else:
-            print "mal"
+            print( "mal" )
 
 #class _HTTPRequestThread(threading.Thread):
 class mTServer:
@@ -99,7 +99,7 @@ class mTServer:
                 #debug.log( debug.MODULES, "Highest")
 
         if not connected:
-            print "problems"
+            print( "problems" )
         else:
             thread.start_new_thread(self.__handler, ())
             

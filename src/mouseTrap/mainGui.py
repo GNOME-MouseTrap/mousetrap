@@ -432,7 +432,7 @@ class CoordsGui(gtk.DrawingArea):
 	"""
         for area in self.areas:
             self.drawRectangle( self.context,  area.xInit, area.yInit, 
-                                area.width, area.height, (255, 255, 255))
+                                area.width, area.height, (0, 0, 102))
 	    if area.drawCorners:
 		self.drawCorners( area )
  		

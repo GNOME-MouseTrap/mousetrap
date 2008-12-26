@@ -48,9 +48,12 @@ def checkModule( module ):
 
     level = logging.DEBUG
 
-    if mouseTrap.settings:
-        level = mouseTrap.settings.getint("main", "debugLevel")
-
+    try:
+        if getattr( mouseTrap, "settings" ):
+            level = mouseTrap.settings.getint("main", "debugLevel")
+    except:
+        level = logging.DEBUG
+        
     formatter = logging.Formatter("%(levelname)s: %(name)s -> %(message)s")
 
     cli = logging.StreamHandler( )

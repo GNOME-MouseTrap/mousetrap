@@ -28,6 +28,7 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import gtk
+import debug
 import pyatspi
 import environment as env
 import Xlib.ext.xtest as xtest
@@ -53,7 +54,7 @@ xDisplay   = display.Display()
 isGnome = False
 if env.desktop == "gnome":
     isGnome = True
-    debug.debug( "mousetrap.mouse", _( "GNOME desktop has been detected" ) )
+    debug.debug( "mousetrap.mouse", "GNOME desktop has been detected" )
     
     ## pyatspi registry for gnome users
     reg = pyatspi.Registry

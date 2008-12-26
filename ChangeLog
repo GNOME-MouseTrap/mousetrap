@@ -1,3 +1,18 @@
+2008-12-26  Flavio Percoco Premoli  <flaper87@r4-p17>
+
+	reviewed by: <delete if not using a buddy>
+
+	* po/es.po: Updated Spanish Translation
+	* src/mouseTrap/cam.py: Porting to python2.6
+	* src/mouseTrap/debug.py: porting to python2.6
+	* src/mouseTrap/mTServer.py: porting to python2.6
+	* src/mouseTrap/mainGui.py: porting to python2.6
+	* src/mouseTrap/mouse.py: porting to python2.6
+	* src/mouseTrap/mouseTrap.py: porting to python2.6
+	* src/mouseTrap/prefGui.py: porting to python2.6
+	* src/mouseTrap/scripts/profiles/screenProfile.py: Added new mouse method
+	using relative movements.
+
 2008-11-04  Flavio Percoco Premoli  <flaper87@r4-p17>
 
 	reviewed by: <delete if not using a buddy>

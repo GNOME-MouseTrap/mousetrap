@@ -31,10 +31,10 @@ import sys
 import os 
 
 try:
-    import debug
-    import dialogs
+    from . import debug
+    from . import dialogs
 except ImportError, e:
-    sys.stderr.write( "\nmouseTrap needs %s to work correctly. " % e.message.split()[-1]
+    sys.stderr.write( "\nmouseTrap needs %s to work correctly. " % str(e).split(" ")[-1]
     + "\nPlease check if the file exist in " 
     + " the folder or if it is installed.\n" )
     sys.exit(0)
@@ -44,23 +44,24 @@ import environment as env
 from mTi18n import _
 
 try:
-    import mouse
+    from . import mouse
     import shutil
     import getopt
     import gobject
-    import mTSettings
+    from . import mTSettings
     import mouseTrapPref as mTPref
 except ImportError, e:
+    print( e.args[0] )
     dialogs.errorDialog( 
-            "mouseTrap needs <b>%s</b> to work correctly. " % e.message.split()[-1]
+            "mouseTrap needs <b>%s</b> to work correctly. " % str(e).split(" ")[-1]
             + "\nPlease check if the file exist in "  
             + " the folder or if it is installed.", None )
-    debug.exception( "mousetrap", "ImportError: %s" % e.message.split()[-1] )
+    debug.exception( "mousetrap", "ImportError: %s" % str(e).split(" ")[-1] )
     sys.exit(0)
     
 # We don't want mouseTrap to fail for it.
 try:
-    import profiling
+    from . import profiling
 except:
     pass
 
@@ -266,8 +267,7 @@ def calcPoint():
     if needed.
     """
     
-    if settings.get( "main", "startCam" ):
-        modules["cam"].cmCleanLKPoints()
+    modules["cam"].cmCleanLKPoints() if settings.get( "main", "startCam" ) else None
 
 # For Profiling pourpouse uncoment the next line
 # The profile file will be saved in the user config folder
@@ -302,8 +302,7 @@ def start( ):
         for opt, val in opts:
             
             # This will change the default video device input
-            if opt in ("-i"):
-                settings.set( "cam", "inputDevIndex", val )
+            settings.set( "cam", "inputDevIndex", val ) if opt in ("-i") else None
                 
             if opt in ("-e", "--enable"):
                 value = val.strip()
@@ -338,7 +337,7 @@ def start( ):
             # Whe the timeout is reached the listener will attempt
             # to get the nearest icon in case the listener is enabled.
             if opt in ("-v", "--version"):
-                print env.version
+                print( env.version )
                 quit(0)
                     
             # This will show the usage of mouseTrap
@@ -352,7 +351,7 @@ def start( ):
               #  quit(0)
                 
     except getopt.GetoptError, err:
-        print str(err)
+        print( str(err) )
         usage()
         quit(2)
 
@@ -365,7 +364,7 @@ def start( ):
         gobject.threads_init()
         loop.run()
     except KeyboardInterrupt:
-        print "KeyboardInterrupt"
+        print("KeyboardInterrupt")
         quit(0)
     except:
         debug.exception( "mousetrap", "Mousetrap failed starting the loops" )
@@ -375,7 +374,7 @@ def usage( ):
     """
     This function shows the usage and the mouseTraps options.
     """
-    print _("Usage: mouseTrap [OPTION...]")
+    print( _("Usage: mouseTrap [OPTION...]") )
     
     # '-?, --help' that is used to display usage information.
     #
@@ -385,32 +384,32 @@ def usage( ):
     
     # Option:
     # '-i' that is used to set the input camera index. E.g: -i 0
-    print "-i                    " + \
-            _("              Input video device index. E.g -i 0")
+    print( "-i                    " + \
+            _("              Input video device index. E.g -i 0") )
 
     # Options:
     # -e, --enable Allow the users to enable modules not permantly
-    print "-e, --enable=[" \
+    print( "-e, --enable=[" \
         + _("main-window") + "|" \
-        + _("cam") + "]",
+        + _("cam") + "]" ),
     
-    print _("     Enable the selected options")
+    print( _("     Enable the selected options") )
     
     # Options:
     # -d, --disable Allow the users to disable modules not permanently.
-    print "-d, --disable=[" \
+    print( "-d, --disable=[" \
         + _("main-window") + "|" \
-        + _("cam") + "]",
+        + _("cam") + "]" ),
         
-    print _("    Disable the selected options")
+    print( _("    Disable the selected options") )
     
     # Options:
     # -t --timeout To change the mouse timeout not permanently.
-    print "-v, --version      " + \
-            _("                 Shows mouseTrap version")
+    print( "-v, --version      " + \
+            _("                 Shows mouseTrap version") )
     
-    print
-    print _("Report bugs to flaper87@flaper87.org")
+    print("")
+    print( _("Report bugs to flaper87@flaper87.org") )
     
     
 def quit( exitcode=1 ):  
@@ -421,7 +420,5 @@ def quit( exitcode=1 ):
     - exitcode: The exitcode number. It helps to handle some quit events.
     """
 
-    if settings.getboolean( "main", "startCam"): 
-        modules["events"].stopMapperListener()
-
+    modules["events"].stopMapperListener() if settings.getboolean( "main", "startCam") else None
     sys.exit(exitcode)

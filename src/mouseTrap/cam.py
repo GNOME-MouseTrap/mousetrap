@@ -32,8 +32,7 @@ import sys
 try:
     import gtk
 except ImportError, e:
-    module = e.message.split()[-1]
-    sys.stderr.write( "\nmouseTrap needs %s to work correctly. " % module  
+    sys.stderr.write( "\nmouseTrap needs %s to work correctly. " % str(e).split(" ")[-1]
     + "\nPlease check if the file exist in " 
     + " the folder or if it is installed.\n" )
     sys.exit(0)
@@ -51,7 +50,7 @@ try:
     from opencv import cv
     from opencv import highgui
 except:
-    print "This modules depends of opencv libraries"
+    print( "This modules depends of opencv libraries" )
 
         
 class Camera( ocvfw.ocvfw ):
@@ -125,7 +124,7 @@ class Camera( ocvfw.ocvfw ):
         try:
             self.cmStartCamera( self.settings.getint( "cam", "inputDevIndex" ) )
             
-            if( self.capture ):
+            if self.capture:
                 gobject.timeout_add(100, self._checkImg)
                 
         except:
@@ -239,6 +238,9 @@ class Camera( ocvfw.ocvfw ):
         self.foreheadLast = self.forehead
         
     def checkBlink( self ):
+        """
+        Under Development
+        """
         points = self.cmGetMotionPoints( cv.cvRect( self.forehead.x - 100, 
                                                     self.forehead.y, 
                                                     100, 70) )
@@ -250,7 +252,7 @@ class Camera( ocvfw.ocvfw ):
             if self.blink:
                 self.blink = False
                 if curTime - self.lastBlink > 0.5 and curTime - self.lastBlink < 2.5:
-                    print point
+                    print( point )
             else:
                 self.blink = True
                 self.lastBlink = time.time()

@@ -40,7 +40,8 @@ from mouseTrap.mTi18n import _
 setName = "screen"
 
 ## Internal Modes
-modes = { "screen|none"  :  _( "Mouse Screen Mode" ) }
+modes = { "screen|abs"  :  _( "Mouse Absolute Movements" ),
+          "screen|rel"  :  _( "Mouse Relative Movements")}
 
 
 class Profile:
@@ -59,20 +60,31 @@ class Profile:
 
         ## Preference Vars and WidgetsTypes
         self.pref = { "vScreen" : "label" }
-        
+
+        self.gui      = gui
         self.mTp      = mouseTrap
         self.settings = mouseTrap.settings
-        self.gui = gui
 
-        self.last = time.time()
+        self.locked   = False
+        self.lastLock = time.time()
+
+        self.last    = time.time()
         self.mpClick = [ 0, 0, 0, 0, 0, 0 ]
         
         self._loadSettings()
 
-        self.area = MapperArea()
-
+        self.area     = MapperArea()
+        self.brCorner = MapperArea()
+        self.trCorner = MapperArea()
+        self.blCorner = MapperArea()
+        self.tlCorner = MapperArea()
+        
         self.area.area( self.vScreen["startX"], self.vScreen["startY"], self.vScreen["endX"], self.vScreen["endY"] )
-            
+        self.brCorner.area( self.vScreen["endX"] - 15, self.vScreen["endY"] - 15, self.vScreen["endX"], self.vScreen["endY"] )
+        self.trCorner.area( self.vScreen["endX"] - 15, self.vScreen["startY"], self.vScreen["endX"], self.vScreen["startY"] + 15 )
+        self.blCorner.area( self.vScreen["startX"], self.vScreen["endY"] - 15, self.vScreen["startX"] + 15, self.vScreen["endY"] )
+        self.tlCorner.area( self.vScreen["startX"], self.vScreen["startY"], self.vScreen["startX"] + 15, self.vScreen["startY"] + 15 )
+
         self._registerMapperEvents()
 
     def _loadSettings( self ):
@@ -117,7 +129,20 @@ class Profile:
 
         self.area.connect( "point-move", self._moveScreenMode, out = False )
         self.area.connect( "point-move", self._timeUpdate, out = True )
+        self.brCorner.connect( "point-move", self._mouseLocker, out = False )
+        self.trCorner.connect( "point-move", self._mouseLocker, out = False )
+        self.blCorner.connect( "point-move", self._mouseLocker, out = False )
+        self.tlCorner.connect( "point-move", self._mouseLocker, out = False )
         self.gui.mapper.registerArea( self.area  )
+        self.gui.mapper.registerArea( self.brCorner )
+        self.gui.mapper.registerArea( self.trCorner )
+        self.gui.mapper.registerArea( self.blCorner )
+        self.gui.mapper.registerArea( self.tlCorner )
+
+    def _mouseLocker( self, *args, **kwds ):
+        if time.time() - self.lastLock > 3:
+            self.locked   = not self.locked
+            self.lastLock = time.time()
         
     def _timeUpdate( self, *args, **kwds ):
         """
@@ -142,6 +167,10 @@ class Profile:
             self.last = time.time()
             return
         
+        if self.settings.get( "cam", "mouseMode" ).endswith("rel"):
+            self._relMovement()
+            return
+        
         diff = mouseTrap.getModVar( "cam", "foreheadDiff")
         
         if time.time() - self.last >= 0.2 and not abs(diff.x) >= 3 and not abs(diff.y) >= 3:
@@ -162,6 +191,24 @@ class Profile:
             self.last = time.time()
             mouseTrap.mice( "move", newX, newY )
 
+    def  _relMovement( self ):
+        """
+        Performs relative mouse movements
+        """
+
+        if self.locked:
+            return False
+
+        diff = mouseTrap.getModVar( "cam", "foreheadDiff" )
+
+        curX, curY = mouseTrap.mice( "position" )
+        
+        newX, newY = ( curX + diff.x, curY - diff.y )
+
+        if not curX == newX or not curY == newY:
+            self.last = time.time()
+            mouseTrap.mice( "move", newX, newY)
+        
     def prefTab( self, prefGui ):
         """
         This is the preferences tab function for the Screen Mode Profile.

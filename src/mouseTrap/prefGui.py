@@ -330,7 +330,7 @@ class preffGui( gtk.Window ):
 
     def _checkToggled( self, widget, section, option ):
         """
-        Sets the new value in the settings object for the toggled checkbox
+0        Sets the new value in the settings object for the toggled checkbox
 
         Arguments:
         - self: The main object pointer.

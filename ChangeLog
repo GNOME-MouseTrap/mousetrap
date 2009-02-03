@@ -1,4 +1,15 @@
-2008-12-26  Flavio Percoco Premoli  <flaper87@r4-p17>
+2009-02-03  Flavio Percoco Premoli  <flaper87@gnome.org>
+
+	reviewed by: <delete if not using a buddy>
+
+	* mousetrap.desktop.in: Changing the name of script.py to scriptHdlr.py
+	* src/mouseTrap/Makefile.am:  Changing the name of script.py to scriptHdlr.py
+	* src/mouseTrap/mainGui.py:  Changing the name of script.py to scriptHdlr.py
+	* src/mouseTrap/prefGui.py:  Changing the name of script.py to scriptHdlr.py
+	* src/mouseTrap/scriptHdlr.py: Changing the name of script.py to scriptHdlr.py
+	* src/mouseTrap/scripts.py:  Changing the name of script.py to scriptHdlr.py
+
+2008-12-26  Flavio Percoco Premoli  <flaper87@gnome.org>
 
 	reviewed by: <delete if not using a buddy>
 
@@ -13,7 +24,7 @@
 	* src/mouseTrap/scripts/profiles/screenProfile.py: Added new mouse method
 	using relative movements.
 
-2008-11-04  Flavio Percoco Premoli  <flaper87@r4-p17>
+2008-11-04  Flavio Percoco Premoli  <flaper87@gnome.org>
 
 	reviewed by: <delete if not using a buddy>
 
@@ -22,7 +33,7 @@
 	* mousetrap.desktop.in: MouseTrap Icons Added
 	* src/mouseTrap/mainGui.py: MouseTrap icons Added
 
-2008-10-12  Flavio Percoco Premoli  <flaper87@r4-p17>
+2008-10-12  Flavio Percoco Premoli  <flaper87@gnome.org>
 
 	* src/mouseTrap/scripts/profiles/holdProfile.py: BugFix
 

@@ -24,7 +24,7 @@ mouseTrap_python_PYTHON = \
 	ocvfw.py \
 	prefGui.py \
 	profiling.py \
-	scripts.py
+	scriptHdlr.py
  
 
 SUBDIRS = haarcascade scripts

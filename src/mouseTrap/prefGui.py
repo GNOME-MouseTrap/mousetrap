@@ -30,7 +30,7 @@ __license__   = "GPLv2"
 
 import gtk
 import sys
-import scripts
+import scriptHdlr
 import mouseTrap
 import mouseTrapPref as mTPref
 import environment as env
@@ -106,7 +106,7 @@ class preffGui( gtk.Window ):
         self.debugTab()
         
         try:
-            scripts.loaded.prefTab( self )
+            scriptHdlr.loaded.prefTab( self )
         except:
             # The loaded profile doesn't have preferences tab
             pass

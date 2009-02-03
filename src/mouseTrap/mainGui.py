@@ -31,7 +31,7 @@ __license__   = "GPLv2"
 import gtk
 import debug
 import events
-import scripts
+import scriptHdlr
 import dialogs
 import mouseTrap
 import environment as env
@@ -586,6 +586,6 @@ def showMainGui( ):
     gui = MainGui()
     gui.setWindowsIcon()
     gui.buildInterface()
-    scripts.loadProfile( gui )
+    scriptHdlr.loadProfile( gui )
     return gui
 

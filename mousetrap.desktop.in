@@ -7,5 +7,4 @@ Icon=mousetrap
 Terminal=false
 Type=Application
 StartupNotify=true
-Categories=GNOME;GTK;Accessibility;
-
+Categories=Utility;GNOME;GTK;Accessibility;

@@ -20,7 +20,7 @@
 # along with mouseTrap.  If not, see <http://www.gnu.org/licenses/>.
 
 
-"""The main GUI of mouseTrap."""
+"""Camera Device Module."""
 
 __id__        = "$Id$"
 __version__   = "$Revision$"

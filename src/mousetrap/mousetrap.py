@@ -20,7 +20,7 @@
 # along with mouseTrap.  If not, see <http://www.gnu.org/licenses/>.
 
 
-"""The main GUI of mouseTrap."""
+"""MouseTrap's main script."""
 
 __id__        = "$Id$"
 __version__   = "$Revision$"

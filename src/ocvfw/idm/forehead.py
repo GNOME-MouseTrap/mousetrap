@@ -19,6 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with mouseTrap.  If not, see <http://www.gnu.org/licenses/>.
 
+
 """Forehead IDM"""
 
 __id__        = "$Id$"
@@ -49,9 +50,9 @@ class Module(object):
         self.foreheadDiff = None
         self.stopMove     = None
         self.startMove    = None
-        self.haar_cds     = { 'Face'  :  "/home/flaper87/workspace/MouseTrap/src/ocvfw/haars/haarcascade_frontalface_alt.xml",
-                              'Eyes'  :  "/home/flaper87/workspace/MouseTrap/src/ocvfw/haars/frontalEyes35x16.xml",
-                              'Mouth' :  "/home/flaper87/workspace/MouseTrap/src/ocvfw/haars/Mouth.xml"}
+        self.haar_cds     = { 'Face'  :  "../ocvfw/haars/haarcascade_frontalface_alt.xml",
+                              'Eyes'  :  "../ocvfw/haars/frontalEyes35x16.xml",
+                              'Mouth' :  "../ocvfw/haars/Mouth.xml"}
 
         ##############################
         #       ACTION POINTS        #

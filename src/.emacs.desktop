@@ -1,0 +1,18 @@
+;; -*- mode: emacs-lisp; coding: emacs-mule; -*-
+;; --------------------------------------------------------------------------
+;; Desktop File for Emacs
+;; --------------------------------------------------------------------------
+;; Created Sat Feb 14 19:48:08 2009
+;; Desktop file format version 206
+;; Emacs version 22.3.1
+
+;; Global section:
+(setq file-name-history '("/home/flaper87/workspace/MouseTrap/src/test.py" "~/workspace/MouseTrap/src/" "/home/flaper87/MouseTrap/trunk/src/mouseTrap/ocvfw.py" "/home/flaper87/MouseTrap/trunk/src/mouseTrap/cam.py" "/home/flaper87/MODULO NOTA SPESE.xls" "/home/flaper87/workspace/MouseTrap/src/idm/forehead.py" "/home/flaper87/workspace/MouseTrap/src/ocvfw/camera.py" "/home/flaper87/workspace/MouseTrap/src/ocvfw/_ocv.py"))
+(setq desktop-missing-file-warning nil)
+(setq tags-file-name nil)
+(setq tags-table-list nil)
+(setq search-ring nil)
+(setq regexp-search-ring nil)
+(setq register-alist nil)
+
+;; Buffer section -- buffers listed in same order as in buffer list:

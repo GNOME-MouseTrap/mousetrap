@@ -39,7 +39,7 @@ from .._ocv import ocvfw as ocv
 
 class __Camera(ocv):
 
-    def init(self, idx=0, fps=100, async=False):
+    def init(self, idx=0 ):
         """
         Initialize the camera.
 
@@ -51,23 +51,6 @@ class __Camera(ocv):
         """
 
         self.start_camera(idx)
-        self.set_async(fps, async)
-
-    def set_async(self, fps=100, async=False):
-        """
-        Sets/Unsets the asynchronous property.
-
-        Arguments:
-        - self: The main object pointer
-        - fps: The frames per second to be queried.
-        - async: Enable/Disable asynchronous image querying. Default: False
-        """
-
-        self.fps   = fps
-        self.async = async
-
-        if self.async:
-            gobject.timeout_add(self.fps, self.query_image)
 
 
 Camera = __Camera()
@@ -75,7 +58,7 @@ Camera = __Camera()
 
 class Capture(object):
 
-    def __init__(self, image=None):
+    def __init__(self, image=None, fps=100, async=False):
 
         self.__lock        = False
         self.__flip        = {}
@@ -98,6 +81,23 @@ class Capture(object):
         self.last_update   = 0
         self.last_duration = 0
 
+        self.set_async(fps, async)
+
+    def set_async(self, fps=100, async=False):
+        """
+        Sets/Unsets the asynchronous property.
+
+        Arguments:
+        - self: The main object pointer
+        - fps: The frames per second to be queried.
+        - async: Enable/Disable asynchronous image querying. Default: False
+        """
+
+        self.fps   = fps
+        self.async = async
+
+        if self.async:
+            gobject.timeout_add(self.fps, self.sync)
 
     def sync(self):
         """
@@ -107,8 +107,7 @@ class Capture(object):
         - self: The main object pointer.
         """
 
-        if not self.__camera.async:
-            self.__camera.query_image()
+        self.__camera.query_image()
 
         if not self.__image:
             self.__images_cn   = { 1 : cv.cvCreateImage ( self.__camera.imgSize, 8, 1 ),
@@ -117,15 +116,6 @@ class Capture(object):
 
         self.__color       = "bgr"
         self.__image_orig  = self.__image = self.__camera.img
-
-    #@property
-    def image(self):
-        """
-        Returns the image ready to use
-
-        Arguments:
-        - self: The main object pointer.
-        """
 
         if self.__color != self.__color_set:
             self.__image = self.color("rgb")
@@ -139,6 +129,18 @@ class Capture(object):
         self.show_rectangles(self.rectangles())
 
         self.__image = self.resize(200, 160)
+
+        return self.async
+
+    #@property
+    def image(self):
+        """
+        Returns the image ready to use
+
+        Arguments:
+        - self: The main object pointer.
+        """
+
         return self.__image
 
     def resize(self, width, height):
@@ -398,6 +400,7 @@ class Point(Graphic):
         self.__ocv = None
         self.last  = None
         self.diff  = None
+        self.orig  = cv.cvPoint( self.x, self.y )
 
     def set_opencv(self, opencv):
         """
@@ -417,8 +420,11 @@ class Point(Graphic):
             self.last = self.__ocv
 
             # Update the diff attr
-            self.diff = cv.cvPoint( self.last.x - self.x,
-                                    self.last.y - self.y )
+            self.rel_diff = cv.cvPoint( self.last.x - self.x,
+                                        self.last.y - self.y )
+
+            self.abs_diff = cv.cvPoint( self.x - self.orig.x,
+                                        self.y - self.orig.y )
 
         self.__ocv = opencv
 

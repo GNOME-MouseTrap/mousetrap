@@ -30,6 +30,7 @@ __license__   = "GPLv2"
 
 import gtk
 import gobject
+import lib.mouse as mouse
 #import ocvfw.idm as idm
 from ocvfw import pocv
 from ui.scripts.screen import ScriptClass
@@ -74,10 +75,14 @@ class Controller():
         Arguments:
         - self: The main object pointer.
         """
-        return ScriptClass
+        return ScriptClass()
 
     def update_frame(self):
-        self.itf.update_frame(self.idm.get_image())
+        self.itf.update_frame(self.idm.get_image(), self.idm.get_pointer())
+        return True
+
+    def update_pointers(self):
+        self.itf.script.update_items(self.idm.get_pointer())
         return True
 
 
@@ -86,6 +91,7 @@ class Controller():
 loop = gobject.MainLoop()
 a = Controller()
 a.start()
-gobject.timeout_add(100, a.update_frame)
+gobject.timeout_add(150, a.update_frame)
+#gobject.timeout_add(50, a.update_pointers)
 gobject.threads_init()
 loop.run()

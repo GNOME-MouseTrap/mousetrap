@@ -117,7 +117,7 @@ class MainGui( gtk.Window ):
         self.vBox.pack_start(self.cap_expander)
 
         self.map_expander = gtk.expander_new_with_mnemonic("_Script Mapper")
-        self.map_expander.add(self.script())
+        self.map_expander.add(self.script)
         self.map_expander.set_expanded(True)
         #expander.connect('notify::expanded', self.expanded_cb)
         self.vBox.pack_start(self.map_expander)
@@ -150,7 +150,7 @@ class MainGui( gtk.Window ):
         self.add(self.vBox)
         self.show()
 
-    def update_frame(self, img):
+    def update_frame(self, img, point):
         """
         Updates the image
 
@@ -158,6 +158,11 @@ class MainGui( gtk.Window ):
         - self: The main object pointer.
         - img: The IPLimage object.
         """
+
+        if img is None:
+            return False
+
+        #self.script.update_items(point)
         buff = gtk.gdk.pixbuf_new_from_data( img.imageData, gtk.gdk.COLORSPACE_RGB, False, 8, \
                                              int(img.width), int(img.height), img.widthStep )
 
@@ -322,6 +327,8 @@ class CoordsGui(gtk.DrawingArea):
         self.desp = 0
 
         self.pointer = [ 0, 0 ]
+
+        self.connect("motion_notify_event", self.motion_notify_event)
 #
 #     def registerArea( self, area ):
 #         """
@@ -351,6 +358,9 @@ class CoordsGui(gtk.DrawingArea):
 #         events.registerTrigger( {  "X" : X, "Y" : Y, "size" : size, "last" : 0,
 #                                    "callback" : callback, "args" : args, "kwds" : kwds })
 #
+    def motion_notify_event(self, *args):
+        print("PASA")
+
     def draw_rectangle( self, x, y, width, height, color ):
         """
         Draws a rectangle in the DrawingArea.

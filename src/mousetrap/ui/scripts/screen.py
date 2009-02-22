@@ -30,7 +30,8 @@ __license__   = "GPLv2"
 
 import gtk
 import time
-from ui.main import CoordsGui
+import environment as env
+import lib.mouse as mouse
 from ui.widgets import Mapper
 
 # The name given for the config file
@@ -43,8 +44,63 @@ modes = { "screen|abs"  :  "Mouse Absolute Movements",
 class ScriptClass(Mapper):
 
     def __init__(self):
-        #CoordsGui.__init__(self)
-        Mapper.__init__(self, 100, 50)
+        Mapper.__init__(self, 200, 160)
+
+        self.point       = None
+        self.border_with = 0
+
+        self.connect("expose_event", self.expose_event)
+
+    def update_items(self, point):
+        self.point = point
+        self.calc_move()
+        self.queue_draw()
+        try:
+            pass
+        except:
+            pass
+
+    def expose_event(self, widget, event):
+        self.width, self.height = self.allocation[2], self.allocation[3]
+
+        self.draw_rectangle(self.border_with,
+                            self.border_with,
+                            self.width - 2*self.border_with,
+                            self.height - 2*self.border_with,
+                            self.style.fg[self.state],
+                            5.0)
+
+        self.center = { "x" : self.width / 2,
+                        "y" : self.height / 2 }
+
+        self.vscreen = { "x" : self.center["x"] - 40,
+                         "y" : self.center["y"] - 30,
+                         "width"  : 80,
+                         "height" : 60}
+
+        self.draw_rectangle( self.vscreen["x"], self.vscreen["y"],
+                             self.vscreen["width"], self.vscreen["height"],
+                             self.style.fg[self.state], 5.0)
+
+        if hasattr(self.point, "abs_diff"):
+            self.vpoint = { "x" : self.center["x"] - self.point.abs_diff.x,
+                            "y" : self.center["y"] + self.point.abs_diff.y }
+
+            self.draw_point( self.vpoint["x"], self.vpoint["y"], 2)
+
+    def calc_move(self):
+        if not hasattr(self, "vpoint"):
+            return False
+
+        x, y = mouse.position()
+
+        par = ["width", "height"]
+
+        new_x, new_y = [ (float(poss)/self.vscreen[par[i]])*env.screen[par[i]]
+                          for i,poss in enumerate([ (self.vscreen["width"]/2) - ( self.center["x"] - self.vpoint["x"]),
+                                                    (self.vscreen["height"]/2) - ( self.center["y"] - self.vpoint["y"] ) ])]
+
+        mouse.move( new_x, new_y)
 
     def prefferences(self):
         """
@@ -53,3 +109,4 @@ class ScriptClass(Mapper):
         Arguments:
         - self: the main object pointer.
         """
+        pass

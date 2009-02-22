@@ -35,6 +35,7 @@ import pango
 import gtk
 import cairo
 from gtk import gdk
+from math import pi
 
 TEXT = 'A GtkWidget implemented in PyGTK'
 BORDER_WIDTH = 0
@@ -124,19 +125,34 @@ class Mapper(gtk.Widget):
         if self.flags() & gtk.REALIZED:
             self.window.move_resize(*allocation)
 
-    def do_expose_event(self, event):
+    def expose_event(self, widget, event):
         # The do_expose_event is called when the widget is asked to draw itself
         # Remember that this will be called a lot of times, so it's usually
         # a good idea to write this code as optimized as it can be, don't
         # Create any resources in here.
 
-        x, y, w, h = self.allocation
-        self.draw_rectangle(BORDER_WIDTH,
-                            BORDER_WIDTH,
-                            w - 2*BORDER_WIDTH,
-                            h - 2*BORDER_WIDTH,
-                            self.style.fg[self.state],
-                            5.0)
+#         x, y, self.width, self.height = self.allocation
+#         self.draw_rectangle(BORDER_WIDTH,
+#                             BORDER_WIDTH,
+#                             self.width - 2*BORDER_WIDTH,
+#                             self.height - 2*BORDER_WIDTH,
+#                             self.style.fg[self.state],
+#                             5.0)
+#
+#         w = self.width / 2
+#         h = self.height / 2
+#
+#         self.draw_rectangle(60, 50, 80, 60, self.style.fg[self.state], 5.0)
+#         self.draw_point( w + point.abs_diff.x, h - point.abs_diff.y, 2)
+
+#         x, y, w, h = self.allocation
+#         self.draw_rectangle(200,
+#                             160,
+#                             100,
+#                             ,
+#                             self.style.fg[self.state],
+#                             5.0)
+        return True
 
         # And draw the text in the middle of the allocated space
 #         fontw, fonth = self._layout.get_pixel_size()
@@ -153,6 +169,26 @@ class Mapper(gtk.Widget):
         cr.set_line_width(line)
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
         cr.stroke()
+
+    def draw_point(self, X, Y, size, color = 'green'):
+        """
+        Draws the point
+
+        Arguments:
+        - self: The main object pointer.
+        - X: The X possition.
+        - Y: The Y possition
+        - size: The point diameter.
+        - color: A RGB color tuple. E.g (255,255,255)
+        """
+
+        cr = self.window.cairo_create()
+        cr.set_source_rgb(0.7, 0.8, 0.1)
+        cr.arc(X, Y, size, 0, 2 * pi)
+        cr.fill_preserve()
+        cr.stroke()
+
+        return True
 
     def on_expose_show(self, area):
         """

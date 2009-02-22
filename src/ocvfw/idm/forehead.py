@@ -33,7 +33,7 @@ from ocvfw.dev.camera import *
 class Module(object):
 
     def __init__(self, controller):
-        Camera.init(idx=0, async=False)
+        Camera.init(idx=0)
 
         self.img          = None
         self.ctr          = controller
@@ -52,6 +52,7 @@ class Module(object):
         self.startMove    = None
         self.haar_cds     = { 'Face'  :  "../ocvfw/haars/haarcascade_frontalface_alt.xml",
                               'Eyes'  :  "../ocvfw/haars/frontalEyes35x16.xml",
+                              #'Eyes'  :  "../ocvfw/haars/haarcascade_eye_tree_eyeglasses.xml",
                               'Mouth' :  "../ocvfw/haars/Mouth.xml"}
 
         ##############################
@@ -66,7 +67,7 @@ class Module(object):
         self.isMoving       = False
 
     def set_capture(self):
-        self.cap = Capture()
+        self.cap = Capture(async=True)
         self.cap.change(color="rgb")
 
     def calc_motion(self):
@@ -74,8 +75,14 @@ class Module(object):
             self.get_forehead()
 
     def get_image(self):
-        self.cap.sync()
+        """
+        Sets the forehead point if needed and returns the formated image.
 
+        Arguments:
+        - self: The main object pointer
+
+        returns self.cap.image()
+        """
         if not hasattr(self.cap, "forehead"):
             self.get_forehead()
 
@@ -84,8 +91,12 @@ class Module(object):
     def get_pointer(self):
         """
         Returns the new MousePosition
+
+        Arguments:
+        - self: The main object pointer
         """
-        return self.cap.forehead
+        if hasattr(self.cap, "forehead"):
+            return self.cap.forehead
 
     def get_forehead(self):
         eyes = False
@@ -99,7 +110,7 @@ class Module(object):
             endF     = face[areas.index(max(areas))][1]
 
             # Shows the face rectangle
-            #self.cap.show_rectangles([Graphic("rect", "Face", ( startF.x, startF.y ), (endF.x, endF.y), parent=self.cap)])
+            #self.cap.add( Graphic("rect", "Face", ( startF.x, startF.y ), (endF.x, endF.y), parent=self.cap) )
 
             eyes = self.cap.get_area( self.haar_cds['Eyes'], {"start" : startF.x,
                                                          "end" : startF.y,
@@ -112,7 +123,7 @@ class Module(object):
             point1, point2   = eyes[areas.index(max(areas))][0], eyes[areas.index(max(areas))][1]
 
             # Shows the eyes rectangle
-            #self.cap.show_rectangles([Graphic("rect", "Face", ( point1.x, point1.y ), (point2.x, point2.y), parent=self.cap)])
+            #self.cap.add(Graphic("rect", "Face", ( point1.x, point1.y ), (point2.x, point2.y), parent=self.cap))
 
             X, Y = ( (point1.x + point2.x) / 2 ), ( point1.y + ( (point1.y + point2.y) / 2 ) ) / 2
             self.cap.add( Point("point", "forehead", ( X, Y ), parent=self.cap, follow=True) )

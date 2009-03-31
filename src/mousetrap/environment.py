@@ -1,7 +1,6 @@
-
 # -*- coding: utf-8 -*-
 
-# mouseTrap
+# MOUSEtrap
 #
 # Copyright 2008 Flavio Percoco Premoli
 #
@@ -20,7 +19,7 @@
 # Free Software Foundation, Inc., Franklin Street, Fifth Floor,
 # Boston MA  02110-1301 USA.
 
-""" Holds mouseTrap internal information. """
+""" Holds mousetrap internal information. """
 
 __id__        = "$Id$"
 __version__   = "$Revision$"
@@ -32,20 +31,20 @@ import sys
 import os
 import gtk
 
-## mouseTrap Version
+## mousetrap Version
 version     = "@MOUSETRAP_VERSION@"
 
 ## "--prefix" parameter used when configuring the build.
 prefix      = "@prefix@"
 
-## The package name (should be "mouseTrap").
+## The package name (should be "mousetrap").
 package     = "@PACKAGE@"
 
 ## The name of the data directory (usually "share").
 datadirname = "%s/@DATADIRNAME@" % prefix
 
-## Directly mouseTrap data dir
-mTDataDir = "%s/mouseTrap" % datadirname
+## Directly mousetrap data dir
+mTDataDir = "%s/mousetrap" % datadirname
 
 ## The actuall running desktop manager.
 desktop = os.getenv("DESKTOP_MANAGER")
@@ -60,10 +59,10 @@ appPath = os.path.dirname(__file__)
 home = os.path.expanduser("~")
 
 ## Configurations dir
-configPath = home + "/.mouseTrap/"
+configPath = home + "/.mousetrap/"
 
 ## Configurations dir
-configPath = "%s/.mouseTrap/" % home
+configPath = "%s/.mousetrap/" % home
 
 ## Scripts Path
 scriptsPath = "%s/scripts/" % configPath
@@ -75,7 +74,7 @@ profilesPath = "%s/profiles/" % scriptsPath
 configFile = configPath + "userSettings.cfg"
 
 ## The debug file
-debugFile = configPath + "mouseTrap_DEBUG.log"
+debugFile = configPath + "mousetrap_DEBUG.log"
 
 ## The language path
 langPath = "%s/locale/" % datadirname
@@ -86,7 +85,7 @@ haarcascades = appPath + "/haarcascade"
 ## The debugging parts
 DEBUG = ['widget']
 
-## mouseTrap Modules
+## mousetrap Modules
 mTModules = { 'lTr' : '_startListener',
               'cAm' : '_startCam',
 			  'wTp' : '_startWidgetsTrap'}

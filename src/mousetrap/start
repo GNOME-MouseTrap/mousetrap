@@ -21,4 +21,5 @@ getDesktop() {
 }
 
 getDesktop
-PYTHONPATH=$PYTHONPATH:../ python mousetrap.py
+export PYTHONPATH=$PYTHONPATH:../
+python mousetrap.py

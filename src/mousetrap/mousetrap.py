@@ -28,13 +28,13 @@ __date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
+
 import gtk
 import gobject
-import lib.mouse as mouse
-#import ocvfw.idm as idm
 from ocvfw import pocv
+from ui.main import MainGui
 from ui.scripts.screen import ScriptClass
-from ui.main import MainGui, CoordsGui
+from lib import mouse, httpd, dbusd, settings
 
 class Controller():
 
@@ -45,7 +45,14 @@ class Controller():
         Arguments:
         - self: The main object pointer.
         """
+
+        # We don't want to load the settings each time we need them. do we?
+        self.cfg = None
+
         print("Start")
+        self.httpd = httpd.HttpdServer(20433)
+        self.dbusd = dbusd.DbusServer()
+
 
     def start(self):
         """
@@ -55,14 +62,16 @@ class Controller():
         - self: The main object pointer.
         """
 
-        # Lets start the module
-        #idm = __import__("ocvfw.idm.forehead", globals(), locals(), [''])
-        #self.idm = idm.Module(self)
-        #self.idm.set_capture()
+        if self.cfg is None:
+            self.cfg = settings.load()
 
-        idm = pocv.get_idm("forehead")
-        self.idm = idm.Module(self)
-        self.idm.set_capture()
+        if not self.dbusd.start():
+            self.httpd.start()
+
+        # Lets start the module
+         idm = pocv.get_idm(self.cfg.get("main", "algorithm"))
+         self.idm = idm.Module(self)
+         self.idm.set_capture()
 
         # Lets build the interface
         self.itf = MainGui(self)
@@ -84,7 +93,6 @@ class Controller():
     def update_pointers(self):
         self.itf.script.update_items(self.idm.get_pointer())
         return True
-
 
 
 ## This is momentary

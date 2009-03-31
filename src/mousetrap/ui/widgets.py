@@ -29,15 +29,13 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import sys
-
-import gobject
-import pango
 import gtk
+import pango
 import cairo
+import gobject
 from gtk import gdk
 from math import pi
 
-TEXT = 'A GtkWidget implemented in PyGTK'
 BORDER_WIDTH = 0
 
 # A quite simple gtk.Widget subclass which demonstrates how to subclass

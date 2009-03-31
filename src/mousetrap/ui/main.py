@@ -20,7 +20,7 @@
 # along with mouseTrap.  If not, see <http://www.gnu.org/licenses/>.
 
 
-"""The main GUI of mouseTrap."""
+"""The main GUI of mousetrap."""
 
 __id__        = "$Id$"
 __version__   = "$Revision$"
@@ -29,8 +29,9 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import gtk
-
+import settings_gui
 from math import pi
+
 
 class MainGui( gtk.Window ):
     """
@@ -48,6 +49,7 @@ class MainGui( gtk.Window ):
 
         gtk.Window.__init__( self )
         self.ctr    = controller
+        self.cfg    = controller.cfg
         self.script = self.ctr.script()
         #self.set_default_size(200, 400)
 
@@ -94,7 +96,7 @@ class MainGui( gtk.Window ):
 
         self.prefButton = gtk.Button()
         self.prefButton.add(self._newStockImageButton("_Preferences", gtk.STOCK_PREFERENCES))
-        #self.prefButton.connect("clicked", self._loadPreferences)
+        self.prefButton.connect("clicked", self._show_settings_gui)
         self.buttonsBox.pack_start( self.prefButton )
 
         self.closeButton = gtk.Button()
@@ -229,18 +231,17 @@ class MainGui( gtk.Window ):
         buttonLabelBox.show_all()
 
         return buttonLabelBox
-#
-#     def _loadPreferences( self, *args ):
-#         """
-#         Starts the preferences GUI
-#
-#         Arguments:
-#         - self: The main object pointer.
-#         - *args: The widget callback arguments.
-#         """
-#
-#         pref = __import__( "prefGui", globals(), locals(), [''])
-#         pref.showPreffGui( self.mTp )
+
+    def _show_settings_gui( self, *args ):
+        """
+        Starts the preferences GUI
+
+        Arguments:
+        - self: The main object pointer.
+        - *args: The widget callback arguments.
+        """
+
+        settings_gui.showPreffGui(self.ctr)
 #
 #     def clickDlgHandler( self, button = False ):
 #         """

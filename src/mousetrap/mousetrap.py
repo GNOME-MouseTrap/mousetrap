@@ -69,9 +69,9 @@ class Controller():
             self.httpd.start()
 
         # Lets start the module
-         idm = pocv.get_idm(self.cfg.get("main", "algorithm"))
-         self.idm = idm.Module(self)
-         self.idm.set_capture()
+        idm = pocv.get_idm(self.cfg.get("main", "algorithm"))
+        self.idm = idm.Module(self)
+        self.idm.set_capture()
 
         # Lets build the interface
         self.itf = MainGui(self)

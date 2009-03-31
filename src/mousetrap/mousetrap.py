@@ -69,9 +69,9 @@ class Controller():
             self.httpd.start()
 
         # Lets start the module
-        idm = pocv.get_idm(self.cfg.get("main", "algorithm"))
-        self.idm = idm.Module(self)
-        self.idm.set_capture()
+        #idm = pocv.get_idm(self.cfg.get("main", "algorithm"))
+        #self.idm = idm.Module(self)
+        #self.idm.set_capture()
 
         # Lets build the interface
         self.itf = MainGui(self)
@@ -99,7 +99,7 @@ class Controller():
 loop = gobject.MainLoop()
 a = Controller()
 a.start()
-gobject.timeout_add(150, a.update_frame)
-gobject.timeout_add(50, a.update_pointers)
+#gobject.timeout_add(150, a.update_frame)
+#gobject.timeout_add(50, a.update_pointers)
 gobject.threads_init()
 loop.run()

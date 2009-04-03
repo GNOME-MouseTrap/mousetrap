@@ -2,7 +2,7 @@
 
 # mouseTrap
 #
-# Copyright 2008 Flavio Percoco Premoli
+# Copyright 2009 Flavio Percoco Premoli
 #
 # This file is part of mouseTrap.
 #
@@ -19,19 +19,20 @@
 # You should have received a copy of the GNU General Public License
 # along with mouseTrap.  If not, see <http://www.gnu.org/licenses/>.
 
-"""The prefferences GUI."""
+
+"""Settings Handler Interface."""
 
 __id__        = "$Id$"
 __version__   = "$Revision$"
 __date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
-#
 
 import gtk
 import sys
 from i18n import _
 import environment as env
+from ocvfw import pocv
 
 class preffGui( gtk.Window ):
     """
@@ -96,10 +97,11 @@ class preffGui( gtk.Window ):
         self.Table.attach( self.NoteBook, 0, 6, 0, 1 )
         self.NoteBook.show()
 
-        self.mainGuiTab()
-        self.camTab()
+        self.main_gui_tab()
+        self.cam_tab()
+        self.algorithm_tab()
         #self.mouseTab()
-        self.debugTab()
+        self.debug_tab()
 
         ####################
         # Bottom's buttons #
@@ -125,7 +127,7 @@ class preffGui( gtk.Window ):
         self.add( self.Table )
         self.show()
 
-    def mainGuiTab( self ):
+    def main_gui_tab( self ):
         """
         The mainGui Preff Tab.
 
@@ -150,7 +152,7 @@ class preffGui( gtk.Window ):
 
         self.NoteBook.insert_page(Frame, gtk.Label( _("General") ) )
 
-    def camTab( self ):
+    def cam_tab( self ):
         """
         The cam module Preff Tab.
 
@@ -195,6 +197,63 @@ class preffGui( gtk.Window ):
         Frame.show()
 
         self.NoteBook.insert_page(Frame, gtk.Label( _("Camera") ) )
+
+    def algorithm_tab( self ):
+        """
+        The cam module Preff Tab.
+
+        Arguments:
+        - self: The main object pointer.
+        """
+
+        Frame = gtk.Frame()
+
+        algo_box = gtk.VBox( spacing = 6 )
+
+        liststore = gtk.ListStore(bool, str, bool)
+
+        conf_button = gtk.Button(stock=gtk.STOCK_PREFERENCES)
+        conf_button.set_sensitive(False)
+
+        tree_view = gtk.TreeView(liststore)
+        tree_view.connect("cursor-changed", self._tree_view_click, conf_button)
+
+        toggle_cell = gtk.CellRendererToggle()
+        toggle_cell.set_radio(True)
+        toggle_cell.connect( 'toggled', self._toggle_cell_changed, liststore)
+        toggle_cell.set_property('activatable', True)
+        #toggle_cell.set_property('background-set' , True)
+
+        text_cell = gtk.CellRendererText()
+
+        toggle_column = gtk.TreeViewColumn(_('Active Algorithms'), toggle_cell)
+        text_column = gtk.TreeViewColumn(_('Installed Algorithms'))
+
+        for alg in pocv.get_idms_list():
+            alg_inf = pocv.get_idm_inf(alg)
+            liststore.append([False, "%s: %s" % (alg_inf["name"], alg_inf["dsc"]), alg_inf["stgs"]])
+
+        tree_view.append_column(toggle_column)
+        tree_view.append_column(text_column)
+
+        text_column.pack_start(text_cell, True)
+
+        toggle_column.add_attribute( toggle_cell, "active", 0 )
+        toggle_column.set_max_width(30)
+        #toggle_column.set_attributes( toggle_cell, background=2 )
+        text_column.set_attributes(text_cell, text=1)
+
+        algo_box.pack_start(tree_view)
+        algo_box.pack_start(conf_button, False, False)
+
+
+
+        algo_box.show_all()
+
+        Frame.add( algo_box )
+        Frame.show()
+
+        self.NoteBook.insert_page(Frame, gtk.Label( _("Algorithm") ) )
 
     def mouseTab( self ):
         """
@@ -267,7 +326,7 @@ class preffGui( gtk.Window ):
 
         self.NoteBook.insert_page(Frame, gtk.Label( _("Mouse") ) )
 
-    def debugTab( self ):
+    def debug_tab( self ):
         """
         The debuging Preff Tab.
 
@@ -317,9 +376,42 @@ class preffGui( gtk.Window ):
         self.destroy()
 
 
+    def _tree_view_click(self, widget, conf_button):
+        """
+        Row Selection Event.
+
+        Enables/Disables the conf_button whether the
+        selected algorithm can be configured or not.
+
+        Arguments:
+        - widget: The gtk Widget
+        - conf_button: The configuration button object.
+        """
+
+        ts = widget.get_selection()
+        model, it = ts.get_selected()
+        path = model.get_path(it)[0]
+        conf_button.set_sensitive(model[path][2])
+
+    def _toggle_cell_changed(self, cell, path, model ):
+        """
+        ListStore RadioButton Value Changer.
+        """
+
+        if model[path][0]:
+            return False
+
+        for pth in range(len(model)):
+            pth = str(pth)
+            if pth == path:
+                model[pth][0] = True
+            else:
+                model[pth][0] = False
+
+
     def _checkToggled( self, widget, section, option ):
         """
-0        Sets the new value in the settings object for the toggled checkbox
+        Sets the new value in the settings object for the toggled checkbox
 
         Arguments:
         - self: The main object pointer.

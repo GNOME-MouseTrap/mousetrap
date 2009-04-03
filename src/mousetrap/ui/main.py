@@ -94,20 +94,17 @@ class MainGui( gtk.Window ):
         self.buttonsBox = gtk.HButtonBox()
         #self.buttonsBox = gtk.HBox(False,0)
 
-        self.prefButton = gtk.Button()
-        self.prefButton.add(self._newStockImageButton("_Preferences", gtk.STOCK_PREFERENCES))
+        self.prefButton = gtk.Button(stock=gtk.STOCK_PREFERENCES)
         self.prefButton.connect("clicked", self._show_settings_gui)
-        self.buttonsBox.pack_start( self.prefButton )
+        self.buttonsBox.pack_start( self.prefButton, True, True )
 
-        self.closeButton = gtk.Button()
-        self.closeButton.add(self._newStockImageButton("_Exit", gtk.STOCK_QUIT))
+        self.closeButton = gtk.Button(stock=gtk.STOCK_QUIT)
         self.closeButton.connect("clicked", self.close)
-        self.buttonsBox.pack_start( self.closeButton )
+        self.buttonsBox.pack_start( self.closeButton, True, True )
 
-        self.helpButton = gtk.Button()
-        self.helpButton.add(self._newStockImageButton("_Help", gtk.STOCK_HELP))
+        self.helpButton = gtk.Button(stock=gtk.STOCK_HELP)
         #self.helpButton.connect("clicked", self._loadHelp)
-        self.buttonsBox.pack_start( self.helpButton )
+        self.buttonsBox.pack_start( self.helpButton, True, True )
 
         self.vBox.pack_start( self.buttonsBox, False, False )
 

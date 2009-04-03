@@ -68,10 +68,14 @@ class Controller():
         if not self.dbusd.start():
             self.httpd.start()
 
-        # Lets start the module
-        #idm = pocv.get_idm(self.cfg.get("main", "algorithm"))
-        #self.idm = idm.Module(self)
-        #self.idm.set_capture()
+        if self.cfg.getboolean("main", "startCam"):
+            # Lets start the module
+            idm = pocv.get_idm(self.cfg.get("main", "algorithm"))
+            self.idm = idm.Module(self)
+            self.idm.set_capture()
+
+            gobject.timeout_add(150, a.update_frame)
+            gobject.timeout_add(50, a.update_pointers)
 
         # Lets build the interface
         self.itf = MainGui(self)
@@ -99,7 +103,5 @@ class Controller():
 loop = gobject.MainLoop()
 a = Controller()
 a.start()
-#gobject.timeout_add(150, a.update_frame)
-#gobject.timeout_add(50, a.update_pointers)
 gobject.threads_init()
 loop.run()

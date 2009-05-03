@@ -41,6 +41,9 @@ except ImportError, e:
 
 import environment as env
 
+if not os.path.exists( env.configPath ):
+    os.mkdir( env.configPath )
+
 from mTi18n import _
 
 try:
@@ -235,8 +238,7 @@ def loadSettings( ):
     
     if not settings:
         try:
-            if not os.path.exists( env.configPath ):
-                os.mkdir( env.configPath )
+            if not os.path.exists( env.configFile ):
                 mTPref.writeFirstConf()
             
             if not os.path.exists( env.scriptsPath ):

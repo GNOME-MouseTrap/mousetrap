@@ -21,9 +21,9 @@
 
 """ Holds mousetrap internal information. """
 
-__id__        = "$Id$"
-__version__   = "$Revision$"
-__date__      = "$Date$"
+__id__        = "$Id: environment.py 27 2009-03-31 12:02:22Z flaper $"
+__version__   = "$Revision: 27 $"
+__date__      = "$Date: 2009-03-31 14:02:22 +0200 (mar 31 de mar de 2009) $"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli."
 __license__   = "GPLv2"
 

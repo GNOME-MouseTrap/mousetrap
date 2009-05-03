@@ -22,22 +22,28 @@
 
 """Forehead IDM"""
 
-__id__        = "$Id$"
-__version__   = "$Revision$"
-__date__      = "$Date$"
+__id__        = "$Id: forehead.py 21 2009-02-22 18:24:52Z flaper $"
+__version__   = "$Revision: 21 $"
+__date__      = "$Date: 2009-02-22 19:24:52 +0100 (dom 22 de feb de 2009) $"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 from ocvfw.dev.camera import *
 
+
+a_name = "Forehead"
+a_description = "Forehead point tracker based on LK Algorithm"
+a_settings = { 'speed' : {"value":2}}
+
 class Module(object):
 
-    def __init__(self, controller):
+    def __init__(self, controller, stgs = {}):
         Camera.init(idx=0)
 
         self.img          = None
         self.ctr          = controller
         self.cap          = None
+        self.stgs         = stgs
 
         ##############################
         #  MOTION RELATED VARIABLES  #
@@ -65,6 +71,15 @@ class Module(object):
         ##############################
 
         self.isMoving       = False
+
+        self.prepare_config()
+
+    def prepare_config(self):
+        global a_settings
+
+        for key in self.stgs:
+            pass
+        pass
 
     def set_capture(self):
         self.cap = Capture(async=True)
@@ -132,5 +147,3 @@ class Module(object):
         self.foreheadOrig = None
 
         return False
-
-

@@ -22,9 +22,9 @@
 
 """Little  Framework for OpenCV Library."""
 
-__id__        = "$Id$"
-__version__   = "$Revision$"
-__date__      = "$Date$"
+__id__        = "$Id: _ocv.py 20 2009-02-21 21:34:12Z flaper $"
+__version__   = "$Revision: 20 $"
+__date__      = "$Date: 2009-02-21 22:34:12 +0100 (sáb 21 de feb de 2009) $"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
@@ -94,11 +94,11 @@ class ocvfw:
         if not cascade:
             debug.exception( "ocvfw", "The Haar Classifier Cascade load failed" )
 
-        cv.cvResize( self.img, self.smallImg, cv.CV_INTER_LINEAR )
+        cv.cvResize( self.img, self.small_img, cv.CV_INTER_LINEAR )
 
         cv.cvClearMemStorage( self.storage )
 
-        points = cv.cvHaarDetectObjects( self.smallImg, cascade, self.storage, 1.2, 2, method, cv.cvSize(20,20) )
+        points = cv.cvHaarDetectObjects( self.small_img, cascade, self.storage, 1.2, 2, method, cv.cvSize(20,20) )
 
         if points:
             matches = [ [ cv.cvPoint( int(r.x*self.imageScale), int(r.y*self.imageScale)), \
@@ -122,10 +122,8 @@ class ocvfw:
         cascade = cv.cvLoadHaarClassifierCascade( haarCascade, self.imgSize )
 
         cv.cvClearMemStorage( self.storage )
-        #imageROI = cv.cvCreateImage( cv.cvSize( rect.width, rect.height ), 8, 1 )
 
         imageROI = cv.cvGetSubRect( self.img, rect )
-        #imageROI = cv.getImageROI(self.img)
 
         if cascade:
             points = cv.cvHaarDetectObjects( imageROI, cascade, self.storage,
@@ -174,6 +172,12 @@ class ocvfw:
             self.img_lkpoints["current"] = []
 
     def clean_lkpoints(self):
+        """
+        Cleans all the registered points.
+
+        Arguments:
+        - self: The main object pointer
+        """
 
         self.img_lkpoints = { "current" : [],
                               "last"    : [],
@@ -281,7 +285,7 @@ class ocvfw:
             self.prevGrey       = cv.cvCreateImage ( self.imgSize, 8, 1 )
             self.pyramid        = cv.cvCreateImage ( self.imgSize, 8, 1 )
             self.prevPyramid    = cv.cvCreateImage ( self.imgSize, 8, 1 )
-            self.smallImg       = cv.cvCreateImage( cv.cvSize( cv.cvRound ( self.imgSize.width/self.imageScale),
+            self.small_img       = cv.cvCreateImage( cv.cvSize( cv.cvRound ( self.imgSize.width/self.imageScale),
                                     cv.cvRound ( self.imgSize.height/self.imageScale) ), 8, 3 )
         self.img = frame
         cv.cvCvtColor(self.img, self.grey, cv.CV_BGR2GRAY)

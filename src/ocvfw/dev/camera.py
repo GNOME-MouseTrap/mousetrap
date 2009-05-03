@@ -22,9 +22,9 @@
 
 """Camera Device Module."""
 
-__id__        = "$Id$"
-__version__   = "$Revision$"
-__date__      = "$Date$"
+__id__        = "$Id: camera.py 21 2009-02-22 18:24:52Z flaper $"
+__version__   = "$Revision: 21 $"
+__date__      = "$Date: 2009-02-22 19:24:52 +0100 (dom 22 de feb de 2009) $"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 

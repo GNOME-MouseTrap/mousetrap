@@ -22,9 +22,9 @@
 
 """MouseTrap's settings handler."""
 
-__id__        = "$Id$"
-__version__   = "$Revision$"
-__date__      = "$Date$"
+__id__        = "$Id: settings.py 30 2009-04-03 16:00:06Z flaper $"
+__version__   = "$Revision: 30 $"
+__date__      = "$Date: 2009-04-03 18:00:06 +0200 (vie 03 de abr de 2009) $"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 

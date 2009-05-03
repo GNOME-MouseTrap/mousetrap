@@ -23,9 +23,9 @@
 
 """The Server module of mouseTrap."""
 
-__id__        = "$Id$"
-__version__   = "$Revision$"
-__date__      = "$Date$"
+__id__        = "$Id: httpd.py 29 2009-03-31 12:06:44Z flaper $"
+__version__   = "$Revision: 29 $"
+__date__      = "$Date: 2009-03-31 14:06:44 +0200 (mar 31 de mar de 2009) $"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 

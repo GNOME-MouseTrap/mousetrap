@@ -22,14 +22,15 @@
 
 """Settings Handler Interface."""
 
-__id__        = "$Id$"
-__version__   = "$Revision$"
-__date__      = "$Date$"
+__id__        = "$Id: settings_gui.py 30 2009-04-03 16:00:06Z flaper $"
+__version__   = "$Revision: 30 $"
+__date__      = "$Date: 2009-04-03 18:00:06 +0200 (vie 03 de abr de 2009) $"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import gtk
 import sys
+import dialogs
 from i18n import _
 import environment as env
 from ocvfw import pocv
@@ -210,9 +211,10 @@ class preffGui( gtk.Window ):
 
         algo_box = gtk.VBox( spacing = 6 )
 
-        liststore = gtk.ListStore(bool, str, bool)
+        liststore = gtk.ListStore(bool, str, str)
 
         conf_button = gtk.Button(stock=gtk.STOCK_PREFERENCES)
+        conf_button.connect('clicked', self.show_alg_pref, liststore)
         conf_button.set_sensitive(False)
 
         tree_view = gtk.TreeView(liststore)
@@ -231,7 +233,8 @@ class preffGui( gtk.Window ):
 
         for alg in pocv.get_idms_list():
             alg_inf = pocv.get_idm_inf(alg)
-            liststore.append([False, "%s: %s" % (alg_inf["name"], alg_inf["dsc"]), alg_inf["stgs"]])
+            liststore.append([False, alg_inf["name"], alg_inf["stgs"]])
+            #liststore.append([False, "%s: %s" % (alg_inf["name"], alg_inf["dsc"]), alg_inf["stgs"]])
 
         tree_view.append_column(toggle_column)
         tree_view.append_column(text_column)
@@ -362,6 +365,11 @@ class preffGui( gtk.Window ):
         self.NoteBook.insert_page(Frame, gtk.Label( _("Debug") ) )
 
 
+    def show_alg_pref(self, widget, liststore):
+        dlg = dialogs.IdmSettings(self.cfg, self.selected_idm, self.selected_idm_stgs)
+        dlg.set_transient_for(self)
+        dlg.set_destroy_with_parent(True)
+
     def acceptButtonClick( self, *args ):
         """
         Acept button callback. This will apply the settings and close the
@@ -391,9 +399,12 @@ class preffGui( gtk.Window ):
         ts = widget.get_selection()
         model, it = ts.get_selected()
         path = model.get_path(it)[0]
-        conf_button.set_sensitive(model[path][2])
+        if model[path][0] and model[path][2]:
+            self.selected_idm = model[path][1]
+            self.selected_idm_stgs = model[path][2]
+            conf_button.set_sensitive(True)
 
-    def _toggle_cell_changed(self, cell, path, model ):
+    def _toggle_cell_changed(self, cell, path, model):
         """
         ListStore RadioButton Value Changer.
         """
@@ -407,7 +418,6 @@ class preffGui( gtk.Window ):
                 model[pth][0] = True
             else:
                 model[pth][0] = False
-
 
     def _checkToggled( self, widget, section, option ):
         """

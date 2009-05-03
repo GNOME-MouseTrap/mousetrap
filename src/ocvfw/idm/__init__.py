@@ -21,9 +21,9 @@
 
 """IDM Init Module"""
 
-__id__        = "$Id$"
-__version__   = "$Revision$"
-__date__      = "$Date$"
+__id__        = "$Id: __init__.py 18 2009-02-21 21:17:24Z flaper $"
+__version__   = "$Revision: 18 $"
+__date__      = "$Date: 2009-02-21 22:17:24 +0100 (sáb 21 de feb de 2009) $"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 

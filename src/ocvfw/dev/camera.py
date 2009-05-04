@@ -39,7 +39,7 @@ from .._ocv import ocvfw as ocv
 
 class __Camera(ocv):
 
-    def init(self, idx=0 ):
+    def init(self):
         """
         Initialize the camera.
 
@@ -49,8 +49,13 @@ class __Camera(ocv):
         - fps: The frames per second to be queried.
         - async: Enable/Disable asynchronous image querying. Default: False
         """
+        self.idx = 0
 
-        self.start_camera(idx)
+    def set_camera(self, idx):
+        self.idx = idx
+
+    def start(self):
+        self.start_camera(self.idx)
 
 
 Camera = __Camera()
@@ -58,13 +63,15 @@ Camera = __Camera()
 
 class Capture(object):
 
-    def __init__(self, image=None, fps=100, async=False):
+    def __init__(self, image=None, fps=100, async=False, idx=0):
 
         self.__lock        = False
         self.__flip        = {}
         self.__color       = "bgr"
         self.__props       = { "color" : "rgb" }
         self.__camera      = Camera
+        self.__camera.set_camera(idx)
+        self.__camera.start();
 
         self.__graphics    = { "rect"  : [],
                                "point" : []}

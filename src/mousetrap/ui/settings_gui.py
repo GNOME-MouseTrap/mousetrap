@@ -101,7 +101,7 @@ class preffGui( gtk.Window ):
         self.main_gui_tab()
         self.cam_tab()
         self.algorithm_tab()
-        #self.mouseTab()
+        self.mouseTab()
         self.debug_tab()
 
         ####################
@@ -211,7 +211,7 @@ class preffGui( gtk.Window ):
 
         algo_box = gtk.VBox( spacing = 6 )
 
-        liststore = gtk.ListStore(bool, str, str)
+        liststore = gtk.ListStore(bool, str, str, str)
 
         conf_button = gtk.Button(stock=gtk.STOCK_PREFERENCES)
         conf_button.connect('clicked', self.show_alg_pref, liststore)
@@ -226,25 +226,33 @@ class preffGui( gtk.Window ):
         toggle_cell.set_property('activatable', True)
         #toggle_cell.set_property('background-set' , True)
 
-        text_cell = gtk.CellRendererText()
+        name_cell = gtk.CellRendererText()
+        desc_cell = gtk.CellRendererText()
 
         toggle_column = gtk.TreeViewColumn(_('Active Algorithms'), toggle_cell)
-        text_column = gtk.TreeViewColumn(_('Installed Algorithms'))
+        name_column = gtk.TreeViewColumn(_('Installed Algorithms'))
+        desc_column = gtk.TreeViewColumn(_('Description'))
 
         for alg in pocv.get_idms_list():
             alg_inf = pocv.get_idm_inf(alg)
-            liststore.append([False, alg_inf["name"], alg_inf["stgs"]])
+            state = False
+            if alg_inf["name"].lower() in self.cfg.get("main", "algorithm").lower():
+                state = True
+            liststore.append([state, alg_inf["name"], alg_inf["dsc"], alg_inf["stgs"]])
             #liststore.append([False, "%s: %s" % (alg_inf["name"], alg_inf["dsc"]), alg_inf["stgs"]])
 
         tree_view.append_column(toggle_column)
-        tree_view.append_column(text_column)
+        tree_view.append_column(name_column)
+        tree_view.append_column(desc_column)
 
-        text_column.pack_start(text_cell, True)
+        name_column.pack_start(name_cell, True)
+        desc_column.pack_start(desc_cell, True)
 
         toggle_column.add_attribute( toggle_cell, "active", 0 )
         toggle_column.set_max_width(30)
         #toggle_column.set_attributes( toggle_cell, background=2 )
-        text_column.set_attributes(text_cell, text=1)
+        name_column.set_attributes(name_cell, text=1)
+        desc_column.set_attributes(desc_cell, text=2)
 
         algo_box.pack_start(tree_view)
         algo_box.pack_start(conf_button, False, False)
@@ -298,29 +306,6 @@ class preffGui( gtk.Window ):
 
         defClickF.add( defClick)
         camBox.pack_start( defClickF, False, False )
-
-
-        mouseModF = gtk.Frame( _( "Select Mouse Mode:" ) )
-
-        mouseModes = env.mouseModes
-
-        mouseModesInv = dict((v,k) for k,v in mouseModes.iteritems())
-
-        mouseMod = gtk.combo_box_new_text()
-        mouseMod.append_text(mouseModes[self.cfg.get( "cam", "mouseMode" )])
-        mouseModlBl = gtk.Label(self.cfg.get( "cam", "mouseMode" ))
-        self.preffWidgets['mouseMode'] = mouseModlBl
-
-        for mode in mouseModes:
-            if mode == self.cfg.get( "cam", "mouseMode" ):
-                continue
-            mouseMod.append_text( mouseModes[mode] )
-
-        mouseMod.connect('changed', self._comboChanged, "cam", "mouseMode", mouseModesInv)
-        mouseMod.set_active(0)
-
-        mouseModF.add( mouseMod)
-        camBox.pack_start( mouseModF, False, False )
 
         camBox.show_all()
 
@@ -399,9 +384,9 @@ class preffGui( gtk.Window ):
         ts = widget.get_selection()
         model, it = ts.get_selected()
         path = model.get_path(it)[0]
-        if model[path][0] and model[path][2]:
+        if model[path][0] and model[path][3]:
             self.selected_idm = model[path][1]
-            self.selected_idm_stgs = model[path][2]
+            self.selected_idm_stgs = model[path][3]
             conf_button.set_sensitive(True)
 
     def _toggle_cell_changed(self, cell, path, model):
@@ -416,6 +401,7 @@ class preffGui( gtk.Window ):
             pth = str(pth)
             if pth == path:
                 model[pth][0] = True
+                self.cfg.set("main", "algorithm", model[pth][1].lower())
             else:
                 model[pth][0] = False
 

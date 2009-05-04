@@ -72,7 +72,7 @@ class Controller():
             # Lets start the module
             idm = pocv.get_idm(self.cfg.get("main", "algorithm"))
             self.idm = idm.Module(self)
-            self.idm.set_capture()
+            self.idm.set_capture(self.cfg.getint("cam", "inputDevIndex"))
 
             gobject.timeout_add(150, a.update_frame)
             gobject.timeout_add(50, a.update_pointers)

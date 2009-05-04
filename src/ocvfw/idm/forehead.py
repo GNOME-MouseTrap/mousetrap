@@ -81,8 +81,8 @@ class Module(object):
             pass
         pass
 
-    def set_capture(self):
-        self.cap = Capture(async=True)
+    def set_capture(self, cam):
+        self.cap = Capture(async=True, idx=cam)
         self.cap.change(color="rgb")
 
     def calc_motion(self):

@@ -109,17 +109,20 @@ class MainGui( gtk.Window ):
         self.vBox.pack_start( self.buttonsBox, False, False )
 
         self.cap_image    = gtk.Image()
-        self.cap_expander = gtk.expander_new_with_mnemonic("_Camera Image")
-        self.cap_expander.add(self.cap_image)
-        self.cap_expander.set_expanded(True)
-        #expander.connect('notify::expanded', self.expanded_cb)
-        self.vBox.pack_start(self.cap_expander)
 
-        self.map_expander = gtk.expander_new_with_mnemonic("_Script Mapper")
-        self.map_expander.add(self.script)
-        self.map_expander.set_expanded(True)
-        #expander.connect('notify::expanded', self.expanded_cb)
-        self.vBox.pack_start(self.map_expander)
+        if self.cfg.getboolean("gui", "showCapture"):
+            self.cap_expander = gtk.expander_new_with_mnemonic("_Camera Image")
+            self.cap_expander.add(self.cap_image)
+            self.cap_expander.set_expanded(True)
+            #expander.connect('notify::expanded', self.expanded_cb)
+            self.vBox.pack_start(self.cap_expander)
+
+        if self.cfg.getboolean("gui", "showPointMapper"):
+            self.map_expander = gtk.expander_new_with_mnemonic("_Script Mapper")
+            self.map_expander.add(self.script)
+            self.map_expander.set_expanded(True)
+            #expander.connect('notify::expanded', self.expanded_cb)
+            self.vBox.pack_start(self.map_expander)
 
 #         hBox = gtk.HBox()
 #         showMapper = gtk.CheckButton( _("Start Point Mapper: ") )

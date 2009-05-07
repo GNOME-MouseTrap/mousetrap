@@ -60,10 +60,10 @@ appPath = os.path.dirname(__file__)
 home = os.path.expanduser("~")
 
 ## Configurations dir
-configPath = home + "/.mouseTrap/"
+configPath = home + "/.mousetrap/"
 
 ## Configurations dir
-configPath = "%s/.mouseTrap/" % home
+configPath = "%s/.mousetrap/" % home
 
 ## Scripts Path
 scriptsPath = "%s/scripts/" % configPath
@@ -75,22 +75,13 @@ profilesPath = "%s/profiles/" % scriptsPath
 configFile = configPath + "userSettings.cfg"
 
 ## The debug file
-debugFile = configPath + "mouseTrap_DEBUG.log"
+debugFile = configPath + "mouseTrap.debug"
 
 ## The language path
 langPath = "%s/locale/" % datadirname
 
 ## The haarcascade folder
 haarcascades = appPath + "/haarcascade"
-
-## The debugging parts
-DEBUG = ['widget']
-
-## mouseTrap Modules
-mTModules = { 'lTr' : '_startListener',
-              'cAm' : '_startCam',
-			  'wTp' : '_startWidgetsTrap'}
-
 
 ## Screen Resolution
 screen       = { 'width'  : gtk.gdk.screen_width(),

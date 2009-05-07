@@ -138,17 +138,32 @@ class preffGui( gtk.Window ):
 
         Frame = gtk.Frame()
 
-        mainGuiBox = gtk.VBox( spacing = 6 )
+        general_box = gtk.VBox( spacing = 6 )
 
-        mWindowActive = gtk.CheckButton( _("Show main window") )
-        mWindowActive.set_active( self.cfg.getboolean( "gui", "showMainGui" ) )
-        mWindowActive.connect( "toggled", self._checkToggled, "gui", "showMainGui" )
+#         mWindowActive = gtk.CheckButton( _("Show main window") )
+#         mWindowActive.set_active( self.cfg.getboolean( "gui", "showMainGui" ) )
+#         mWindowActive.connect( "toggled", self._checkToggled, "gui", "showMainGui" )
+#
+#         mainGuiBox.pack_start( mWindowActive, False, False )
 
-        mainGuiBox.pack_start( mWindowActive, False, False )
+        cAmActive = gtk.CheckButton( _("Activate Camera module") )
+        cAmActive.set_active( self.cfg.getboolean( "main", "startCam" ) )
+        cAmActive.connect( "toggled", self._checkToggled, "main", "startCam" )
 
-        mainGuiBox.show_all()
+        general_box.pack_start( cAmActive, False, False )
 
-        Frame.add( mainGuiBox )
+        flipImage = gtk.CheckButton( _("Flip Image") )
+        flipImage.set_active( self.cfg.getboolean( "cam",  "flipImage" ) )
+        flipImage.connect( "toggled", self._checkToggled, "cam", "flipImage" )
+
+        general_box.pack_start( flipImage, False, False )
+
+        inputDevIndex = self.addSpin( _("Input Video Device Index: "), "inputDevIndex", self.cfg.getint( "cam", "inputDevIndex" ), "cam", "inputDevIndex", 0)
+        general_box.pack_start( inputDevIndex, False, False )
+
+        general_box.show_all()
+
+        Frame.add( general_box )
         Frame.show()
 
         self.NoteBook.insert_page(Frame, gtk.Label( _("General") ) )
@@ -165,18 +180,6 @@ class preffGui( gtk.Window ):
 
         camBox = gtk.VBox( spacing = 6 )
 
-        cAmActive = gtk.CheckButton( _("Activate Camera module") )
-        cAmActive.set_active( self.cfg.getboolean( "main", "startCam" ) )
-        cAmActive.connect( "toggled", self._checkToggled, "main", "startCam" )
-
-        camBox.pack_start( cAmActive, False, False )
-
-        flipImage = gtk.CheckButton( _("Flip Image") )
-        flipImage.set_active( self.cfg.getboolean( "cam",  "flipImage" ) )
-        flipImage.connect( "toggled", self._checkToggled, "cam", "flipImage" )
-
-        camBox.pack_start( flipImage, False, False )
-
         mapperActive = gtk.CheckButton( _("Show Point Mapper") )
         mapperActive.set_active( self.cfg.getboolean( "gui", "showPointMapper" ) )
         mapperActive.connect( "toggled", self._checkToggled, "gui", "showPointMapper" )
@@ -188,9 +191,6 @@ class preffGui( gtk.Window ):
         showCapture.connect( "toggled", self._checkToggled, "gui", "showCapture" )
 
         camBox.pack_start( showCapture, False, False )
-
-        inputDevIndex = self.addSpin( _("Input Video Device Index: "), "inputDevIndex", self.cfg.getint( "cam", "inputDevIndex" ), "cam", "inputDevIndex", 0)
-        camBox.pack_start( inputDevIndex, False, False )
 
         camBox.show_all()
 
@@ -281,31 +281,38 @@ class preffGui( gtk.Window ):
         reqMov = self.addSpin( _("Step Speed: "), "stepSpeed", self.cfg.getint( "mouse", "stepSpeed" ), "mouse", "stepSpeed" )
         camBox.pack_start( reqMov, False, False )
 
-        defClickF = gtk.Frame( _( "Default Click:" ) )
+        ###############################################
+        #                                             #
+        #    THE WHEEL HAS ALREADY BEEN DISCOVERED    #
+        #     SO, LETS USE MOUSETWEAK INSTEAD OF      #
+        #      ADD THIS SUPPORT TO MOUSETRAP.         #
+        ###############################################
 
-        defClicks = {  "b1c"   :  _("Left Click"),
-                       "b1d"   :  _("Double Click"),
-                       "b1p"   :  _("Drag/Drop Click"),
-                       "b3c"   :  _("Right Click")}
-
-        defClicksInv = dict((v,k) for k,v in defClicks.iteritems())
-
-        defClick = gtk.combo_box_new_text()
-        defClick.append_text(defClicks[self.cfg.get( "mouse", "defClick" )])
-
-        defClicklBl = gtk.Label(self.cfg.get( "mouse", "defClick" ))
-        self.preffWidgets['defClick'] = defClicklBl
-
-        for mode in defClicks:
-            if mode == self.cfg.get( "mouse", "defClick" ):
-                continue
-            defClick.append_text( defClicks[mode] )
-
-        defClick.connect('changed', self._comboChanged, "mouse", "defClick", defClicksInv)
-        defClick.set_active(0)
-
-        defClickF.add( defClick)
-        camBox.pack_start( defClickF, False, False )
+#         defClickF = gtk.Frame( _( "Default Click:" ) )
+#
+#         defClicks = {  "b1c"   :  _("Left Click"),
+#                        "b1d"   :  _("Double Click"),
+#                        "b1p"   :  _("Drag/Drop Click"),
+#                        "b3c"   :  _("Right Click")}
+#
+#         defClicksInv = dict((v,k) for k,v in defClicks.iteritems())
+#
+#         defClick = gtk.combo_box_new_text()
+#         defClick.append_text(defClicks[self.cfg.get( "mouse", "defClick" )])
+#
+#         defClicklBl = gtk.Label(self.cfg.get( "mouse", "defClick" ))
+#         self.preffWidgets['defClick'] = defClicklBl
+#
+#         for mode in defClicks:
+#             if mode == self.cfg.get( "mouse", "defClick" ):
+#                 continue
+#             defClick.append_text( defClicks[mode] )
+#
+#         defClick.connect('changed', self._comboChanged, "mouse", "defClick", defClicksInv)
+#         defClick.set_active(0)
+#
+#         defClickF.add( defClick)
+#         camBox.pack_start( defClickF, False, False )
 
         camBox.show_all()
 

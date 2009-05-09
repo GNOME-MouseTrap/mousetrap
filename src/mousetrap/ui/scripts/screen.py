@@ -30,9 +30,9 @@ __license__   = "GPLv2"
 
 import gtk
 import time
-import environment as env
-import lib.mouse as mouse
-from ui.widgets import Mapper
+import mousetrap.environment as env
+import mousetrap.lib.mouse as mouse
+from ..widgets import Mapper
 
 # The name given for the config file
 setName = "screen"

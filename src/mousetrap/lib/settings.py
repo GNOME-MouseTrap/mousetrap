@@ -29,7 +29,7 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import ConfigParser
-import environment as env
+import mousetrap.environment as env
 
 class settings( ConfigParser.ConfigParser ):
 

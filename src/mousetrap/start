@@ -22,4 +22,4 @@ getDesktop() {
 
 getDesktop
 export PYTHONPATH=$PYTHONPATH:../
-python mousetrap.py
+/usr/bin/python -c "import mousetrap; mousetrap.Controller().start();" "$ARGS"

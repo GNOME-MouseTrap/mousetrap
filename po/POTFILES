@@ -1,0 +1,8 @@
+		../src/mouseTrap/cam.py
+		../src/mouseTrap/mouse.py
+		../src/mouseTrap/mTDbus.py
+		../src/mouseTrap/dialogs.py
+		../src/mouseTrap/mainGui.py
+		../src/mouseTrap/preffGui.py
+		../src/mouseTrap/mouseTrap.py
+		../src/mouseTrap/mouseTrapPreff.py

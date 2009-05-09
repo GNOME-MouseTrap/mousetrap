@@ -49,7 +49,7 @@ class Controller():
         # We don't want to load the settings each time we need them. do we?
         self.cfg = None
 
-        print("Start")
+        self.loop = gobject.MainLoop()
         self.httpd = httpd.HttpdServer(20433)
         self.dbusd = dbusd.DbusServer()
 
@@ -74,12 +74,15 @@ class Controller():
             self.idm = idm.Module(self)
             self.idm.set_capture(self.cfg.getint("cam", "inputDevIndex"))
 
-            gobject.timeout_add(150, a.update_frame)
-            gobject.timeout_add(50, a.update_pointers)
+            gobject.timeout_add(150, self.update_frame)
+            gobject.timeout_add(50, self.update_pointers)
 
         # Lets build the interface
         self.itf = MainGui(self)
         self.itf.build_interface()
+
+        gobject.threads_init()
+        self.loop.run()
 
     def script(self):
         """
@@ -97,11 +100,3 @@ class Controller():
     def update_pointers(self):
         self.itf.script.update_items(self.idm.get_pointer())
         return True
-
-
-## This is momentary
-loop = gobject.MainLoop()
-a = Controller()
-a.start()
-gobject.threads_init()
-loop.run()

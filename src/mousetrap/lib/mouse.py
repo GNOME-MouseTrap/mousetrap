@@ -29,7 +29,7 @@ __license__   = "GPLv2"
 
 import gtk
 import pyatspi
-import environment as env
+import mousetrap.environment as env
 import Xlib.ext.xtest as xtest
 
 from Xlib import X, display

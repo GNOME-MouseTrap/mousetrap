@@ -89,6 +89,7 @@ class ocvfw:
         Returns a list with the matches.
         """
 
+        print(haarCascade)
         cascade = cv.cvLoadHaarClassifierCascade( haarCascade, self.imgSize )
 
         if not cascade:

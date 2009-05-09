@@ -32,8 +32,8 @@ import gtk
 import sys
 import dialogs
 from i18n import _
-import environment as env
 from ocvfw import pocv
+import mousetrap.environment as env
 
 class preffGui( gtk.Window ):
     """

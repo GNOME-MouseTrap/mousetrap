@@ -29,6 +29,7 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import os
+import re
 
 def get_idm(idm):
     """
@@ -43,8 +44,9 @@ def get_idm(idm):
                       [''])
 
 def get_idms_list():
+    reg = re.compile(r'([A-Za-z0-9]+)\.py$',re.DOTALL)
     dirname = os.path.dirname(__file__)
-    return [ f.replace(".py", "") for f in os.listdir("%s/idm/" % dirname) if "__" not in f and ".py" in f and ".pyc" not in f ]
+    return [ mod[0] for mod in [ reg.findall(f) for f in os.listdir("%s/idm/" % dirname)] if mod ]
 
 def get_idm_inf(idm):
     tmp = __import__("ocvfw.idm.%s" % idm,

@@ -80,7 +80,7 @@ debugFile = configPath + "mousetrap_DEBUG.log"
 langPath = "%s/locale/" % datadirname
 
 ## The haarcascade folder
-haarcascades = appPath + "/haarcascade"
+haars = appPath + "/haarcascade"
 
 ## The debugging parts
 DEBUG = ['widget']

@@ -28,8 +28,8 @@ __date__      = "$Date: 2009-02-22 19:24:52 +0100 (dom 22 de feb de 2009) $"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
+import ocvfw.commons as commons
 from ocvfw.dev.camera import *
-
 
 a_name = "Forehead"
 a_description = "Forehead point tracker based on LK Algorithm"
@@ -38,7 +38,7 @@ a_settings = { 'speed' : {"value":2}}
 class Module(object):
 
     def __init__(self, controller, stgs = {}):
-        Camera.init(idx=0)
+        Camera.init()
 
         self.img          = None
         self.ctr          = controller
@@ -56,10 +56,6 @@ class Module(object):
         self.foreheadDiff = None
         self.stopMove     = None
         self.startMove    = None
-        self.haar_cds     = { 'Face'  :  "../ocvfw/haars/haarcascade_frontalface_alt.xml",
-                              'Eyes'  :  "../ocvfw/haars/frontalEyes35x16.xml",
-                              #'Eyes'  :  "../ocvfw/haars/haarcascade_eye_tree_eyeglasses.xml",
-                              'Mouth' :  "../ocvfw/haars/Mouth.xml"}
 
         ##############################
         #       ACTION POINTS        #
@@ -117,7 +113,7 @@ class Module(object):
         eyes = False
         #self.cap.add_message("Getting Forehead!!!")
 
-        face     = self.cap.get_area(self.haar_cds['Face'])
+        face     = self.cap.get_area(commons.haar_cds['Face'])
 
         if face:
             areas    = [ (pt[1].x - pt[0].x)*(pt[1].y - pt[0].y) for pt in face ]
@@ -127,7 +123,7 @@ class Module(object):
             # Shows the face rectangle
             #self.cap.add( Graphic("rect", "Face", ( startF.x, startF.y ), (endF.x, endF.y), parent=self.cap) )
 
-            eyes = self.cap.get_area( self.haar_cds['Eyes'], {"start" : startF.x,
+            eyes = self.cap.get_area( commons.haar_cds['Eyes'], {"start" : startF.x,
                                                          "end" : startF.y,
                                                          "width" : endF.x - startF.x,
                                                          "height" : endF.y - startF.y}, (startF.x, startF.y) )

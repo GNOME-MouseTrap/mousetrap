@@ -72,6 +72,7 @@ DOCBOOK_CHECK()
 AC_OUTPUT([
 Makefile
 mousetrap.desktop
+run_pylint.sh
 po/Makefile.in
 docs/Makefile
 docs/man/Makefile

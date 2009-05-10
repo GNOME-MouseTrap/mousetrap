@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# mouseTrap
+# MouseTrap
 #
-# Copyright 2008 Flavio Percoco Premoli
+# Copyright 2009 Flavio Percoco Premoli
 #
 # This file is part of mouseTrap.
 #
-# mouseTrap is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 2 of the License, or
-# (at your option) any later version.
+# MouseTrap is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License v2 as published
+# by the Free Software Foundation.
 #
 # mouseTrap is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of

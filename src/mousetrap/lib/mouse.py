@@ -1,19 +1,18 @@
 # -*- coding: utf-8 -*-
 
-# mouseTrap
+# MouseTrap
 #
-# Copyright 2008 Flavio Percoco Premoli
+# Copyright 2009 Flavio Percoco Premoli
 #
 # This file is part of mouseTrap.
 #
-# mouseTrap is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 2 of the License, or
-# (at your option) any later version.
+# MouseTrap is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License v2 as published
+# by the Free Software Foundation.
 #
 # mouseTrap is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE\  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
@@ -21,9 +20,9 @@
 
 """The mouse events handler."""
 
-__id__        = "$Id: mouse.py 21 2009-02-22 18:24:52Z flaper $"
-__version__   = "$Revision: 21 $"
-__date__      = "$Date: 2009-02-22 19:24:52 +0100 (dom 22 de feb de 2009) $"
+__id__        = "$Id$"
+__version__   = "$Revision$"
+__date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 

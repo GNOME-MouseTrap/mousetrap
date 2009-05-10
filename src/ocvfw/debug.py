@@ -1,34 +1,33 @@
 # -*- coding: utf-8 -*-
 
-# mouseTrap
+# Ocvfw
 #
-# Copyright 2008 Flavio Percoco Premoli
+# Copyright 2009 Flavio Percoco Premoli
 #
-# This file is part of mouseTrap.
+# This file is part of Ocvfw.
 #
-# mouseTrap is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 2 of the License, or
-# (at your option) any later version.
+# Ocvfw is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License v2 as published
+# by the Free Software Foundation.
 #
-# mouseTrap is distributed in the hope that it will be useful,
+# Ocvfw is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with mouseTrap.  If not, see <http://www.gnu.org/licenses/>.
+# along with Ocvfw.  If not, see <http://www.gnu.org/licenses/>>.
 
 """The debug module of mouseTrap."""
 
-__id__        = "$Id: debug.py 18 2009-02-21 21:17:24Z flaper $"
-__version__   = "$Revision: 18 $"
-__date__      = "$Date: 2009-02-21 22:17:24 +0100 (sáb 21 de feb de 2009) $"
+__id__        = "$Id$"
+__version__   = "$Revision$"
+__date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import sys
-import logging 
+import logging
 import traceback
 
 modules = {}
@@ -44,7 +43,7 @@ def checkModule( module ):
     global modules
 
     level = logging.DEBUG
-        
+
     formatter = logging.Formatter("%(levelname)s: %(name)s -> %(message)s")
 
     cli = logging.StreamHandler( )
@@ -145,7 +144,7 @@ def exception( module, message ):
     modules[module].exception(message)
 
 # The following code has been borrowed from the following URL:
-# 
+#
 # http://www.dalkescientific.com/writings/diary/archive/ \
 #                                     2005/04/20/tracing_python_code.html
 #
@@ -154,17 +153,17 @@ import linecache
 def traceit(frame, event, arg):
     """
     Line tracing utility to output all lines as they are executed by
-    the interpreter.  This is to be used by sys.settrace and is for 
+    the interpreter.  This is to be used by sys.settrace and is for
     debugging purposes.
-   
+
     Arguments:
     - frame: is the current stack frame
     - event: 'call', 'line', 'return', 'exception', 'c_call', 'c_return',
              or 'c_exception'
     - arg:   depends on the event type (see docs for sys.settrace)
-    
+
     Returns traceit
-    """ 
+    """
 
     if event == "line":
         lineno = frame.f_lineno
@@ -181,6 +180,6 @@ def traceit(frame, event, arg):
         line = linecache.getline(filename, lineno)
         log(ALL, "Trace", "TRACE %s:%s: %s" % (name, lineno, line.rstrip()))
     return traceit
-    
+
 #if debugLevel == EXTREME:
 #    sys.settrace(traceit)

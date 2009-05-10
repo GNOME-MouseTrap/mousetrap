@@ -28,6 +28,7 @@ __date__      = "$Date: 2009-04-03 18:00:06 +0200 (vie 03 de abr de 2009) $"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
+import os
 import ConfigParser
 import mousetrap.environment as env
 
@@ -36,7 +37,46 @@ class settings( ConfigParser.ConfigParser ):
     def optionxform( self, optionstr ):
         return optionstr
 
+    def write_first(self, conf_file):
+        """
+        Writes the first configuration file in case it doesn't exists.
+
+        Arguments:
+        self: The main object pointer
+        conf_file: The config file to write.
+        """
+
+        with open(conf_file, "w") as conf:
+            conf.write("[gui]")
+            conf.write("\nshowCapture = True")
+            conf.write("\nshowMainGui = True")
+            conf.write("\nshowPointMapper = True")
+
+            conf.write("\n\n[access]")
+            conf.write("\nreqMovement = 10")
+
+            conf.write("\n\n[cam]")
+            conf.write("\nmouseMode = forehead")
+            conf.write("\ninputDevIndex = 0")
+            conf.write("\nflipImage = False")
+
+            conf.write("\n\n[main]")
+            conf.write("\ndebugLevel = 10")
+            conf.write("\nalgorithm = forehead")
+            conf.write("\nstartCam = True")
+
+            conf.write("\n\n[mouse]")
+            conf.write("\ndefClick = b1c")
+            conf.write("\nstepSpeed = 5")
+
 def load():
     cfg = settings()
+    if not os.path.exists( env.configPath ):
+        os.mkdir( env.configPath )
+        cfg.write_first()
+
+    if not os.path.exists( env.configFile ):
+        cfg.write_first(env.configFile)
+
     cfg.readfp(open( env.configFile ))
     return cfg

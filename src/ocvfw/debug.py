@@ -1,22 +1,22 @@
 # -*- coding: utf-8 -*-
 
-# Ocvfw
+# MouseTrap
 #
 # Copyright 2009 Flavio Percoco Premoli
 #
-# This file is part of Ocvfw.
+# This file is part of mouseTrap.
 #
-# Ocvfw is free software: you can redistribute it and/or modify
+# MouseTrap is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License v2 as published
 # by the Free Software Foundation.
 #
-# Ocvfw is distributed in the hope that it will be useful,
+# mouseTrap is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Ocvfw.  If not, see <http://www.gnu.org/licenses/>>.
+# along with mouseTrap.  If not, see <http://www.gnu.org/licenses/>.
 
 """The debug module of mouseTrap."""
 
@@ -26,9 +26,8 @@ __date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
-import sys
 import logging
-import traceback
+#import traceback
 
 modules = {}
 
@@ -39,8 +38,6 @@ def checkModule( module ):
     Arguments:
     - module: The module requesting a logger.
     """
-
-    global modules
 
     level = logging.DEBUG
 
@@ -178,7 +175,7 @@ def traceit(frame, event, arg):
            or name == "UserDict":
             return traceit
         line = linecache.getline(filename, lineno)
-        log(ALL, "Trace", "TRACE %s:%s: %s" % (name, lineno, line.rstrip()))
+        debug("ALL", "TRACE %s:%s: %s" % (name, lineno, line.rstrip()))
     return traceit
 
 #if debugLevel == EXTREME:

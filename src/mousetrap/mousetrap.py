@@ -36,14 +36,16 @@ __license__   = "GPLv2"
 import sys
 sys.argv[0] = "mousetrap"
 
-import gtk
 import gobject
 from ocvfw import pocv
 from ui.main import MainGui
 from ui.scripts.screen import ScriptClass
-from lib import mouse, httpd, dbusd, settings
+from lib import httpd, dbusd, settings
 
 class Controller():
+    """
+    MouseTrap's Controller Class
+    """
 
     def __init__(self):
         """
@@ -101,9 +103,21 @@ class Controller():
         return ScriptClass()
 
     def update_frame(self):
+        """
+        Updates the User Interface frame with the latest capture.
+
+        Arguments:
+        - self: The main object pointer.
+        """
         self.itf.update_frame(self.idm.get_image(), self.idm.get_pointer())
         return True
 
     def update_pointers(self):
+        """
+        Gets the new mouse pointer position based on the las calcs.
+
+        Arguments:
+        - self: The main object pointer.
+        """
         self.itf.script.update_items(self.idm.get_pointer())
         return True

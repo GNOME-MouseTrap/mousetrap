@@ -28,13 +28,12 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import gtk
-import sys
 import dialogs
 from i18n import _
 from ocvfw import pocv
 import mousetrap.environment as env
 
-class preffGui( gtk.Window ):
+class PreffGui( gtk.Window ):
     """
     The Class for the preferences GUI.
 
@@ -57,7 +56,7 @@ class preffGui( gtk.Window ):
         self.cfg = self.ctr.cfg
         self.preffWidgets = dict()
 
-    def _SetWindowsIcon( self ):
+    def setWindowsIcon( self ):
         """
         Sets the icon for the preffGUI.
 
@@ -73,7 +72,7 @@ class preffGui( gtk.Window ):
 
         gtk.window_set_default_icon(icon)
 
-    def _buildInterface( self ):
+    def buildInterface( self ):
         """
         Builds the preffGUI.
 
@@ -90,12 +89,12 @@ class preffGui( gtk.Window ):
         self.set_size_request( 600 , 400)
         self.connect( "destroy", self.close)
 
-        self.Table = gtk.Table( 3, 6, False )
+        self.table = gtk.Table( 3, 6, False )
 
-        self.NoteBook = gtk.Notebook()
-        self.NoteBook.set_tab_pos( gtk.POS_TOP )
-        self.Table.attach( self.NoteBook, 0, 6, 0, 1 )
-        self.NoteBook.show()
+        self.noteBook = gtk.Notebook()
+        self.noteBook.set_tab_pos( gtk.POS_TOP )
+        self.table.attach( self.noteBook, 0, 6, 0, 1 )
+        self.noteBook.show()
 
         self.main_gui_tab()
         self.cam_tab()
@@ -106,25 +105,25 @@ class preffGui( gtk.Window ):
         ####################
         # Bottom's buttons #
         ####################
-        self.ButtonsBox = gtk.HBox( False, spacing=6 )
+        self.buttonsBox = gtk.HBox( False, spacing=6 )
 
-        self.AcceptButton = gtk.Button( _("Accept"), stock=gtk.STOCK_OK)
-        self.AcceptButton.connect("clicked", self.acceptButtonClick )
-        self.ButtonsBox.pack_end( self.AcceptButton )
+        self.acceptButton = gtk.Button( _("Accept"), stock=gtk.STOCK_OK)
+        self.acceptButton.connect("clicked", self.acceptButtonClick )
+        self.buttonsBox.pack_end( self.acceptButton )
 
-        CancelButton = gtk.Button( _("Accept"), stock=gtk.STOCK_CANCEL )
-        CancelButton.connect("clicked", self.close )
-        self.ButtonsBox.pack_end( CancelButton)
+        cancelButton = gtk.Button( _("Accept"), stock=gtk.STOCK_CANCEL )
+        cancelButton.connect("clicked", self.close )
+        self.buttonsBox.pack_end( cancelButton)
 
-        self.ApplyButton = gtk.Button( _("Accept"), stock=gtk.STOCK_APPLY )
-        self.ApplyButton.connect( "clicked", self.applyButtonClick )
-        self.ButtonsBox.pack_end( self.ApplyButton )
+        self.applyButton = gtk.Button( _("Accept"), stock=gtk.STOCK_APPLY )
+        self.applyButton.connect( "clicked", self.applyButtonClick )
+        self.buttonsBox.pack_end( self.applyButton )
 
-        self.ButtonsBox.show_all()
+        self.buttonsBox.show_all()
 
-        self.Table.attach(self.ButtonsBox, 1, 2, 2, 3, 'fill', False)
-        self.Table.show()
-        self.add( self.Table )
+        self.table.attach(self.buttonsBox, 1, 2, 2, 3, 'fill', False)
+        self.table.show()
+        self.add( self.table )
         self.show()
 
     def main_gui_tab( self ):
@@ -135,7 +134,7 @@ class preffGui( gtk.Window ):
         - self: The main object pointer.
         """
 
-        Frame = gtk.Frame()
+        frame = gtk.Frame()
 
         general_box = gtk.VBox( spacing = 6 )
 
@@ -157,15 +156,16 @@ class preffGui( gtk.Window ):
 
         general_box.pack_start( flipImage, False, False )
 
-        inputDevIndex = self.addSpin( _("Input Video Device Index: "), "inputDevIndex", self.cfg.getint( "cam", "inputDevIndex" ), "cam", "inputDevIndex", 0)
+        inputDevIndex = self.addSpin( _("Input Video Device Index: "), "inputDevIndex",
+                        self.cfg.getint( "cam", "inputDevIndex" ), "cam", "inputDevIndex", 0)
         general_box.pack_start( inputDevIndex, False, False )
 
         general_box.show_all()
 
-        Frame.add( general_box )
-        Frame.show()
+        frame.add( general_box )
+        frame.show()
 
-        self.NoteBook.insert_page(Frame, gtk.Label( _("General") ) )
+        self.noteBook.insert_page(frame, gtk.Label( _("General") ) )
 
     def cam_tab( self ):
         """
@@ -175,7 +175,7 @@ class preffGui( gtk.Window ):
         - self: The main object pointer.
         """
 
-        Frame = gtk.Frame()
+        frame = gtk.Frame()
 
         camBox = gtk.VBox( spacing = 6 )
 
@@ -193,10 +193,10 @@ class preffGui( gtk.Window ):
 
         camBox.show_all()
 
-        Frame.add( camBox )
-        Frame.show()
+        frame.add( camBox )
+        frame.show()
 
-        self.NoteBook.insert_page(Frame, gtk.Label( _("Camera") ) )
+        self.noteBook.insert_page(frame, gtk.Label( _("Camera") ) )
 
     def algorithm_tab( self ):
         """
@@ -206,7 +206,7 @@ class preffGui( gtk.Window ):
         - self: The main object pointer.
         """
 
-        Frame = gtk.Frame()
+        frame = gtk.Frame()
 
         algo_box = gtk.VBox( spacing = 6 )
 
@@ -260,10 +260,10 @@ class preffGui( gtk.Window ):
 
         algo_box.show_all()
 
-        Frame.add( algo_box )
-        Frame.show()
+        frame.add( algo_box )
+        frame.show()
 
-        self.NoteBook.insert_page(Frame, gtk.Label( _("Algorithm") ) )
+        self.noteBook.insert_page(frame, gtk.Label( _("Algorithm") ) )
 
     def mouseTab( self ):
         """
@@ -273,7 +273,7 @@ class preffGui( gtk.Window ):
         - self: The main object pointer.
         """
 
-        Frame = gtk.Frame()
+        frame = gtk.Frame()
 
         camBox = gtk.VBox( spacing = 6 )
 
@@ -287,7 +287,7 @@ class preffGui( gtk.Window ):
         #      ADD THIS SUPPORT TO MOUSETRAP.         #
         ###############################################
 
-#         defClickF = gtk.Frame( _( "Default Click:" ) )
+#         defClickF = gtk.frame( _( "Default Click:" ) )
 #
 #         defClicks = {  "b1c"   :  _("Left Click"),
 #                        "b1d"   :  _("Double Click"),
@@ -315,10 +315,10 @@ class preffGui( gtk.Window ):
 
         camBox.show_all()
 
-        Frame.add( camBox )
-        Frame.show()
+        frame.add( camBox )
+        frame.show()
 
-        self.NoteBook.insert_page(Frame, gtk.Label( _("Mouse") ) )
+        self.noteBook.insert_page(frame, gtk.Label( _("Mouse") ) )
 
     def debug_tab( self ):
         """
@@ -329,7 +329,7 @@ class preffGui( gtk.Window ):
         """
 
 
-        Frame = gtk.Frame()
+        frame = gtk.Frame()
 
         debugBox = gtk.VBox( spacing = 6 )
 
@@ -350,10 +350,10 @@ class preffGui( gtk.Window ):
 
         debugBox.show_all()
 
-        Frame.add( debugBox )
-        Frame.show()
+        frame.add( debugBox )
+        frame.show()
 
-        self.NoteBook.insert_page(Frame, gtk.Label( _("Debug") ) )
+        self.noteBook.insert_page(frame, gtk.Label( _("Debug") ) )
 
 
     def show_alg_pref(self, widget, liststore):
@@ -466,7 +466,7 @@ class preffGui( gtk.Window ):
         index = widget.get_active()
         self.cfg.set( section, option, modes[model[index][0]] )
 
-    def addSpin( self, label, var, startValue, section, option, min = 1, max = 15):
+    def addSpin( self, label, var, startValue, section, option, min_ = 1, max_ = 15):
         """
         Creates a new spin button inside a HBox and return it.
 
@@ -484,7 +484,7 @@ class preffGui( gtk.Window ):
         spinLbl.show()
         spinHbox.pack_start( spinLbl, False, False )
 
-        adj = gtk.Adjustment( startValue, min, max, 1, 1, 0)
+        adj = gtk.Adjustment( startValue, min_, max_, 1, 1, 0)
         spinButton = gtk.SpinButton( adj, 0.0, 0 )
         spinButton.set_wrap( True )
         spinButton.connect( "value-changed", self._spinChanged, section, option )
@@ -513,6 +513,6 @@ def showPreffGui(controller):
     - mouseTrap: The mouseTrap object pointer.
     """
 
-    GUI = preffGui(controller)
-    GUI._SetWindowsIcon()
-    GUI._buildInterface()
+    gui = PreffGui(controller)
+    gui.setWindowsIcon()
+    gui.buildInterface()

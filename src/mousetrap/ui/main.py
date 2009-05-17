@@ -28,9 +28,10 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import gtk
+import dialogs
 import settings_gui
-from math import pi
-
+import mousetrap.debug as debug
+import mousetrap.environment as env
 
 class MainGui( gtk.Window ):
     """
@@ -102,7 +103,7 @@ class MainGui( gtk.Window ):
         self.buttonsBox.pack_start( self.closeButton, True, True )
 
         self.helpButton = gtk.Button(stock=gtk.STOCK_HELP)
-        #self.helpButton.connect("clicked", self._loadHelp)
+        self.helpButton.connect("clicked", self._loadHelp)
         self.buttonsBox.pack_start( self.helpButton, True, True )
 
         self.vBox.pack_start( self.buttonsBox, False, False )
@@ -186,25 +187,7 @@ class MainGui( gtk.Window ):
 #
 #         mouseTrap.calcPoint()
 #
-#     def updateView( self, img ):
-#         """
-#         Updates the GUI widgets (Image, Mapper)
-#
-#         Arguments:
-#         - self: The main object pointer.
-#         """
-#
-#         self.mapper.updateView()
-#
-#         cv.cvResize( img, self.image, cv.CV_INTER_AREA )
-#
-#         buff = gtk.gdk.pixbuf_new_from_data( self.image.imageData, gtk.gdk.COLORSPACE_RGB, \
-#                                         False, 8, int(self.image.width), int(self.image.height), \
-#                                         self.image.widthStep )
-#
-#         #sets new pixbuf
-#         self.capture.set_from_pixbuf(buff)
-#
+
     def _newStockImageButton( self, label, stock ):
         """
         Creates an image button from gtk's stock.
@@ -241,43 +224,24 @@ class MainGui( gtk.Window ):
         """
 
         settings_gui.showPreffGui(self.ctr)
-#
-#     def clickDlgHandler( self, button = False ):
-#         """
-#         Process the Events related to the click panel.
-#
-#         Arguments:
-#         - self: The main object pointer.
-#         - button: the button click to perform if not false.
-#         """
-#
-#         poss = mouseTrap.mice( "position" )
-#
-#         if button:
-#             self.clickDialog.hide()
-#             mouseTrap.mice("click", poss[0], poss[1], button )
-#             return
-#
-#         if not self.clickDialog.props.visible:
-#             self.clickDialog.showPanel()
-#             return
-#
-#     def _loadHelp( self, *args ):
-#         """
-#         Shows the user manual.
-#
-#         Arguments:
-#         - self: The main object pointer.
-#         - *args: The widget callback arguments.
-#         """
-#
-#         try:
-#             import gnome
-#             gnome.help_display_uri("ghelp:%s/docs/mousetrap.xml" % env.mTDataDir)
-#         except ImportError:
-#             dialogs.errorDialog(
-#             "mouseTrap needs <b>gnome</b> module to show the help. Please install gnome-python and try again.", None )
-#             debug.exception( "mainGui", "The help load failed" )
+
+
+    def _loadHelp( self, *args ):
+        """
+        Shows the user manual.
+
+        Arguments:
+        - self: The main object pointer.
+        - *args: The widget callback arguments.
+        """
+
+        try:
+            import gnome
+            gnome.help_display_uri("ghelp:%s/docs/mousetrap.xml" % env.mTDataDir)
+        except ImportError:
+            dialogs.errorDialog(
+            "mouseTrap needs <b>gnome</b> module to show the help. Please install gnome-python and try again.", None )
+            debug.exception( "mainGui", "The help load failed" )
 
     def close( self, *args ):
         """
@@ -290,314 +254,6 @@ class MainGui( gtk.Window ):
         exit()
         #self.mTp.quit(0)
 
-
-class CoordsGui(gtk.DrawingArea):
-    """
-    A Class for the Point Mapper and its functions.
-
-    Arguments:
-    - gtk.DrawingArea: Widget where the mapper will be drawed
-    """
-
-    def __init__( self ):
-        """
-        Initialize the Point Mapper.
-
-        Arguments:
-        - self: The main object pointer.
-        - mouseTrap: The mouseTrap object pointer.
-        - cAm: The camera object pointer
-        """
-
-        gtk.DrawingArea.__init__(self)
-
-        self.areas    = []
-        self.axis     = False
-        self.context  = None
-        self.set_size_request(200, 160)
-        self.add_events( gtk.gdk.BUTTON_PRESS_MASK |
-                         gtk.gdk.BUTTON_RELEASE_MASK |
-                         gtk.gdk.BUTTON1_MOTION_MASK )
-
-        self.triggers = []
-
-        self.connect("expose_event", self.expose)
-
-        #Desplazamiento
-        self.desp = 0
-
-        self.pointer = [ 0, 0 ]
-
-        self.connect("motion_notify_event", self.motion_notify_event)
-#
-#     def registerArea( self, area ):
-#         """
-#         Registers a new area.
-#
-#         Arguments:
-#         - self: The main object pointer.
-#         - area: The area to register
-#         """
-#         self.areas.append( area )
-#
-#     def registerTrigger( self, X, Y, size, callback, *args, **kwds ):
-#         """
-#         Registers a new trigger.
-#
-#         Arguments:
-#         - self: The main object pointer.
-#         - X: The X possition.
-#         - Y: The Y possition.
-#         - size: The trigger point size.
-#         - callback: The callback function
-#         - *args: Extra arguments to pass to the callback function.
-#         - **kwds: Extra keywords to pass to the callback function.
-#         """
-#         self.triggers.append( { "X" : X, "Y" : Y, "size" : size } )
-#
-#         events.registerTrigger( {  "X" : X, "Y" : Y, "size" : size, "last" : 0,
-#                                    "callback" : callback, "args" : args, "kwds" : kwds })
-#
-    def motion_notify_event(self, *args):
-        print("PASA")
-
-    def draw_rectangle( self, x, y, width, height, color ):
-        """
-        Draws a rectangle in the DrawingArea.
-
-        Arguments:
-        - context: The Cairo Context.
-        - initX: The initial X possition.
-        - initY: The initial Y possition.
-        - width: The rectangle width.
-        - height: The rectangle height.
-        - color: An RGB color tuple. E.g: ( 255, 255, 255 )
-        """
-
-        r, g, b = color
-        self.context.set_source_rgb(r, g, b)
-        self.context.rectangle( x, y, width, height)
-        self.context.stroke()
-
-        return True
-#
-#     def updateView( self ):
-#         """
-#         Updates the Point Mapper view using the expose_event
-#
-#         Arguments:
-#         - self: The main object pointer.
-#         """
-#
-#         self.queue_draw()
-#         return True
-#
-    def expose( self, widget, event ):
-        """
-        Draws in the Point Mapper calling the functions that will
-        draw the plane and point.
-
-        Arguments:
-        - self: The main object pointer.
-        - widget: The Drawing area.
-        - event: The event information.
-        """
-
-        self.context = self.window.cairo_create()
-        self.context.rectangle(event.area.x, event.area.y,
-                               event.area.width, event.area.height)
-        self.context.clip()
-
-        self.draw_rectangle( 4, 5, 100, 100, (255,255,255) )
-        return True
-
-#
-#         if "clk-dialog" in mouseTrap.getState():
-#             self.dialogMapper()
-#             return True
-#
-# 	if self.axis:
-# 	    self.drawAxis()
-#
-#         self.drawAreas()
-#         self.drawTriggers()
-#
-#         pointer = mouseTrap.getModVar( "cam", "mpPointer" )
-#
-#         if pointer:
-#             self.drawPoint( pointer.x, pointer.y, 4 )
-#
-#         return True
-#
-#     def drawTriggers( self ):
-#         """
-#         Draws the registered triggers.
-#
-#         Arguments:
-#         - self: The main object pointer.
-#         """
-#         for trigger in self.triggers:
-#
-#             color = "orange"
-#
-#             if self.pointer[0] in xrange( trigger["X"] - 2, trigger["X"] + 2 ) \
-#                    and self.pointer[1] in xrange( trigger["Y"] - 2, trigger["Y"] + 2 ):
-#                 color = "blue"
-#
-#             self.drawPoint( trigger["X"], trigger["Y"], trigger["size"], color )
-#
-#     def drawAreas( self ):
-#         """
-# 	Draws the areas and the parts requested ( Corner's Points, Axis)
-#
-#         Arguments:
-#         - self: The main object pointer.
-# 	"""
-#         for area in self.areas:
-#             self.drawRectangle( self.context,  area.xInit, area.yInit,
-#                                 area.width, area.height, (0, 0, 102))
-# 	    if area.drawCorners:
-# 		self.drawCorners( area )
-#
-#
-#     def drawAxis( self ):
-# 	"""
-# 	Draws the axis of the plane
-#
-# 	Arguments:
-# 	- self: The main object pointer
-# 	"""
-#
-#         self.drawLine( self.context, 100, 0, 100, 160, (255, 255, 255))
-#
-#         self.drawLine( self.context, 0, 80, 200, 80, (255, 255, 255))
-#
-#     def drawCorners( self, area):
-# 	"""
-# 	Draw the corner's points for the given area.
-#
-# 	Arguments:
-# 	- self: The main object pointer.
-# 	- area: The area requesting the corners
-# 	"""
-#
-#         self.drawPoint( area.xInit, area.yInit, 3, "orange")
-#
-#         self.drawPoint( area.xEnd, area.yEnd, 3, "orange" )
-#
-#         self.drawPoint( area.xEnd, area.yInit, 3, "orange" )
-#
-#         self.drawPoint( area.xInit, area.yEnd, 3, "orange" )
-#
-#     def drawPoint(self, X, Y, size, color = 'green'):
-#         """
-#         Draws the point
-#
-#         Arguments:
-#         - self: The main object pointer.
-#         - X: The X possition.
-#         - Y: The Y possition
-#         - size: The point diameter.
-#         - color: A RGB color tuple. E.g (255,255,255)
-#         """
-#
-#         self.pointer = [ X, Y ]
-#         self.context.move_to( X, Y)
-#         self.context.arc(X, Y, size, 0, 2 * pi)
-#
-#         if color == 'green':
-#             self.context.set_source_rgb(0.7, 0.8, 0.1)
-#         elif color == 'blue':
-#             self.context.set_source_rgb(0.5, 0.65, 12)
-#         else:
-#             self.context.set_source_rgb(10, 0.8, 0.1)
-#
-#         self.context.fill_preserve()
-#         self.context.stroke()
-#         return True
-#
-#     def drawLine( self, ctx, x1, y1, x2, y2, color ):
-#         """
-#         Draws a Line
-#
-#         Arguments:
-#         - self:  The main object pointer.
-#         - ctx:   The Cairo Context.
-#         - x1:    The Starting X coord.
-#         - y1:    The Starting Y coord.
-#         - x2:    The Ending X coord.
-#         - y2:    The Ending Y coord.
-#         - color: The line color.
-#         """
-#
-#         ctx.move_to( x1, y1 )
-#         ctx.line_to( x2, y2 )
-#         ctx.set_line_width( 1.0 )
-#         ctx.set_source_rgb( color[0], color[1], color[2])
-#         ctx.stroke()
-#         return True
-#
-#     def dialogMapper( self ):
-#
-#         reqLim = 10
-#
-#         self.context.set_font_size( 20 )
-#         self.context.set_source_rgb( 255, 255, 255 )
-#
-#         self.drawRectangle( self.context, 100 - reqLim, 80 - reqLim, reqLim*2, reqLim*2, (255,255,255))
-#
-# class MapperArea:
-#
-#     def __init__( self ):
-#
-#         self.xInit = None
-#         self.yInit = None
-#         self.xEnd  = None
-#         self.yEnd  = None
-#         self.width = None
-#         self.height = None
-# 	self.drawCorners = False
-#
-#         self.events = None
-#
-#         self.events    = { "point-move" : [],
-#                       "top-left-corner" : [],
-#                      "top-right-corner" : [],
-#                    "bottom-left-corner" : [],
-#                   "bottom-right-corner" : [] }
-#
-#
-#         self.eventTypes = [ "point-move",
-#                    "top-left-corner",
-#                    "top-right-corner",
-#                    "bottom-left-corner",
-#                    "bottom-right-corner" ]
-#
-#     def area( self, xInit, yInit, xEnd, yEnd, corners = False ):
-#
-#         if not int(xInit) or not int(yInit) or not int(xEnd) or not int(yEnd):
-#             debug.error( "mainGui", "All arguments must be INT" )
-#
-#         self.xInit = xInit
-#         self.yInit = yInit
-#         self.xEnd  = xEnd
-#         self.yEnd  = yEnd
-#
-#         self.width  = xEnd - xInit
-#         self.height = yEnd - yInit
-# 	self.drawCorners = corners
-#
-#     def connect( self, eventType, callback, state = "active",*args, **kwds ):
-#
-#         self.events[ eventType ].append( { "callback" : callback,
-#                                            "state"    : state,
-#                                            "args"     : args,
-#                                            "kwds"     : kwds } )
-#
-#         events.registerArea( self )
-#
-#
-#
 def showMainGui( ):
     """
     Loads the mainGUI components and launch it.

@@ -26,9 +26,8 @@ __date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
-import sys
 import logging
-import traceback
+#import traceback
 
 modules = {}
 
@@ -39,8 +38,6 @@ def checkModule( module ):
     Arguments:
     - module: The module requesting a logger.
     """
-
-    global modules
 
     level = logging.DEBUG
 
@@ -178,7 +175,7 @@ def traceit(frame, event, arg):
            or name == "UserDict":
             return traceit
         line = linecache.getline(filename, lineno)
-        log(ALL, "Trace", "TRACE %s:%s: %s" % (name, lineno, line.rstrip()))
+        debug("ALL", "TRACE %s:%s: %s" % (name, lineno, line.rstrip()))
     return traceit
 
 #if debugLevel == EXTREME:

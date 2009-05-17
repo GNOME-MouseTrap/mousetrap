@@ -27,22 +27,18 @@ __date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
-import gtk
 import time
-import gobject
 import debug
-from math import cos,sin,sqrt, pi
 
 
 try:
-    import opencv
     from opencv import cv
     from opencv import highgui
 except:
     print "This modules depends of opencv libraries"
 
 
-class ocvfw:
+class Ocvfw:
     """
     This Class controlls the main camera functions.
     It works as a little framework for OpenCV.
@@ -88,7 +84,6 @@ class ocvfw:
         Returns a list with the matches.
         """
 
-        print(haarCascade)
         cascade = cv.cvLoadHaarClassifierCascade( haarCascade, self.imgSize )
 
         if not cascade:
@@ -98,7 +93,7 @@ class ocvfw:
 
         cv.cvClearMemStorage( self.storage )
 
-        points = cv.cvHaarDetectObjects( self.small_img, cascade, self.storage, 1.2, 2, method, cv.cvSize(20,20) )
+        points = cv.cvHaarDetectObjects( self.small_img, cascade, self.storage, 1.2, 2, method, cv.cvSize(20, 20) )
 
         if points:
             matches = [ [ cv.cvPoint( int(r.x*self.imageScale), int(r.y*self.imageScale)), \
@@ -107,7 +102,7 @@ class ocvfw:
             debug.debug( "ocvfw", "cmGetHaarPoints: detected some matches" )
             return matches
 
-    def get_haar_roi_points(self, haarCascade, rect, origSize=(0,0), method=cv.CV_HAAR_DO_CANNY_PRUNING):
+    def get_haar_roi_points(self, haarCascade, rect, origSize=(0, 0), method=cv.CV_HAAR_DO_CANNY_PRUNING):
         """
         Search for points matching the haarcascade selected.
 
@@ -121,9 +116,12 @@ class ocvfw:
 
         cascade = cv.cvLoadHaarClassifierCascade( haarCascade, self.imgSize )
 
-        cv.cvClearMemStorage( self.storage )
+        if not cascade:
+            debug.exception( "ocvfw", "The Haar Classifier Cascade load failed" )
 
-        imageROI = cv.cvGetSubRect( self.img, rect )
+        cv.cvClearMemStorage(self.storage)
+
+        imageROI = cv.cvGetSubRect(self.img, rect)
 
         if cascade:
             points = cv.cvHaarDetectObjects( imageROI, cascade, self.storage,
@@ -227,16 +225,17 @@ class ocvfw:
         # set back the self.imgPoints we keep
         self.img_lkpoints["current"] = new_points
 
-    def wait_key( self, int ):
+    def wait_key(self, num):
         """
         Simple call to the highgui.cvWaitKey function, which has to be called periodically.
 
         Arguments:
         - self: The main object pointer.
+        - num: An int value.
         """
-        return highgui.cvWaitKey( int )
+        return highgui.cvWaitKey(num)
 
-    def swap_lkpoints( self ):
+    def swap_lkpoints(self):
         """
         Swap the LK method variables so the new points will be the last points.
         This function has to be called after showing the new points.
@@ -251,14 +250,14 @@ class ocvfw:
         self.img_lkpoints["last"], self.img_lkpoints["current"] = \
                                    self.img_lkpoints["current"], self.img_lkpoints["last"]
 
-    def start_camera( self, input, params = None ):
+    def start_camera(self, idx, params = None):
         """
         Starts the camera capture using highgui.
 
         Arguments:
         - params: A list with the capture properties. NOTE: Not implemented yet.
         """
-        self.capture = highgui.cvCreateCameraCapture( int(input) )
+        self.capture = highgui.cvCreateCameraCapture( int(idx) )
         debug.debug( "ocvfw", "cmStartCamera: Camera Started" )
 
     def query_image(self, bgr=False, flip=False):
@@ -273,7 +272,6 @@ class ocvfw:
         """
 
         frame = highgui.cvQueryFrame( self.capture )
-        #frame = highgui.cvRetrieveFrame( self.capture )
 
         if not  self.img:
             self.storage        = cv.cvCreateMemStorage(0)
@@ -293,6 +291,12 @@ class ocvfw:
         self.wait_key(10)
         return True
 
+
+    ##########################################
+    #                                        #
+    #          THIS IS NOT USED YET          #
+    #                                        #
+    ##########################################
     def get_motion_points(self, imgRoi=None):
         """
         Calculate the motion points in the image.
@@ -307,7 +311,7 @@ class ocvfw:
         """
 
         mv = []
-        N = 4
+        n_ = 4
 
         timestamp = time.clock()/1.0
 
@@ -333,7 +337,7 @@ class ocvfw:
 
             cv.cvZero( self.mhi )
 
-            for i in range( N ):
+            for i in range( n_ ):
                 self.buf[i] = cv.cvCreateImage( imgSize, 8, 1 )
                 cv.cvZero( self.buf[i] )
 
@@ -342,8 +346,8 @@ class ocvfw:
         # convert frame to grayscale
         cv.cvCvtColor( img, self.buf[self.lastFm], cv.CV_BGR2GRAY )
 
-        # index of (self.lastFm - (N-1))th frame
-        idx2 = ( self.lastFm + 1 ) % N
+        # index of (self.lastFm - (n_-1))th frame
+        idx2 = ( self.lastFm + 1 ) % n_
         self.lastFm = idx2
 
         silh = self.buf[idx2]

@@ -33,7 +33,7 @@ from warnings import *
 from .. import debug
 from opencv import cv
 from opencv import highgui as hg
-from .._ocv import ocvfw as ocv
+from .._ocv import Ocvfw as ocv
 
 
 class __Camera(ocv):
@@ -70,7 +70,7 @@ class Capture(object):
         self.__props       = { "color" : "rgb" }
         self.__camera      = Camera
         self.__camera.set_camera(idx)
-        self.__camera.start();
+        self.__camera.start()
 
         self.__graphics    = { "rect"  : [],
                                "point" : []}
@@ -84,6 +84,7 @@ class Capture(object):
 
         self.roi           = None
 
+        self.forehead      = None
         self.last_update   = 0
         self.last_duration = 0
 
@@ -394,7 +395,7 @@ class Graphic(object):
         """
 
         if self.type == "point":
-                return True
+            return True
 
         return False
 

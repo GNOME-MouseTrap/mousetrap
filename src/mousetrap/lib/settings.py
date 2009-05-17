@@ -31,7 +31,7 @@ import os
 import ConfigParser
 import mousetrap.environment as env
 
-class settings( ConfigParser.ConfigParser ):
+class Settings( ConfigParser.ConfigParser ):
 
     def optionxform( self, optionstr ):
         return optionstr
@@ -69,7 +69,7 @@ class settings( ConfigParser.ConfigParser ):
             conf.write("\nstepSpeed = 5")
 
 def load():
-    cfg = settings()
+    cfg = Settings()
     if not os.path.exists( env.configPath ):
         os.mkdir( env.configPath )
         cfg.write_first()

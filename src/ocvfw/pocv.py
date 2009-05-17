@@ -43,7 +43,7 @@ def get_idm(idm):
                       [''])
 
 def get_idms_list():
-    reg = re.compile(r'([A-Za-z0-9]+)\.py$',re.DOTALL)
+    reg = re.compile(r'([A-Za-z0-9]+)\.py$', re.DOTALL)
     dirname = os.path.dirname(__file__)
     return [ mod[0] for mod in [ reg.findall(f) for f in os.listdir("%s/idm/" % dirname)] if mod ]
 

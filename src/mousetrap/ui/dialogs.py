@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with mouseTrap.  If not, see <http://www.gnu.org/licenses/>.
 
-""" A group of formated dialogs functions used by mouseTrap. """
+""" A group of formated dialogs functions used by mousetrap. """
 
 __id__        = "$Id$"
 __version__   = "$Revision$"
@@ -27,10 +27,7 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import gtk
-import sys
-import time
 from i18n import _
-import mousetrap.environment as env
 
 def addLabelMessage( dialog, message ):
     """
@@ -156,13 +153,16 @@ def createDialog( title, parent, flags, buttons ):
     - buttons: A tuple with the gtk.Buttons to show. E.g: ( gtk.STOCK_OK, gtk.STOCK_CANCEL )
     """
 
+    # For some reason pylint says that a VBox doesn't have a set_spacing or pack_start member.
+    # pylint: disable-msg=E1101
+    # createDialog: Class 'vbox' has no 'set_spacing' member
+    # createDialog: Class 'vbox' has no 'pack_start' member
     dialog = gtk.Dialog( title, parent, flags, buttons )
     dialog.set_default_size(150, 100)
     dialog.set_position(gtk.WIN_POS_CENTER)
     dialog.set_border_width(8)
     dialog.vbox.set_spacing ( 4 )
 
-    #vbox = gtk.VBox(spacing=4)
     hbox = gtk.HBox(spacing=4)
 
     #bbox = gtk.HButtonBox()
@@ -170,6 +170,10 @@ def createDialog( title, parent, flags, buttons ):
     #bbox.set_layout(gtk.BUTTONBOX_END)
 
     dialog.vbox.pack_start(hbox, True, True)
+    # pylint: enable-msg=E1101
+    # createDialog: Class 'vbox' has no 'set_spacing' member
+    # createDialog: Class 'vbox' has no 'pack_start' member
+
     #vbox.pack_start(bbox, False)
 
     #dialog.add(vbox)
@@ -278,226 +282,231 @@ class IdmSettings(gtk.Window):
         hbox.show_all()
         return hbox
 
-class ClicksDialog( gtk.Window ):
-    """
-    A Class for the Click Dialog.
+###############################################
+#                                             #
+#    THE WHEEL HAS ALREADY BEEN DISCOVERED    #
+#     SO, LETS USE MOUSETWEAK INSTEAD OF      #
+#      ADD THIS SUPPORT TO MOUSETRAP.         #
+###############################################
+# class ClicksDialog( gtk.Window ):
+#     """
+#     A Class for the Click Dialog.
+#
+#     Arguments:
+#     - gtk.Window: Window for the buttons.
+#     """
+#
+#     def __init__( self, gui ):
+#         """
+#         Initialize the Clicks Dialog.
+#
+#         Arguments:
+#         - self: The main object pointer.
+#         - mouseTrap: The mouseTrap object pointer.
+#         - cAm: The camera object pointer
+#         """
+#
+#         gtk.Window.__init__( self )
+#
+#         self.gui = gui
+#
+#         self.set_property("skip-taskbar-hint", True)
+#         self.set_keep_above( True )
+#         self.set_size_request( 500 , 120)
+#         self.set_default_size( 500 , 120)
+#         self.width, self.height = self.get_default_size()
+#
+#         self.set_title(_('Clicks Panel'))
+#
+#         self.set_app_paintable(True)
+#         #self.set_decorated(False)
+#
+#         self.buttons = []
+#         self.blue  = '#1161d9'
+#         self.green = '#60da11'
+#         evtBox = gtk.EventBox()
+#
+#         buttonsBox = gtk.HBox( spacing = 6 )
+#         buttonsBox.show_all()
+#
+#         self.leftClick = gtk.Button()
+#         self.leftClick.add(self._newImageButton(_("Left Click"),
+#                                                   "%s/images/leftClick.png" % env.mTDataDir))
+#         self.leftClick.connect("clicked", self.executeClick, 'b1c')
+#         self.leftClick.show()
+#         self.buttons.append( self.leftClick )
+#         buttonsBox.pack_start( self.leftClick )
+#
+#         self.doubleClick = gtk.Button()
+#         self.doubleClick.add(self._newImageButton(_("Double Click"),
+#                                                     "%s/images/doubleClick.png" % env.mTDataDir))
+#         self.doubleClick.connect("clicked", self.executeClick, 'b1d')
+#         self.doubleClick.show()
+#         self.buttons.append( self.doubleClick )
+#         buttonsBox.pack_start( self.doubleClick )
+#
+#         self.leftHold = gtk.Button()
+#         self.leftHold.add(self._newImageButton(_("Drag/Drop Click"),
+#                                                  "%s/images/leftHold.png" % env.mTDataDir))
+#         self.leftHold.connect("clicked", self.executeClick, 'b1p')
+#         self.leftHold.show()
+#         self.buttons.append( self.leftHold )
+#         buttonsBox.pack_start( self.leftHold )
+#
+#         #~ self.middleClick = gtk.Button()
+#         #~ self.middleClick.add(self._newImageButton(_("Middle Click"), "%s/images/middleClick.png" % env.mTDataDir))
+#         #~ self.middleClick.connect("clicked", self.executeClick, 'b2c')
+#         #~ self.middleClick.show()
+#         #~ self.buttons.append( self.middleClick )
+#         #~ buttonsBox.pack_start( self.middleClick )
+#
+#         self.rightClick = gtk.Button()
+#         self.rightClick.add(self._newImageButton(_("Right Click"),
+#                                                    "%s/images/rightClick.png" % env.mTDataDir))
+#         self.rightClick.connect("clicked", self.executeClick, 'b3c')
+#         self.rightClick.show()
+#         self.buttons.append( self.rightClick )
+#         buttonsBox.pack_start( self.rightClick )
+#
+#         self.add( buttonsBox  )
+#
+#     def showPanel( self ):
+#         """
+#         Shows the panel
+#
+#         Arguments:
+#         - self: The main object pointer.
+#         """
+#
+#         X = Y = 0
+#
+#         poss = mouseTrap.mice( "position" )
+#
+#         # We'll change the click panel position to be sure that
+#         # it won't appear under another window or worse under a
+#         # popup menu.
+#         if poss[0] in xrange( env.screen["width"]/2 ):
+#             X = env.screen["width"] - self.width
+#
+#
+#         if poss[1] in xrange( env.screen["height"]/2 ):
+#             Y = env.screen["height"] - self.height
+#
+#
+#         self.move(X, Y)
+#
+#         if self.get_focus():
+#             self.buttons[ self.buttons.index(self.get_focus()) ].get_child().modify_bg( gtk.STATE_NORMAL,
+#                                                                                         gtk.gdk.color_parse(self.blue))
+#
+#         self.set_focus(self.buttons[0])
+#         self.buttons[0].get_child().modify_bg( gtk.STATE_NORMAL, gtk.gdk.color_parse(self.green))
+#         self.show_all()
+#
+#         mouseTrap.setState( "clk-dialog" )
+#
+#     def hidePanel( self, *args ):
+#         """
+#         Hides the panel
+#
+#         Arguments:
+#         - self: The main object pointer.
+#         - args: The event arguments
+#         """
+#         self.hide()
+#         mouseTrap.setState( "active" )
+#
+#     def pressButton( self, *args ):
+#         """
+#         Press the focused button
+#
+#         Arguments:
+#         - self: The main object pointer.
+#         - args: The event arguments
+#         """
+#
+#         self.get_focus().clicked()
+#
+#     def prevBtn( self, *args ):
+#         """
+#         Move to the prev button
+#
+#         Arguments:
+#         - self: The main object pointer.
+#         - args: The event arguments
+#         """
+#
+#         self.buttons[ self.buttons.index(self.get_focus()) ].get_child().modify_bg( gtk.STATE_NORMAL,
+#                                                                                     gtk.gdk.color_parse(self.blue))
+#         self.buttons[ self.buttons.index(self.get_focus()) - 1 ].grab_focus()
+#         self.buttons[ self.buttons.index(self.get_focus()) ].get_child().modify_bg( gtk.STATE_NORMAL,
+#                                                                                     gtk.gdk.color_parse(self.green))
+#
+#     def nextBtn( self, *args ):
+#         """
+#         Move to the next button
+#
+#         Arguments:
+#         - self: The main object pointer.
+#         - args: The event arguments
+#         """
+#
+#         index = self.buttons.index(self.get_focus()) + 1
+#         if index >= len(self.buttons):
+#             index = 0
+#         self.buttons[ index -1 ].get_child().modify_bg( gtk.STATE_NORMAL,
+#                                                         gtk.gdk.color_parse(self.blue))
+#         self.buttons[ index ].grab_focus()
+#         self.buttons[ index ].get_child().modify_bg( gtk.STATE_NORMAL,
+#                                                      gtk.gdk.color_parse(self.green))
+#
+#     def executeClick( self, widget, button ):
+#         """
+#         Execute the selected click
+#
+#         Arguments:
+#         - self: The main object pointer.
+#         - widget: The button clicked.
+#         - button: The mouse button that should be pressed.
+#         """
+#
+#         self.gui.clickDlgHandler( button )
+#         self.hidePanel()
+#
+#     def _newImageButton( self, label, image ):
+#         """
+#         Creates an image button from an image file
+#
+#         Arguments:
+#         - self: The main object pointer
+#         - label: The buttons label
+#         - image: The image path
+#
+#         Returns ButtonLabelBox A gtk.HBox that contains the new image stock button.
+#         """
+#         evt = gtk.EventBox()
+#
+#         buttonLabelBox = gtk.VBox()
+#
+#         im = gtk.Image()
+#         im.set_from_file( image )
+#         im.show
+#
+#         label = gtk.Label( label )
+#         label.set_alignment( 0.0, 0.5 )
+#         label.set_use_underline( True )
+#
+#         buttonLabelBox.pack_start( im )
+#         buttonLabelBox.pack_start( label )
+#         buttonLabelBox.show_all()
+#
+#         evt.add(buttonLabelBox)
+#         evt.modify_bg( gtk.STATE_NORMAL, gtk.gdk.color_parse(self.blue))
+#         evt.modify_bg( gtk.STATE_PRELIGHT, gtk.gdk.color_parse(self.green))
+#         return evt
 
-    Arguments:
-    - gtk.Window: Window for the buttons.
-    """
 
-    def __init__( self, gui ):
-        """
-        Initialize the Clicks Dialog.
-
-        Arguments:
-        - self: The main object pointer.
-        - mouseTrap: The mouseTrap object pointer.
-        - cAm: The camera object pointer
-        """
-
-        gtk.Window.__init__( self )
-
-        self.gui = gui
-        self.mouseTrap = mouseTrap
-
-        self.set_property("skip-taskbar-hint", True)
-        self.set_keep_above( True )
-        self.set_size_request( 500 , 120)
-        self.set_default_size( 500 , 120)
-        self.width, self.height = self.get_default_size()
-
-        self.set_title(_('Clicks Panel'))
-
-        self.set_app_paintable(True)
-        #self.set_decorated(False)
-
-        self.buttons = []
-        self.blue  = '#1161d9'
-        self.green = '#60da11'
-        evtBox = gtk.EventBox()
-
-        buttonsBox = gtk.HBox( spacing = 6 )
-        buttonsBox.show_all()
-
-        self.leftClick = gtk.Button()
-        self.leftClick.add(self._newImageButton(_("Left Click"),
-                                                  "%s/images/leftClick.png" % env.mTDataDir))
-        self.leftClick.connect("clicked", self.executeClick, 'b1c')
-        self.leftClick.show()
-        self.buttons.append( self.leftClick )
-        buttonsBox.pack_start( self.leftClick )
-
-        self.doubleClick = gtk.Button()
-        self.doubleClick.add(self._newImageButton(_("Double Click"),
-                                                    "%s/images/doubleClick.png" % env.mTDataDir))
-        self.doubleClick.connect("clicked", self.executeClick, 'b1d')
-        self.doubleClick.show()
-        self.buttons.append( self.doubleClick )
-        buttonsBox.pack_start( self.doubleClick )
-
-        self.leftHold = gtk.Button()
-        self.leftHold.add(self._newImageButton(_("Drag/Drop Click"),
-                                                 "%s/images/leftHold.png" % env.mTDataDir))
-        self.leftHold.connect("clicked", self.executeClick, 'b1p')
-        self.leftHold.show()
-        self.buttons.append( self.leftHold )
-        buttonsBox.pack_start( self.leftHold )
-
-        #~ self.middleClick = gtk.Button()
-        #~ self.middleClick.add(self._newImageButton(_("Middle Click"), "%s/images/middleClick.png" % env.mTDataDir))
-        #~ self.middleClick.connect("clicked", self.executeClick, 'b2c')
-        #~ self.middleClick.show()
-        #~ self.buttons.append( self.middleClick )
-        #~ buttonsBox.pack_start( self.middleClick )
-
-        self.rightClick = gtk.Button()
-        self.rightClick.add(self._newImageButton(_("Right Click"),
-                                                   "%s/images/rightClick.png" % env.mTDataDir))
-        self.rightClick.connect("clicked", self.executeClick, 'b3c')
-        self.rightClick.show()
-        self.buttons.append( self.rightClick )
-        buttonsBox.pack_start( self.rightClick )
-
-        self.add( buttonsBox  )
-
-    def showPanel( self ):
-        """
-        Shows the panel
-
-        Arguments:
-        - self: The main object pointer.
-        """
-
-        X = Y = 0
-
-        poss = mouseTrap.mice( "position" )
-
-        # We'll change the click panel position to be sure that
-        # it won't appear under another window or worse under a
-        # popup menu.
-        if poss[0] in xrange( env.screen["width"]/2 ):
-            X = env.screen["width"] - self.width
-
-
-        if poss[1] in xrange( env.screen["height"]/2 ):
-            Y = env.screen["height"] - self.height
-
-
-        self.move(X, Y)
-
-        if self.get_focus():
-            self.buttons[ self.buttons.index(self.get_focus()) ].get_child().modify_bg( gtk.STATE_NORMAL,
-                                                                                        gtk.gdk.color_parse(self.blue))
-
-        self.set_focus(self.buttons[0])
-        self.buttons[0].get_child().modify_bg( gtk.STATE_NORMAL, gtk.gdk.color_parse(self.green))
-        self.show_all()
-
-        mouseTrap.setState( "clk-dialog" )
-
-    def hidePanel( self, *args ):
-        """
-        Hides the panel
-
-        Arguments:
-        - self: The main object pointer.
-        - args: The event arguments
-        """
-        self.hide()
-        mouseTrap.setState( "active" )
-
-    def pressButton( self, *args ):
-        """
-        Press the focused button
-
-        Arguments:
-        - self: The main object pointer.
-        - args: The event arguments
-        """
-
-        self.get_focus().clicked()
-
-    def prevBtn( self, *args ):
-        """
-        Move to the prev button
-
-        Arguments:
-        - self: The main object pointer.
-        - args: The event arguments
-        """
-
-        self.buttons[ self.buttons.index(self.get_focus()) ].get_child().modify_bg( gtk.STATE_NORMAL,
-                                                                                    gtk.gdk.color_parse(self.blue))
-        self.buttons[ self.buttons.index(self.get_focus()) - 1 ].grab_focus()
-        self.buttons[ self.buttons.index(self.get_focus()) ].get_child().modify_bg( gtk.STATE_NORMAL,
-                                                                                    gtk.gdk.color_parse(self.green))
-
-    def nextBtn( self, *args ):
-        """
-        Move to the next button
-
-        Arguments:
-        - self: The main object pointer.
-        - args: The event arguments
-        """
-
-        index = self.buttons.index(self.get_focus()) + 1
-        if index >= len(self.buttons):
-            index = 0
-        self.buttons[ index -1 ].get_child().modify_bg( gtk.STATE_NORMAL,
-                                                        gtk.gdk.color_parse(self.blue))
-        self.buttons[ index ].grab_focus()
-        self.buttons[ index ].get_child().modify_bg( gtk.STATE_NORMAL,
-                                                     gtk.gdk.color_parse(self.green))
-
-    def executeClick( self, widget, button ):
-        """
-        Execute the selected click
-
-        Arguments:
-        - self: The main object pointer.
-        - widget: The button clicked.
-        - button: The mouse button that should be pressed.
-        """
-
-        self.gui.clickDlgHandler( button )
-        self.hidePanel()
-
-    def _newImageButton( self, label, image ):
-        """
-        Creates an image button from an image file
-
-        Arguments:
-        - self: The main object pointer
-        - label: The buttons label
-        - image: The image path
-
-        Returns ButtonLabelBox A gtk.HBox that contains the new image stock button.
-        """
-        evt = gtk.EventBox()
-
-        buttonLabelBox = gtk.VBox()
-
-        im = gtk.Image()
-        im.set_from_file( image )
-        im.show
-
-        label = gtk.Label( label )
-        label.set_alignment( 0.0, 0.5 )
-        label.set_use_underline( True )
-
-        buttonLabelBox.pack_start( im )
-        buttonLabelBox.pack_start( label )
-        buttonLabelBox.show_all()
-
-        evt.add(buttonLabelBox)
-        evt.modify_bg( gtk.STATE_NORMAL, gtk.gdk.color_parse(self.blue))
-        evt.modify_bg( gtk.STATE_PRELIGHT, gtk.gdk.color_parse(self.green))
-        return evt
-
-
-class cairoTransGui( gtk.Window ):
+class CairoTransGui( gtk.Window ):
 
     def __init__( self, message ):
         gtk.Window.__init__(self)
@@ -526,10 +535,10 @@ class cairoTransGui( gtk.Window ):
         cr.set_operator(1)
         cr.paint()
 
-        cr.set_source_rgba (255.0, 255.0, 255.0, 100.0);
-        cr.set_font_size (50);
-        cr.move_to (0,70);
-        cr.show_text (self.message);
+        cr.set_source_rgba (255.0, 255.0, 255.0, 100.0)
+        cr.set_font_size (50)
+        cr.move_to (0, 70)
+        cr.show_text (self.message)
         cr.fill()
         cr.stroke()
         return False

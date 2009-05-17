@@ -28,6 +28,7 @@ __license__   = "GPLv2"
 
 import gtk
 import pyatspi
+import mousetrap.debug as debug
 import mousetrap.environment as env
 import Xlib.ext.xtest as xtest
 
@@ -52,7 +53,7 @@ xDisplay   = display.Display()
 isGnome = False
 if env.desktop == "gnome":
     isGnome = True
-    #debug.debug( "mousetrap.mouse", "GNOME desktop has been detected" )
+    debug.debug( "mousetrap.mouse", "GNOME desktop has been detected" )
 
     ## pyatspi registry for gnome users
     reg = pyatspi.Registry
@@ -100,8 +101,8 @@ def click( x = None, y = None, button = "bc1" ):
         except:
             isGnome = False
     else:
-        for click in clickType[button[2]]:
-            xDisplay.xtest_fake_input(click, int(button[1]), clickVal[click])
+        for action in clickType[button[2]]:
+            xDisplay.xtest_fake_input(action, int(button[1]), clickVal[action])
         xDisplay.flush()
 
     return True
@@ -132,29 +133,31 @@ def move( x=0, y=0, point=None ):
 
     return True
 
+###########################################
+#               DEPRECATED
 # Dictionary Dispatcher
-dsp = { "move"      : move,
-        "click"     : click,
-        "position"  : position }
-
-def handler( func ):
-    """
-    Mouse functions decorator.
-
-    Arguments:
-    - func: The function called to access the decorator.
-
-    Return The wrapper
-    """
-
-    def wrapper( *arg, **kw ):
-        """
-        Wrapper function.
-
-        This functions will execute the required function passing the arguments to it.
-
-        Return the function executed
-        """
-        return dsp[arg[0]]( *arg[1:], **kw )
-
-    return wrapper
+# dsp = { "move"      : move,
+#         "click"     : click,
+#         "position"  : position }
+#
+# def handler( func ):
+#     """
+#     Mouse functions decorator.
+#
+#     Arguments:
+#     - func: The function called to access the decorator.
+#
+#     Return The wrapper
+#     """
+#
+#     def wrapper( *arg, **kw ):
+#         """
+#         Wrapper function.
+#
+#         This functions will execute the required function passing the arguments to it.
+#
+#         Return the function executed
+#         """
+#         return dsp[arg[0]]( *arg[1:], **kw )
+#
+#     return wrapper

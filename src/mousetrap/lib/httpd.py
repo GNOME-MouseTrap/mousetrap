@@ -28,9 +28,7 @@ __date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
-import threading
 import thread
-import gobject
 import BaseHTTPServer
 
 
@@ -52,12 +50,24 @@ class _HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         pass
 
     def do_GET(self):
+        """
+        Handles the GET requests
+
+        Arguments:
+        - self: The main object pointer.
+        """
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.end_headers()
         self.wfile.write("<html><body><p>mouseTrap 0.1</p></body></html>")
 
     def do_POST(self):
+        """
+        Handles the POST requests
+
+        Arguments:
+        - self: The main object pointer.
+        """
         contentLength = self.headers.getheader('content-length')
         if contentLength:
             contentLength = int(contentLength)
@@ -75,6 +85,13 @@ class HttpdServer:
     """Runs a _HTTPRequestHandler in a separate thread."""
 
     def __init__( self, port ):
+        """
+        HttpdServer Init Class.
+
+        Arguments:
+        - self: The main object pointer.
+        - port: The port to use for the server.
+        """
         self.httpd     = None
         self.run       = True
         self.port      = port
@@ -83,6 +100,9 @@ class HttpdServer:
     def start(self):
         """
         Try to start an HTTP server on self.settings.httpPort
+
+        Arguments:
+        - self: The main object pointer.
         """
 
         while not self.connected:
@@ -98,9 +118,21 @@ class HttpdServer:
         thread.start_new_thread(self.__handler, ())
 
     def is_running(self):
+        """
+        Returns True if running
+
+        Arguments:
+        - self: The main object pointer.
+        """
         return self.connected
 
     def __handler( self ):
+        """
+        Http Server main loop. While running will handle new requests.
+
+        Arguments:
+        - self: The main object pointer.
+        """
         while self.run:
             self.httpd.handle_request()
 

@@ -30,6 +30,7 @@ __license__   = "GPLv2"
 
 import dbus
 import dbus.service
+import mousetrap.debug as debug
 from dbus.mainloop.glib import DBusGMainLoop
 
 dbusserver = None
@@ -38,6 +39,9 @@ bus = dbus.SessionBus(mainloop=main_loop)
 
 DBUS_NAME = "org.gnome.mousetrap"
 DBUS_PATH = "/org/gnome/mousetrap"
+
+# pylint: disable-msg=R0923
+# Server: Interface not implemented
 
 class DbusServer(dbus.service.Object):
     """DBus service"""
@@ -51,7 +55,6 @@ class DbusServer(dbus.service.Object):
         - mouseTrap: The mouseTrap onject pointer
         """
 
-        global bus
         bus_name = dbus.service.BusName(DBUS_NAME, bus=bus)
         dbus.service.Object.__init__(self, bus_name, DBUS_PATH)
 

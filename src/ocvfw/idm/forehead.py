@@ -28,7 +28,7 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import ocvfw.commons as commons
-from ocvfw.dev.camera import *
+from ocvfw.dev.camera import Camera, Capture, Point
 
 a_name = "Forehead"
 a_description = "Forehead point tracker based on LK Algorithm"
@@ -74,7 +74,6 @@ class Module(object):
 
         for key in self.stgs:
             pass
-        pass
 
     def set_capture(self, cam):
         self.cap = Capture(async=True, idx=cam)

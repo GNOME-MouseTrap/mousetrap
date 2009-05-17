@@ -27,9 +27,7 @@ __date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
-import sys
 import gtk
-import pango
 import cairo
 import gobject
 from gtk import gdk
@@ -52,11 +50,18 @@ class Mapper(gtk.Widget):
 #         self._layout = self.create_pango_layout(text)
 #         self._layout.set_font_description(pango.FontDescription("Sans Serif 16"))
 
-    # GtkWidget
     def do_realize(self):
-        """Called when the widget should create all of its
+        """
+        Called when the widget should create all of its
         windowing resources.  We will create our gtk.gdk.Window
-        and load our star pixmap."""
+        and load our star pixmap.
+        """
+
+        # For some reason pylint says that a VBox doesn't have a set_spacing or pack_start member.
+        # pylint: disable-msg=E1101
+        # Mapper.do_realize: Class 'style' has no 'attach' member
+        # Mapper.do_realize: Class 'style' has no 'set_background' member
+        # Mapper.do_realize: Class 'style' has no 'fg_gc' member
 
         # First set an internal flag telling that we're realized
         self.set_flags(self.flags() | gtk.REALIZED)
@@ -93,6 +98,7 @@ class Mapper(gtk.Widget):
         # an array or graphic contexts used for drawing the forground
         # colours
         self.gc = self.style.fg_gc[gtk.STATE_NORMAL]
+        # pylint: enable-msg=E1101
 
         #self.connect("motion_notify_event", self.motion_notify_event)
 
@@ -119,10 +125,17 @@ class Mapper(gtk.Widget):
 
         # If we're realized, move and resize the window to the
         # requested coordinates/positions
+        # pylint: disable-msg=W0142
+        # Mapper.do_size_allocate: Used * or ** magic
+        # WE DO NEED THE *
         if self.flags() & gtk.REALIZED:
             self.window.move_resize(*allocation)
+        # pylint: enable-msg=W0142
 
     def expose_event(self, widget, event):
+        """
+        Mapper expose event.
+        """
         # The do_expose_event is called when the widget is asked to draw itself
         # Remember that this will be called a lot of times, so it's usually
         # a good idea to write this code as optimized as it can be, don't
@@ -151,7 +164,7 @@ class Mapper(gtk.Widget):
 #                             5.0)
         return True
 
-        # And draw the text in the middle of the allocated space
+#         And draw the text in the middle of the allocated space
 #         fontw, fonth = self._layout.get_pixel_size()
 #         cr.move_to((w - fontw)/2, (h - fonth)/2)
 #         cr.update_layout(self._layout)
@@ -159,10 +172,12 @@ class Mapper(gtk.Widget):
 
     def draw_rectangle(self, x, y, width, height, color, line):
         """
+        A Method to draw rectangles.
         """
+
         cr = self.window.cairo_create()
         cr.set_source_color(color)
-        cr.rectangle(x, y,width, height)
+        cr.rectangle(x, y, width, height)
         cr.set_line_width(line)
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
         cr.stroke()
@@ -187,18 +202,6 @@ class Mapper(gtk.Widget):
 
         return True
 
-    def on_expose_show(self, area):
-        """
-        Here are registered the areas that should be shown by the expose event.
-
-        Argumnets:
-        - self: The main object pointer.
-        """
-        if area not in AV_AREAS:
-            return False
-
-#         self.on_expose_areas[]
-
     def connect_point_event(self, event, x, y, width, height, callback):
         """
         Connects a new event in the spesified areas.
@@ -216,9 +219,10 @@ class Mapper(gtk.Widget):
         if event not in self.events:
             return False
 
-        self.events[event].append( {"x_range" : range(reg_event["x"], reg_event["x"] + reg_event["width"]),
-                                    "y_range" : range(reg_event["x"], reg_event["y"] + reg_event["height"]),
-                                    "callback" : callback} )
+#         Working on Mapper events
+#         self.events[event].append( {"x_range" : range(reg_event["x"], reg_event["x"] + reg_event["width"]),
+#                                     "y_range" : range(reg_event["x"], reg_event["y"] + reg_event["height"]),
+#                                     "callback" : callback} )
 
     def motion_notify_event(self, event):
         """

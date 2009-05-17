@@ -27,10 +27,12 @@ __date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
-import gtk
-import time
 import mousetrap.environment as env
 import mousetrap.lib.mouse as mouse
+
+# pylint: disable-msg=F0401
+# Unable to import 'widgets' (No module named widgets)
+# Widgets is in the parent folder
 from ..widgets import Mapper
 
 # The name given for the config file
@@ -40,6 +42,9 @@ setName = "screen"
 modes = { "screen|abs"  :  "Mouse Absolute Movements",
           "screen|rel"  :  "Mouse Relative Movements"}
 
+# We get too many E1101 messages, but We know what we're doing.
+# Mapper does have those methods.
+# pylint: disable-msg=E1101
 class ScriptClass(Mapper):
 
     def __init__(self):
@@ -54,10 +59,6 @@ class ScriptClass(Mapper):
         self.point = point
         self.calc_move()
         self.queue_draw()
-        try:
-            pass
-        except:
-            pass
 
     def expose_event(self, widget, event):
         self.width, self.height = self.allocation[2], self.allocation[3]

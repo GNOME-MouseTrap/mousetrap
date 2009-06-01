@@ -2,7 +2,7 @@ AC_INIT(ChangeLog)
 
 
 CURRENT_DIR=$PWD
-MOUSETRAP_VERSION=0.3
+MOUSETRAP_VERSION=0.4
 AM_INIT_AUTOMAKE(mousetrap, $MOUSETRAP_VERSION)
 AC_SUBST(MOUSETRAP_VERSION)
 AC_SUBST(CURRENT_DIR)
@@ -31,7 +31,7 @@ AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [Gettext package])
 AM_GLIB_GNU_GETTEXT
 
-IT_PROG_INTLTOOL([0.35.0])
+IT_PROG_INTLTOOL([0.40.0])
 
 dnl Checks for programs
 AC_PROG_CC
@@ -44,7 +44,7 @@ AM_PROG_LIBTOOL
 
 # Check for Python
 
-AM_PATH_PYTHON(2.4)
+AM_PATH_PYTHON(2.6)
 
 # Find the headers needed to build extensions
 
@@ -70,9 +70,9 @@ DOCBOOK_CHECK()
 #mousetrap.spec
 
 AC_OUTPUT([
+run_pylint.sh
 Makefile
 mousetrap.desktop
-run_pylint.sh
 po/Makefile.in
 docs/Makefile
 docs/man/Makefile
@@ -93,4 +93,4 @@ src/ocvfw/Makefile
 src/ocvfw/dev/Makefile
 src/ocvfw/idm/Makefile
 src/ocvfw/haars/Makefile
-])
+],[chmod +x run_pylint.sh])

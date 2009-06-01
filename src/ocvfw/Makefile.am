@@ -1,6 +1,6 @@
-mousetrap_pathdir=$(pyexecdir)
+ocvfw_pathdir=$(pyexecdir)
 
-mousetrap_python_PYTHON = \
+ocvfw_python_PYTHON = \
 	debug.py \
 	pocv.py \
 	commons.py \
@@ -10,4 +10,7 @@ mousetrap_python_PYTHON = \
 
 SUBDIRS = dev haars idm
 
-mousetrap_pythondir=$(pyexecdir)/ocvfw
+ocvfw_pythondir=$(pyexecdir)/ocvfw
+
+install-exec-hook:
+	chmod a+rx $(ocvfw_pythondir) -R

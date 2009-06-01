@@ -72,7 +72,7 @@ def load():
     cfg = Settings()
     if not os.path.exists( env.configPath ):
         os.mkdir( env.configPath )
-        cfg.write_first()
+        cfg.write_first(env.configFile)
 
     if not os.path.exists( env.configFile ):
         cfg.write_first(env.configFile)

@@ -1,6 +1,6 @@
-mouseTrap_pathdir=$(pyexecdir)
+ocvfw_pathdir=$(pyexecdir)
 
-mouseTrap_python_PYTHON = \
+ocvfw_python_PYTHON = \
 	frontalEyes35x16.xml \
 	haarcascade_frontalface_alt2.xml \
 	haarcascade_frontalface_alt_tree.xml \
@@ -9,4 +9,4 @@ mouseTrap_python_PYTHON = \
 	haarcascade_eye_tree_eyeglasses.xml \
 	Mouth.xml
 
-mouseTrap_pythondir=$(pyexecdir)/ocvfw/haars
+ocvfw_pythondir=$(pyexecdir)/ocvfw/haars

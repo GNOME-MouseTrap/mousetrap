@@ -1,7 +1,7 @@
-mousetrap_pathdir=$(pyexecdir)
+ocvfw_pathdir=$(pyexecdir)
 
-mousetrap_python_PYTHON = \
+ocvfw_python_PYTHON = \
 	forehead.py \
 	__init__.py
 
-mousetrap_pythondir=$(pyexecdir)/ocvfw/idm
+ocvfw_pythondir=$(pyexecdir)/ocvfw/idm

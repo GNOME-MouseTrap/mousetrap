@@ -8,6 +8,7 @@ mousetrap_pathdir=$(pyexecdir)
 
 mousetrap_python_PYTHON = \
 	environment.py \
+	debug.py \
 	__init__.py \
 	mousetrap.py
 
@@ -15,3 +16,6 @@ mousetrap_python_PYTHON = \
 SUBDIRS = lib ui
 
 mousetrap_pythondir=$(pyexecdir)/mousetrap
+
+install-exec-hook:
+	chmod a+rx $(mousetrap_pythondir) -R

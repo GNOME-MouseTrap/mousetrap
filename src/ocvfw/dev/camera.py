@@ -84,7 +84,6 @@ class Capture(object):
 
         self.roi           = None
 
-        self.forehead      = None
         self.last_update   = 0
         self.last_duration = 0
 

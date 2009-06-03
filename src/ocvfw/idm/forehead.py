@@ -92,6 +92,7 @@ class Module(object):
 
         returns self.cap.image()
         """
+
         if not hasattr(self.cap, "forehead"):
             self.get_forehead()
 
@@ -104,6 +105,7 @@ class Module(object):
         Arguments:
         - self: The main object pointer
         """
+
         if hasattr(self.cap, "forehead"):
             return self.cap.forehead
 

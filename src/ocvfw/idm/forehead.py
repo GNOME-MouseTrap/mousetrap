@@ -35,11 +35,21 @@ a_description = "Forehead point tracker based on LK Algorithm"
 a_settings = { 'speed' : {"value":2}}
 
 class Module(object):
+    """
+    This is the IDM's Main class, called by mousetrap.py in the load process.
+    """
 
     def __init__(self, controller, stgs = {}):
+        """
+        IDM's init function.
+        
+        Arguments:
+        - self: The main object pointer.
+        - controller: mousetrap main class pointer. This is passed by MouseTrap's controller (mousetrap.py) when loaded.
+        - stgs: Possible settings loaded from the user's settings file. If there aren't settings the IDM will use the a_settings dict.
+        """
         Camera.init()
 
-        self.img          = None
         self.ctr          = controller
         self.cap          = None
         self.stgs         = stgs
@@ -70,12 +80,25 @@ class Module(object):
         self.prepare_config()
 
     def prepare_config(self):
+        """
+        Prepares the IDM using the settings
+        
+        Arguments:
+        - self: The main object pointer
+        """
         global a_settings
 
         for key in self.stgs:
             pass
 
     def set_capture(self, cam):
+        """
+        Initialize the capture and sets the main settings.
+        
+        Arguments:
+        - self: The main object pointer
+        - cam: The camera device index. For Example: 0 = /dev/video0, 1 = /dev/video1
+        """
         self.cap = Capture(async=True, idx=cam)
         self.cap.change(color="rgb")
 
@@ -96,7 +119,7 @@ class Module(object):
         if not hasattr(self.cap, "forehead"):
             self.get_forehead()
 
-        return self.cap.image()
+        return self.cap.resize(200, 160, True)
 
     def get_pointer(self):
         """

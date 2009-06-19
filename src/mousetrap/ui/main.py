@@ -161,7 +161,7 @@ class MainGui( gtk.Window ):
         - img: The IPLimage object.
         """
 
-        if img is None:
+        if not img:
             return False
 
         #self.script.update_items(point)

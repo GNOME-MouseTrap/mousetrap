@@ -34,3 +34,10 @@ haar_cds = { 'Face'  :  "%s/haars/haarcascade_frontalface_alt.xml" % abs_path,
              'Eyes'  :  "%s/haars/frontalEyes35x16.xml" % abs_path,
              #'Eyes'  :  "../ocvfw/haars/haarcascade_eye_tree_eyeglasses.xml",
              'Mouth' :  "%s/haars/Mouth.xml" % abs_path}
+
+colors = { "gray" : { "ch" : 1 },
+           "rgb"  : { "ch" : 3 },
+           "bgr"  : { "ch" : 3 }}
+
+def get_ch(color):
+    return colors[color]["ch"]

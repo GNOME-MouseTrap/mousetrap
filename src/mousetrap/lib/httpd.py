@@ -28,9 +28,12 @@ __date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
+import mouse
 import thread
 import BaseHTTPServer
 
+from .. import debug
+from .. import environment as env
 
 class _HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     """
@@ -59,7 +62,7 @@ class _HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.end_headers()
-        self.wfile.write("<html><body><p>mouseTrap 0.1</p></body></html>")
+        self.wfile.write("<html><body><p>mouseTrap %s</p></body></html>" % (env.version))
 
     def do_POST(self):
         """
@@ -75,7 +78,8 @@ class _HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
             if inputBody.startswith("move:"):
                 X, Y = inputBody[5:].split(",")
-                print X + " " + Y
+                debug.info( "mouseTrap.httpd", "Moving mouse to %s,%s" % (X, Y) )
+                mouse.move(int(X), int(Y))
                 self.send_response(200, 'OK')
         else:
             print( "mal" )

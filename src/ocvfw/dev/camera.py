@@ -30,7 +30,7 @@ __license__   = "GPLv2"
 import gobject
 
 from warnings import *
-from .. import debug
+from .. import debug, commons
 from opencv import cv
 from opencv import highgui as hg
 from .._ocv import Ocvfw as ocv
@@ -75,6 +75,7 @@ class Capture(object):
         self.__graphics    = { "rect"  : [],
                                "point" : []}
 
+        self.__ch          = 3
         self.__image       = image
         self.__image_log   = []
         self.__image_orig  = None
@@ -124,7 +125,7 @@ class Capture(object):
         self.__image_orig  = self.__image = self.__camera.img
 
         if self.__color != self.__color_set:
-            self.__image = self.color("rgb")
+            self.__image = self.color(self.__color_set)
 
         # TODO: Workaround, I've to fix it
         if len(self.__camera.img_lkpoints["last"]) > 0:
@@ -134,12 +135,10 @@ class Capture(object):
 
         self.show_rectangles(self.rectangles())
 
-        self.__image = self.resize(200, 160)
-
         return self.async
 
     #@property
-    def image(self):
+    def image(self, new_img = None):
         """
         Returns the image ready to use
 
@@ -147,9 +146,12 @@ class Capture(object):
         - self: The main object pointer.
         """
 
+        if new_img:
+            self.__image = new_img
+
         return self.__image
 
-    def resize(self, width, height):
+    def resize(self, width, height, copy=False):
         """
         Image resizing function.
 
@@ -159,8 +161,15 @@ class Capture(object):
         - height: The new image height.
         """
 
-        tmp = cv.cvCreateImage( cv.cvSize( width, height ), 8, 3 )
+        if self.__image is None:
+            return False
+
+        tmp = cv.cvCreateImage( cv.cvSize( width, height ), 8, self.__ch )
         cv.cvResize( self.__image, tmp, cv.CV_INTER_AREA )
+
+        if not copy:
+            self.__image = tmp
+
         return tmp
 
 
@@ -206,6 +215,26 @@ class Capture(object):
         """
         return Capture(self.__image_orig)
 
+    def rect(self, *args):
+        """
+        Returns a Rectangle of the image.
+
+        Arguments:
+        - self: The main object pointer.
+        - args: Could be the CVRect (at index 0) or the 4 values needed (X, Y, Width, Height)
+        """
+
+        if not self.__image:
+            return
+
+        rect = args[0]
+
+        if len(args) > 1:
+            rect = cv.cvRect( args[0], args[1], args[2], args[3] )
+
+        return cv.cvGetSubRect(self.__image, rect)
+
+
     def flip(self, flip):
         """
         Flips the image
@@ -223,7 +252,7 @@ class Capture(object):
 
         return self.__image
 
-    def color(self, new_color, channel=3):
+    def color(self, new_color, channel=None, copy=False):
         """
         Changes the image's color.
 
@@ -234,14 +263,18 @@ class Capture(object):
         returns self.color if color == None
         """
 
-        if new_color:
-            #img = cv.cvCreateImage ( cv.cvGetSize(self.__image), 8, channel )
-            img = self.__images_cn[channel]
-            cv.cvCvtColor( self.__image, img, self.__color_int['cv_%s2%s' % (self.__color, new_color) ])
-            #cv.cvCvtColor( self.__image, img, self.__color_int['cv_%s2%s' % (self.__color, new_color) ])
-            self.__color = new_color
+        channel = channel if channel != None else commons.get_ch(new_color)
 
-        return img
+        if new_color:
+            tmp = self.__images_cn[channel]
+            cv.cvCvtColor( self.__image, tmp, self.__color_int['cv_%s2%s' % (self.__color, new_color) ])
+            self.__color = new_color
+            self.__ch = channel
+
+        if not copy:
+            self.__image = tmp
+
+        return tmp
 
     def change(self, size=None, color=None, flip=None):
         """

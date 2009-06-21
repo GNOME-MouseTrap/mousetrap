@@ -34,7 +34,40 @@ import mousetrap.environment as env
 class Settings( ConfigParser.ConfigParser ):
 
     def optionxform( self, optionstr ):
+        """
+        Keeps the options cases instead of 
+        converting them in lowercase.
+
+        Arguments:
+        - self: The main object pointer.
+        - optionstr: The option string.
+        """
         return optionstr
+
+    def getList(self, section, option):
+        """
+        Gets a section parsed as string
+        and returns it as list
+
+        Arguments:
+        - self: The main object pointer.
+        - section: The section where option is.
+        - option: The needed option value.
+        """
+        return [ val for val in self.get(section, option).split("|") if val != "" ]
+
+    def setList(self, section, option, arr):
+        """
+        Sets a new list type option.
+
+        Arguments:
+        - self: The main object pointer.
+        - section: The section where option will be.
+        - option: The option to set.
+        - arr: The List to transform in string.
+        """
+
+        self.set(section, option, "|".join(arr))
 
     def write_first(self, conf_file):
         """
@@ -63,6 +96,7 @@ class Settings( ConfigParser.ConfigParser ):
             conf.write("\ndebugLevel = 10")
             conf.write("\nalgorithm = forehead")
             conf.write("\nstartCam = True")
+            conf.write("\naddon = ")
 
             conf.write("\n\n[mouse]")
             conf.write("\ndefClick = b1c")

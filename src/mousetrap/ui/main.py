@@ -32,6 +32,7 @@ import dialogs
 import settings_gui
 import mousetrap.debug as debug
 import mousetrap.environment as env
+from mousetrap.addons import cpu
 
 class MainGui( gtk.Window ):
     """
@@ -124,18 +125,6 @@ class MainGui( gtk.Window ):
             #expander.connect('notify::expanded', self.expanded_cb)
             self.vBox.pack_start(self.map_expander)
 
-#         hBox = gtk.HBox()
-#         showMapper = gtk.CheckButton( _("Start Point Mapper: ") )
-#         showMapper.set_active( self.settings.getboolean( "gui", "showPointMapper" ) )
-#         showMapper.connect("toggled", lambda x: self.mapper.show()
-#                                       if x.get_active() else  self.mapper.hide())
-#         hBox.pack_start( showMapper, False, False )
-#
-#         showCapture = gtk.CheckButton( _("Show Capture: ") )
-#         showCapture.set_active( self.settings.getboolean( "gui", "showCapture" ) )
-#         showCapture.connect("toggled", lambda x: self.capture.show()
-#                                         if x.get_active() else  self.capture.hide())
-#         hBox.pack_start( showCapture, False, False )
 #
 #         flipButton = gtk.Button( _("Flip Image") )
 #         flipButton.connect("clicked", self.recalcPoint, "flip" )
@@ -148,9 +137,30 @@ class MainGui( gtk.Window ):
 #         self.vBox.pack_end(hBox, False, False )
 #
 #         self.buttonsBox.show_all()
+
+        self.statusbar = gtk.Statusbar()
+        self.statusbar_id = self.statusbar.get_context_id("statusbar")
+
+        self.vBox.pack_start(self.statusbar, True, True)
+
         self.vBox.show_all()
         self.add(self.vBox)
         self.show()
+
+    def load_addons(self):
+        """
+        Loads the enabled addons
+         
+        Arguments:
+        - self: The main object pointer.
+        """
+
+        for add in self.cfg.getList("main", "addon"):
+            tmp = __import__("mousetrap.addons.%s" % add,
+                    globals(), locals(),[''])
+
+            setattr(self, add, tmp.Addon(self.ctr))
+
 
     def update_frame(self, img, point):
         """

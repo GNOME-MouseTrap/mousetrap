@@ -83,12 +83,13 @@ class Controller():
             self.idm = idm.Module(self)
             self.idm.set_capture(self.cfg.getint("cam", "inputDevIndex"))
 
-            #gobject.timeout_add(150, self.update_frame)
-            #gobject.timeout_add(50, self.update_pointers)
+            gobject.timeout_add(150, self.update_frame)
+            gobject.timeout_add(50, self.update_pointers)
 
         # Lets build the interface
         self.itf = MainGui(self)
         self.itf.build_interface()
+        self.itf.load_addons()
 
         gobject.threads_init()
         self.loop.run()

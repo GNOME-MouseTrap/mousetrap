@@ -32,6 +32,7 @@ import dialogs
 from i18n import _
 from ocvfw import pocv
 import mousetrap.environment as env
+from mousetrap.addons.handler import AddonsHandler
 
 class PreffGui( gtk.Window ):
     """
@@ -54,6 +55,7 @@ class PreffGui( gtk.Window ):
 
         self.ctr = controller
         self.cfg = self.ctr.cfg
+        self.adds = AddonsHandler(self.ctr)
         self.preffWidgets = dict()
 
     def setWindowsIcon( self ):
@@ -99,6 +101,7 @@ class PreffGui( gtk.Window ):
         self.main_gui_tab()
         self.cam_tab()
         self.algorithm_tab()
+        self.addons_tab()
         self.mouseTab()
         self.debug_tab()
 
@@ -264,6 +267,68 @@ class PreffGui( gtk.Window ):
         frame.show()
 
         self.noteBook.insert_page(frame, gtk.Label( _("Algorithm") ) )
+    
+    def addons_tab( self ):
+        """
+        The cam module Preff Tab.
+
+        Arguments:
+        - self: The main object pointer.
+        """
+
+        frame = gtk.Frame()
+
+        algo_box = gtk.VBox( spacing = 6 )
+
+        liststore = gtk.ListStore(bool, str, str, str)
+
+        conf_button = gtk.Button(stock=gtk.STOCK_PREFERENCES)
+        conf_button.connect('clicked', self.show_alg_pref, liststore)
+        conf_button.set_sensitive(False)
+
+        tree_view = gtk.TreeView(liststore)
+        tree_view.connect("cursor-changed", self._tree_view_click, conf_button)
+
+        toggle_cell = gtk.CellRendererToggle()
+        toggle_cell.connect( 'toggled', self._enable_disable_addon, liststore)
+        toggle_cell.set_property('activatable', True)
+
+        name_cell = gtk.CellRendererText()
+        desc_cell = gtk.CellRendererText()
+
+        toggle_column = gtk.TreeViewColumn(_('Active'), toggle_cell)
+        name_column = gtk.TreeViewColumn(_('Name'))
+        desc_column = gtk.TreeViewColumn(_('Description'))
+
+        for add in self.adds.get_addons_list():
+            add_inf = self.adds.get_addon_inf(add)
+            state = False
+            if add_inf["name"].lower() in self.cfg.getList("main", "addon"):
+                state = True
+            liststore.append([state, add_inf["name"], add_inf["dsc"], add_inf["stgs"]])
+
+        tree_view.append_column(toggle_column)
+        tree_view.append_column(name_column)
+        tree_view.append_column(desc_column)
+
+        name_column.pack_start(name_cell, True)
+        desc_column.pack_start(desc_cell, True)
+
+        toggle_column.add_attribute( toggle_cell, "active", 0 )
+        toggle_column.set_max_width(30)
+        #toggle_column.set_attributes( toggle_cell, background=2 )
+        name_column.set_attributes(name_cell, text=1)
+        desc_column.set_attributes(desc_cell, text=2)
+
+        algo_box.pack_start(tree_view)
+        algo_box.pack_start(conf_button, False, False)
+
+        algo_box.show_all()
+
+        frame.add( algo_box )
+        frame.show()
+
+        self.noteBook.insert_page(frame, gtk.Label( _("Addons") ) )
 
     def mouseTab( self ):
         """
@@ -410,6 +475,22 @@ class PreffGui( gtk.Window ):
                 self.cfg.set("main", "algorithm", model[pth][1].lower())
             else:
                 model[pth][0] = False
+
+    def _enable_disable_addon(self, cell, path, model):
+        """
+        ListStore RadioButton Value Changer.
+        """
+        
+        model[path][0] = not model[path][0]
+
+        cur = self.cfg.getList("main", "addon")
+
+        if model[path][1] in cur:
+            cur.remove(model[path][1].lower())
+        else:
+            cur.append(model[path][1].lower())
+
+        self.cfg.setList("main", "addon", cur)
 
     def _checkToggled( self, widget, section, option ):
         """

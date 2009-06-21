@@ -30,6 +30,9 @@ import sys
 import os
 import gtk
 
+## MouseTrap's PID
+pid = os.getpid()
+
 ## mouseTrap Version
 version     = "@MOUSETRAP_VERSION@"
 

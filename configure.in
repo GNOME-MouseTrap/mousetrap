@@ -89,6 +89,7 @@ src/mousetrap/lib/Makefile
 src/mousetrap/ui/Makefile
 src/mousetrap/ui/i18n.py
 src/mousetrap/ui/scripts/Makefile
+src/mousetrap/addons/Makefile
 src/ocvfw/Makefile
 src/ocvfw/dev/Makefile
 src/ocvfw/idm/Makefile

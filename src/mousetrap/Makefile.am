@@ -13,7 +13,7 @@ mousetrap_python_PYTHON = \
 	mousetrap.py
 
 
-SUBDIRS = lib ui
+SUBDIRS = lib ui addons
 
 mousetrap_pythondir=$(pyexecdir)/mousetrap
 

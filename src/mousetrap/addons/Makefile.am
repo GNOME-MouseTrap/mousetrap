@@ -1,5 +1,3 @@
-SUBDIRS = scripts
-
 mousetrap_pathdir=$(pyexecdir)
 
 mousetrap_python_PYTHON = \

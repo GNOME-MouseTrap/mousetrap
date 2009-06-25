@@ -109,6 +109,10 @@ class MainGui( gtk.Window ):
 
         self.vBox.pack_start( self.buttonsBox, False, False )
 
+        self.adds_vbox = gtk.VBox()
+        self.adds_vbox.show_all()
+        self.vBox.pack_start( self.adds_vbox, False, False )
+
         self.cap_image    = gtk.Image()
 
         if self.cfg.getboolean("gui", "showCapture"):
@@ -146,6 +150,9 @@ class MainGui( gtk.Window ):
         self.vBox.show_all()
         self.add(self.vBox)
         self.show()
+        
+        debug.debug("ui.main", "Interface Builded")
+
 
     def load_addons(self):
         """
@@ -160,6 +167,7 @@ class MainGui( gtk.Window ):
                     globals(), locals(),[''])
 
             setattr(self, add, tmp.Addon(self.ctr))
+        debug.debug("ui.main", "Addons loaded")
 
 
     def update_frame(self, img, point):

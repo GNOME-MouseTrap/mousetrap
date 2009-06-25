@@ -37,6 +37,7 @@ import sys
 sys.argv[0] = "mousetrap"
 
 import gobject
+import debug
 from ocvfw import pocv
 from ui.main import MainGui
 from ui.scripts.screen import ScriptClass
@@ -85,11 +86,14 @@ class Controller():
 
             gobject.timeout_add(150, self.update_frame)
             gobject.timeout_add(50, self.update_pointers)
+            
+            debug.info("mousetrap", "Idm loaded and started")
 
         # Lets build the interface
         self.itf = MainGui(self)
         self.itf.build_interface()
         self.itf.load_addons()
+        debug.info("mousetrap", "MouseTrap's Interface Builded and Loaded")
 
         gobject.threads_init()
         self.loop.run()

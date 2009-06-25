@@ -31,6 +31,13 @@ import logging
 
 modules = {}
 
+
+class StreamFileHandler(logging.Handler):
+    
+    def emit(self, record):
+        final_msg = "%s: %s - %s" % (record.levelname, record.name, record.getMessage())
+        print(final_msg)
+
 def checkModule( module ):
     """
     Get's a new logger for modules.
@@ -43,7 +50,7 @@ def checkModule( module ):
 
     formatter = logging.Formatter("%(levelname)s: %(name)s -> %(message)s")
 
-    cli = logging.StreamHandler( )
+    cli = StreamFileHandler( )
     cli.setLevel( level )
     cli.setFormatter(formatter)
 

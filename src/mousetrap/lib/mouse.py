@@ -53,7 +53,7 @@ xDisplay   = display.Display()
 isGnome = False
 if env.desktop == "gnome":
     isGnome = True
-    debug.debug( "mousetrap.mouse", "GNOME desktop has been detected" )
+    debug.info( "mousetrap.mouse", "GNOME desktop has been detected" )
 
     ## pyatspi registry for gnome users
     reg = pyatspi.Registry

@@ -27,6 +27,7 @@ __date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
+import ocvfw.debug as debug
 import ocvfw.commons as commons
 from ocvfw.dev.camera import Camera, Capture, Point
 
@@ -53,6 +54,8 @@ class Module(object):
         - controller: mousetrap main class pointer. This is passed by MouseTrap's controller (mousetrap.py) when loaded.
         - stgs: Possible settings loaded from the user's settings file. If there aren't settings the IDM will use the a_settings dict.
         """
+        # Debugging is always important
+        debug.debug("ocvfw.idm", "Starting %s idm" % a_name)
         
         # This will init the Camera class. 
         # This class is used to handle the camera device.
@@ -71,6 +74,8 @@ class Module(object):
 
         # Prepares the IDM using the settings.
         self.prepare_config()
+        
+        debug.info("ocvfw.idm", "%s Algorithm loaded" % a_name)
 
     def prepare_config(self):
         """
@@ -98,6 +103,8 @@ class Module(object):
         - self: The main object pointer
         - cam: The camera device index. For Example: 0 = /dev/video0, 1 = /dev/video1
         """
+        
+        debug.debug("ocvfw.idm", "Setting Capture")
         
         # Starts the Capture using the async method.
         # This means that self.cap.sync() wont be called periodically

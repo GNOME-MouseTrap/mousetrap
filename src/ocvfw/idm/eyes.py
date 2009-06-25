@@ -28,6 +28,7 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import pyvision as pv
+import ocvfw.debug as debug
 import ocvfw.commons as commons
 from ocvfw.dev.camera import Camera, Capture, Point
 from pyvision.face.FilterEyeLocator import loadFilterEyeLocator as eye_locator
@@ -54,6 +55,8 @@ class Module(object):
         - controller: mousetrap main class pointer. This is passed by MouseTrap's controller (mousetrap.py) when loaded.
         - stgs: Possible settings loaded from the user's settings file. If there aren't settings the IDM will use the a_settings dict.
         """
+        debug.debug("ocvfw.idm", "Starting %s idm" % a_name)
+        
         Camera.init()
 
         self.img          = None
@@ -79,6 +82,7 @@ class Module(object):
         self.isMoving       = False
 
         self.prepare_config()
+        debug.info("ocvfw.idm", "Forhead Algorithm loaded")
 
     def prepare_config(self):
         """
@@ -100,6 +104,9 @@ class Module(object):
         - self: The main object pointer
         - cam: The camera device index. For Example: 0 = /dev/video0, 1 = /dev/video1
         """
+        
+        debug.debug("ocvfw.idm", "Setting Capture")
+        
         self.cap = Capture(async=False, idx=cam)
         self.cap.change(color="rgb")
 

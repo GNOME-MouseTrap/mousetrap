@@ -6,3 +6,4 @@ i18n.py
 compile
 *.patch
 *~
+*.swp

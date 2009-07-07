@@ -1,13 +1,9 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
 [encoding: UTF-8]
-src/mouseTrap/cam.py
-src/mouseTrap/mouse.py
-src/mouseTrap/mTDbus.py
-src/mouseTrap/dialogs.py
-src/mouseTrap/mainGui.py
-src/mouseTrap/prefGui.py
-src/mouseTrap/mouseTrap.py
-src/mouseTrap/scripts/profiles/dragProfile.py
-src/mouseTrap/scripts/profiles/holdProfile.py
-src/mouseTrap/scripts/profiles/screenProfile.py
+src/mousetrap/addons/handler.py
+src/mousetrap/addons/recalc.py
+src/mousetrap/ui/dialogs.py
+src/mousetrap/ui/main.py
+src/mousetrap/ui/settings_gui.py
+src/ocvfw/pocv.py

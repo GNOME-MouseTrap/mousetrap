@@ -170,7 +170,7 @@ class MainGui( gtk.Window ):
         debug.debug("ui.main", "Addons loaded")
 
 
-    def update_frame(self, img, point):
+    def update_frame(self, cap, point):
         """
         Updates the image
 
@@ -179,15 +179,11 @@ class MainGui( gtk.Window ):
         - img: The IPLimage object.
         """
 
-        if not img:
+        if not cap.image():
             return False
 
-        #self.script.update_items(point)
-        buff = gtk.gdk.pixbuf_new_from_data( img.imageData, gtk.gdk.COLORSPACE_RGB, False, 8, \
-                                             int(img.width), int(img.height), img.widthStep )
-
         #sets new pixbuf
-        self.cap_image.set_from_pixbuf(buff)
+        self.cap_image.set_from_pixbuf(cap.to_gtk_buff().scale_simple(200, 160, gtk.gdk.INTERP_BILINEAR))
 
 #     def recalcPoint( self, widget, flip = ''):
 #         """

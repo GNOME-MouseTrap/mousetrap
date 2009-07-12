@@ -29,7 +29,7 @@ __license__   = "GPLv2"
 
 import ocvfw.debug as debug
 import ocvfw.commons as commons
-from ocvfw.dev.camera import Camera, Capture, Point
+from ocvfw.dev.camera import Capture, Point
 
 a_name = "Forehead"
 a_description = "Forehead point tracker based on LK Algorithm"
@@ -52,8 +52,6 @@ class Module(object):
 
         debug.debug("ocvfw.idm", "Starting %s idm" % a_name)
         
-        Camera.init()
-
         self.ctr          = controller
         self.cap          = None
         self.stgs         = stgs
@@ -107,15 +105,16 @@ class Module(object):
         
         debug.debug("ocvfw.idm", "Setting Capture")
         
-        self.cap = Capture(async=True, idx=cam)
+        self.cap = Capture(async=True, idx=cam, backend="OcvfwPython")
         self.cap.change(color="rgb")
+        self.cap.set_camera("lk_swap", True)
 
 
     def calc_motion(self):
         if not hasattr(self.cap, "forehead"):
             self.get_forehead()
 
-    def get_image(self):
+    def get_capture(self):
         """
         Sets the forehead point if needed and returns the formated image.
 
@@ -128,7 +127,8 @@ class Module(object):
         if not hasattr(self.cap, "forehead"):
             self.get_forehead()
 
-        return self.cap.resize(200, 160, True)
+        #return self.cap.resize(200, 160, True)
+        return self.cap
 
     def get_pointer(self):
         """

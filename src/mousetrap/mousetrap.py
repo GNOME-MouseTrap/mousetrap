@@ -114,7 +114,7 @@ class Controller():
         Arguments:
         - self: The main object pointer.
         """
-        self.itf.update_frame(self.idm.get_image(), self.idm.get_pointer())
+        self.itf.update_frame(self.idm.get_capture(), self.idm.get_pointer())
         return True
 
     def update_pointers(self):

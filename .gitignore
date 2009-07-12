@@ -7,3 +7,4 @@ compile
 *.patch
 *~
 *.swp
+*.dropbox

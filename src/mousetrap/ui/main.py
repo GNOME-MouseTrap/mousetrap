@@ -265,8 +265,7 @@ class MainGui( gtk.Window ):
         - self: The main object pointer.
         - *args: The widget callback arguments.
         """
-        exit()
-        #self.mTp.quit(0)
+        self.ctr.quit(0)
 
 def showMainGui( ):
     """

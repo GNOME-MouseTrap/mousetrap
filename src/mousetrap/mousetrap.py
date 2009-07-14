@@ -38,9 +38,15 @@ sys.argv[0] = "mousetrap"
 
 import gobject
 import debug
+import getopt
+import environment as env
+
 from ocvfw import pocv
+
+from ui.i18n import _
 from ui.main import MainGui
 from ui.scripts.screen import ScriptClass
+
 from lib import httpd, dbusd, settings
 
 class Controller():
@@ -75,6 +81,8 @@ class Controller():
         if self.cfg is None:
             self.cfg = settings.load()
 
+        self.proc_args()
+
         if not self.dbusd.start():
             self.httpd.start()
 
@@ -98,6 +106,114 @@ class Controller():
         gobject.threads_init()
         self.loop.run()
 
+    def proc_args(self):
+        """
+        Process the startup flags
+
+        Arguments:
+        - self: The main object pointer.
+        """
+   
+        arguments = sys.argv[1:]
+        if len(arguments) == 1:
+            arguments = arguments[0].split()
+
+        env.flags = dict((key[0], {"section" : sec}) for sec in self.cfg.sections() 
+                                                    for key in self.cfg.items(sec))
+
+        try:
+            # ? for help
+            # e for enable
+            # d for disable
+            # t for mouse tiemout
+            opts, args = getopt.getopt(
+                arguments,
+                "?hve:d:s:",
+                ["help",
+                 "version",
+                 "enable=",
+                 "disable=",
+                 "set="])
+
+            for opt, val in opts:
+               
+                key = False
+
+                # This will change the default video device input
+                if opt in ("-s", "--set"):
+                    key, value = val.strip().split("-")
+                    
+                if opt in ("-e", "--enable"):
+                    key, value = [val.strip(), "True"]
+
+                if opt in ("-d", "--disable"):
+                    key, value = [val.strip(), "False"]
+
+                if key in env.flags:
+                    self.cfg.set(env.flags[key]["section"], key, value)
+                elif key:
+                    self.usage()
+                    self.quit(2)
+                         
+                if opt in ("-v", "--version"):
+                    print(env.version)
+                    self.quit(0)
+                    
+                # This will show the usage of mouseTrap
+                if opt in ("-?", "-h", "--help"):
+                    self.usage()
+                    self.quit(0)
+                    
+        except getopt.GetoptError, err:
+            print str(err)
+            self.usage()
+            self.quit(2)
+            pass
+
+    def usage(self):
+        """
+        Prints the usage
+
+        Arguments:
+        - self: The main object pointer
+        """
+
+        print( _("Usage: mouseTrap [OPTION...]"))
+    
+        # '-?, --help' that is used to display usage information.
+        #
+        print( "-?, -h, --help              " + \
+                _("        Show this help message"))
+                
+        
+        # Option:
+        # '-i' that is used to set the input camera index. E.g: -i 0
+        print( "-s, --set            " + \
+                _("              Sets new value to Non Boolean options E.g -s inputDevIndex-1"))
+    
+        # Options:
+        # -e, --enable Allow the users to enable modules not permantly
+        print( "-e, --enable=[" \
+            + _("main-window") + "|" \
+            + _("cam") + "]"),
+        
+        print( _("     Enable the selected options"))
+        
+        # Options:
+        # -d, --disable Allow the users to disable modules not permanently.
+        print( "-d, --disable=[" \
+            + _("main-window") + "|" \
+            + _("cam") + "]"),
+            
+        print( _("    Disable the selected options"))
+        
+        # Options:
+        # -t --timeout To change the mouse timeout not permanently.
+        print( "-v, --version      " + \
+                _("                 Shows mouseTrap version"))
+        
+        print( _("\nReport bugs to flaper87@flaper87.org"))
+    
     def script(self):
         """
         Returns the main script class object.
@@ -126,3 +242,13 @@ class Controller():
         """
         self.itf.script.update_items(self.idm.get_pointer())
         return True
+
+    def quit(self, exitcode=1):  
+        """
+        Quits mouseTrap and all its process
+        
+        Arguments:
+        - self: The main object pointer.
+        - exitcode: The exitcode number. It helps to handle some quit events.
+        """
+        sys.exit(exitcode)

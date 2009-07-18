@@ -2,20 +2,37 @@
 PYTHONPATH=@pyexecdir@
 
 DOC_FILES = \
-	mouseTrap \
-	mouseTrap.cam \
-	mouseTrap.debug \
-	mouseTrap.dialogs \
-	mouseTrap.info \
-	mouseTrap.mainGui \
-	mouseTrap.mouse \
-	mouseTrap.mouseTrapPreff \
-	mouseTrap.mouseTrap \
-	mouseTrap.mTCommon \
-	mouseTrap.mTDbus \
-	mouseTrap.mTServer \
-	mouseTrap.preffGui \
-	mouseTrap.profiling
+	mousetrap \
+	mousetrap.mousetrap \
+	mousetrap.environment \
+	mousetrap.debug \
+	mousetrap.ui \
+	mousetrap.ui.dialogs \
+	mousetrap.ui.i18n \
+	mousetrap.ui.main \
+	mousetrap.ui.settings_gui \
+	mousetrap.ui.widgets \
+	mousetrap.ui.scripts \
+	mousetrap.ui.scripts.screen \
+	mousetrap.addons \
+	mousetrap.addons.cpu \
+	mousetrap.addons.handler \
+	mousetrap.addons.recalc \
+	mousetrap.lib \
+	mousetrap.lib.dbusd \
+	mousetrap.lib.httpd \
+	mousetrap.lib.mouse \
+	mousetrap.lib.settings \
+	ocvfw \
+	ocvfw.commons \
+	ocvfw.debug \
+	ocvfw._ocv \
+	ocvfw.pocv \
+	ocvfw.dev \
+	ocvfw.dev.camera \
+	ocvfw.idm \
+	ocvfw.idm.forehead 
+
 
 
 if ENABLE_PYDOC

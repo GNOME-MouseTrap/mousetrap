@@ -195,11 +195,17 @@ class OcvfwBase:
         """
 
         # calculate the optical flow
-        self.img_lkpoints["current"], status = co.cv.cvCalcOpticalFlowPyrLK (
+        optical_flow = co.cv.cvCalcOpticalFlowPyrLK (
             self.prevGrey, self.grey, self.prevPyramid, self.pyramid,
             self.img_lkpoints["last"], len( self.img_lkpoints["last"] ),
             co.cv.cvSize (20, 20), 3, len( self.img_lkpoints["last"] ), None,
-            co.cv.cvTermCriteria (co.cv.CV_TERMCRIT_ITER|co.cv.CV_TERMCRIT_EPS, 20, 0.03), 0)[0]
+            co.cv.cvTermCriteria (co.cv.CV_TERMCRIT_ITER|co.cv.CV_TERMCRIT_EPS, 20, 0.03), 0)
+
+        if isinstance(optical_flow[0], tuple):
+            self.img_lkpoints["current"], status = optical_flow[0]
+        else:
+            self.img_lkpoints["current"], status = optical_flow
+
 
         # initializations
         counter = 0

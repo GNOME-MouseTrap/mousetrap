@@ -29,7 +29,7 @@ __license__   = "GPLv2"
 
 import ocvfw.debug as debug
 import ocvfw.commons as commons
-from ocvfw.dev.camera import Camera, Capture, Point
+from ocvfw.dev.camera import Capture, Point
 
 # IDM's Information
 # a_name: IDM's name
@@ -57,10 +57,6 @@ class Module(object):
         # Debugging is always important
         debug.debug("ocvfw.idm", "Starting %s idm" % a_name)
         
-        # This will init the Camera class. 
-        # This class is used to handle the camera device.
-        Camera.init()
-
         # Controller instance
         self.ctr          = controller
         
@@ -109,12 +105,14 @@ class Module(object):
         # Starts the Capture using the async method.
         # This means that self.cap.sync() wont be called periodically
         # by the idm because the Capture syncs the image asynchronously (See dev/camera.py)
-        self.cap = Capture(async=True, idx=cam)
+        # The default backend used is OcvfwPython but it is possible to chose other backends
+        # that will use other libs to process images.
+        self.cap = Capture(async=True, idx=cam, backend="OcvfwPython")
         
         # This sets the final image default color to rgb. The default color is bgr.
         self.cap.change(color="rgb")
 
-    def get_image(self):
+    def get_capture(self):
         """
         Gets the last queried and formated image.
         Function used by the mousetrap/ui/main.py 
@@ -126,10 +124,9 @@ class Module(object):
         returns self.cap.resize(200, 160, True)
         """
 
-        # Calls the resize method passing the new with, height
-        # specifying that the new image has to be a copy of the original
-        # so, self.cap.resize will copy the original instead of modifying it.
-        return self.cap.resize(200, 160, True)
+        # We return the self.cap object, the method calling
+        # this method will chose if resize the image or not.
+        return self.cap
 
     def get_pointer(self):
         """

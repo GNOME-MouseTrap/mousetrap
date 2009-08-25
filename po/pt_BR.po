@@ -3,225 +3,196 @@
 # This file is distributed under the same license as the mousetrap package.
 # Flamarion Jorge <jorge.flamarion@gmail.com>, 2009.
 # Vladimir Melo <vmelo@gnome.org>, 2009.
-#
-#
+# Jonh Wendell <jwendell@gnome.org>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: mousetrap\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-01 12:46-0400\n"
-"PO-Revision-Date: 2009-05-01 13:01-0300\n"
-"Last-Translator: Vladimir Melo <vmelo@gnome.org>\n"
-"Language-Team: Portuguese/Brazil <gnome-pt_br-list@gnome.org>\n"
+"POT-Creation-Date: 2009-08-25 16:59-0300\n"
+"PO-Revision-Date: 2009-08-25 16:57-0300\n"
+"Last-Translator: Flamarion Jorge <jorge.flamarion@gmail.com>\n"
+"Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/mouseTrap/dialogs.py:81
-msgid "Confirmation Dialog"
-msgstr "Diálogo de confirmação"
-
-#: ../src/mouseTrap/dialogs.py:97
-msgid "Error Dialog"
-msgstr "Diálogo de erro"
-
-#: ../src/mouseTrap/dialogs.py:107 ../src/mouseTrap/dialogs.py:117
-msgid "Information Dialog"
-msgstr "Diálogo de informação"
-
-#: ../src/mouseTrap/dialogs.py:219
-msgid "Clicks Panel"
-msgstr "Painel de cliques"
-
-#: ../src/mouseTrap/dialogs.py:233 ../src/mouseTrap/prefGui.py:226
-msgid "Left Click"
-msgstr "Clique com o botão esquerdo"
-
-#: ../src/mouseTrap/dialogs.py:241 ../src/mouseTrap/prefGui.py:227
-msgid "Double Click"
-msgstr "Clique duplo"
-
-#: ../src/mouseTrap/dialogs.py:249 ../src/mouseTrap/prefGui.py:228
-msgid "Drag/Drop Click"
-msgstr "Clique arrastar/soltar"
-
-#: ../src/mouseTrap/dialogs.py:264 ../src/mouseTrap/prefGui.py:229
-msgid "Right Click"
-msgstr "Clique com o botão direito"
-
-#: ../src/mouseTrap/mainGui.py:103
-msgid "_Preferences"
-msgstr "_Preferências"
-
-#: ../src/mouseTrap/mainGui.py:108
-msgid "_Exit"
-msgstr "_Sair"
-
-#: ../src/mouseTrap/mainGui.py:113
-msgid "_Help"
-msgstr "Aj_uda"
-
-#: ../src/mouseTrap/mainGui.py:129
-msgid "Start Point Mapper: "
-msgstr "Iniciar mapeador de ponto: "
-
-#: ../src/mouseTrap/mainGui.py:135
-msgid "Show Capture: "
-msgstr "Mostrar captura: "
-
-#: ../src/mouseTrap/mainGui.py:141 ../src/mouseTrap/prefGui.py:181
-msgid "Flip Image"
-msgstr "Virar imagem"
-
-#: ../src/mouseTrap/mainGui.py:145
+#: ../src/mousetrap/addons/recalc.py:41
 msgid "Recalc Point"
 msgstr "Recalcular ponto"
 
-#: ../src/mouseTrap/prefGui.py:92
-msgid "mouseTrap Preferences"
-msgstr "Preferências do mouseTrap"
+#: ../src/mousetrap/ui/dialogs.py:76
+msgid "Confirmation Dialog"
+msgstr "Diálogo de confirmação"
 
-#: ../src/mouseTrap/prefGui.py:119 ../src/mouseTrap/prefGui.py:123
-#: ../src/mouseTrap/prefGui.py:127
+#: ../src/mousetrap/ui/dialogs.py:92
+msgid "Error Dialog"
+msgstr "Diálogo de erro"
+
+#: ../src/mousetrap/ui/dialogs.py:102 ../src/mousetrap/ui/dialogs.py:112
+msgid "Information Dialog"
+msgstr "Diálogo de informação"
+
+#. self.set_size_request( 500 , 120)
+#. self.set_default_size( 500 , 120)
+#: ../src/mousetrap/ui/dialogs.py:212
+#, python-format
+msgid "%s Config's Dialog"
+msgstr "Diálogo de configuração - %s"
+
+#: ../src/mousetrap/ui/dialogs.py:219 ../src/mousetrap/ui/settings_gui.py:113
+#: ../src/mousetrap/ui/settings_gui.py:117
+#: ../src/mousetrap/ui/settings_gui.py:121
 msgid "Accept"
 msgstr "Aceitar"
 
-#: ../src/mouseTrap/prefGui.py:150
-msgid "Show main window"
-msgstr "Mostrar janela principal"
+#: ../src/mousetrap/ui/dialogs.py:223
+msgid "Cancel"
+msgstr "Cancelar"
 
-#: ../src/mouseTrap/prefGui.py:161
-msgid "General"
-msgstr "Geral"
+#: ../src/mousetrap/ui/settings_gui.py:90
+msgid "mouseTrap Preferences"
+msgstr "Preferências do mouseTrap"
 
-#: ../src/mouseTrap/prefGui.py:175
+#. mWindowActive = gtk.CheckButton( _("Show main window") )
+#. mWindowActive.set_active( self.cfg.getboolean( "gui", "showMainGui" ) )
+#. mWindowActive.connect( "toggled", self._checkToggled, "gui", "showMainGui" )
+#.
+#. mainGuiBox.pack_start( mWindowActive, False, False )
+#: ../src/mousetrap/ui/settings_gui.py:150
 msgid "Activate Camera module"
-msgstr "Ativar módulo da camêra"
+msgstr "Ativar módulo da câmera"
 
-#: ../src/mouseTrap/prefGui.py:187
-msgid "Show Point Mapper"
-msgstr "Mostrar mapeador de ponto"
+#: ../src/mousetrap/ui/settings_gui.py:156
+msgid "Flip Image"
+msgstr "Virar imagem"
 
-#: ../src/mouseTrap/prefGui.py:193
-msgid "Show Capture"
-msgstr "Mostrar captura"
-
-#: ../src/mouseTrap/prefGui.py:199
+#: ../src/mousetrap/ui/settings_gui.py:162
 msgid "Input Video Device Index: "
 msgstr "Índice de dispositivos de entrada de vídeo: "
 
-#: ../src/mouseTrap/prefGui.py:207
+#: ../src/mousetrap/ui/settings_gui.py:171
+msgid "General"
+msgstr "Geral"
+
+#: ../src/mousetrap/ui/settings_gui.py:185
+msgid "Show Point Mapper"
+msgstr "Mostrar mapeador de ponto"
+
+#: ../src/mousetrap/ui/settings_gui.py:191
+msgid "Show Capture"
+msgstr "Mostrar captura"
+
+#: ../src/mousetrap/ui/settings_gui.py:202
 msgid "Camera"
 msgstr "Câmera"
 
-#: ../src/mouseTrap/prefGui.py:221
+#: ../src/mousetrap/ui/settings_gui.py:234
+msgid "Active Algorithms"
+msgstr "Algoritmos ativos"
+
+#: ../src/mousetrap/ui/settings_gui.py:235
+msgid "Installed Algorithms"
+msgstr "Algoritmos instalados"
+
+#: ../src/mousetrap/ui/settings_gui.py:236
+#: ../src/mousetrap/ui/settings_gui.py:301
+msgid "Description"
+msgstr "Descrição"
+
+#: ../src/mousetrap/ui/settings_gui.py:269
+msgid "Algorithm"
+msgstr "Algoritmo"
+
+#: ../src/mousetrap/ui/settings_gui.py:299
+msgid "Active"
+msgstr "Ativar"
+
+#: ../src/mousetrap/ui/settings_gui.py:300
+msgid "Name"
+msgstr "Nome"
+
+#: ../src/mousetrap/ui/settings_gui.py:331
+msgid "Addons"
+msgstr "Addons"
+
+#: ../src/mousetrap/ui/settings_gui.py:345
 msgid "Step Speed: "
 msgstr "Velocidade do passo: "
 
-#: ../src/mouseTrap/prefGui.py:224
-msgid "Default Click:"
-msgstr "Clique por padrão:"
-
-#: ../src/mouseTrap/prefGui.py:251
-msgid "Select Mouse Mode:"
-msgstr "Selecionar modo do mouse:"
-
-#: ../src/mouseTrap/prefGui.py:279
+#: ../src/mousetrap/ui/settings_gui.py:386
 msgid "Mouse"
 msgstr "Mouse"
 
-#: ../src/mouseTrap/prefGui.py:296
+#: ../src/mousetrap/ui/settings_gui.py:403
 msgid "Debugging Level:"
 msgstr "Nível de depuração:"
 
-#: ../src/mouseTrap/prefGui.py:314
+#: ../src/mousetrap/ui/settings_gui.py:421
 msgid "Debug"
 msgstr "Depurar"
 
-#: ../src/mouseTrap/mouseTrap.py:377
-msgid "Usage: mouseTrap [OPTION...]"
-msgstr "Uso: mouseTrap [OPÇÂO...]"
+#~ msgid "Clicks Panel"
+#~ msgstr "Painel de cliques"
 
-#. '-?, --help' that is used to display usage information.
-#.
-#: ../src/mouseTrap/mouseTrap.py:382
-msgid "        Show this help message"
-msgstr "        Mostrar esta mensagem de ajuda"
+#~ msgid "Left Click"
+#~ msgstr "Clique com o botão esquerdo"
 
-#. Option:
-#. '-i' that is used to set the input camera index. E.g: -i 0
-#: ../src/mouseTrap/mouseTrap.py:388
-msgid "              Input video device index. E.g -i 0"
-msgstr "              Índice de dispositivo de entrada de vídeo. Ex.: -1 0"
+#~ msgid "Double Click"
+#~ msgstr "Clique duplo"
 
-#. Options:
-#. -e, --enable Allow the users to enable modules not permantly
-#. Options:
-#. -d, --disable Allow the users to disable modules not permanently.
-#: ../src/mouseTrap/mouseTrap.py:393 ../src/mouseTrap/mouseTrap.py:401
-msgid "main-window"
-msgstr "main-window"
+#~ msgid "Drag/Drop Click"
+#~ msgstr "Clique arrastar/soltar"
 
-#: ../src/mouseTrap/mouseTrap.py:394 ../src/mouseTrap/mouseTrap.py:402
-msgid "cam"
-msgstr "cam"
+#~ msgid "Right Click"
+#~ msgstr "Clique com o botão direito"
 
-#: ../src/mouseTrap/mouseTrap.py:396
-msgid "     Enable the selected options"
-msgstr "     Habilitar as opções selecionadas"
+#~ msgid "_Preferences"
+#~ msgstr "_Preferências"
 
-#: ../src/mouseTrap/mouseTrap.py:404
-msgid "    Disable the selected options"
-msgstr "     Desabilitar as opções selecionadas"
+#~ msgid "_Exit"
+#~ msgstr "_Sair"
 
-#. Options:
-#. -t --timeout To change the mouse timeout not permanently.
-#: ../src/mouseTrap/mouseTrap.py:409
-msgid "                 Shows mouseTrap version"
-msgstr "                     Mostra a versão do mouseTrap"
+#~ msgid "_Help"
+#~ msgstr "Aj_uda"
 
-#: ../src/mouseTrap/mouseTrap.py:412
-msgid "Report bugs to flaper87@flaper87.org"
-msgstr "Relatar bugs para flaper87@flaper87.org"
+#~ msgid "Start Point Mapper: "
+#~ msgstr "Iniciar mapeador de ponto: "
 
-#. # Internal Modes
-#: ../src/mouseTrap/scripts/profiles/dragProfile.py:44
-msgid "Mouse Drag/Drop Mode"
-msgstr ""
+#~ msgid "Show Capture: "
+#~ msgstr "Mostrar captura: "
 
-#: ../src/mouseTrap/scripts/profiles/holdProfile.py:209
-msgid "Required Movement: "
-msgstr ""
+#~ msgid "Show main window"
+#~ msgstr "Mostrar janela principal"
 
-#: ../src/mouseTrap/scripts/profiles/holdProfile.py:218
-msgid "Hold Mode"
-msgstr ""
+#~ msgid "Default Click:"
+#~ msgstr "Clique por padrão:"
 
-#. # Internal Modes
-#: ../src/mouseTrap/scripts/profiles/screenProfile.py:43
-msgid "Mouse Absolute Movements"
-msgstr ""
+#~ msgid "Select Mouse Mode:"
+#~ msgstr "Selecionar modo do mouse:"
 
-#: ../src/mouseTrap/scripts/profiles/screenProfile.py:44
-msgid "Mouse Relative Movements"
-msgstr ""
+#~ msgid "Usage: mouseTrap [OPTION...]"
+#~ msgstr "Uso: mouseTrap [OPÇÂO...]"
 
-#: ../src/mouseTrap/scripts/profiles/screenProfile.py:232
-msgid "Start X: "
-msgstr ""
+#~ msgid "        Show this help message"
+#~ msgstr "        Mostrar esta mensagem de ajuda"
 
-#: ../src/mouseTrap/scripts/profiles/screenProfile.py:235
-msgid "Start Y: "
-msgstr ""
+#~ msgid "              Input video device index. E.g -i 0"
+#~ msgstr "              Índice de dispositivo de entrada de vídeo. Ex.: -1 0"
 
-#: ../src/mouseTrap/scripts/profiles/screenProfile.py:238
-msgid "Width: "
-msgstr ""
+#~ msgid "main-window"
+#~ msgstr "main-window"
 
-#: ../src/mouseTrap/scripts/profiles/screenProfile.py:241
-msgid "Height: "
-msgstr ""
+#~ msgid "cam"
+#~ msgstr "cam"
 
-#: ../src/mouseTrap/scripts/profiles/screenProfile.py:252
-msgid "Screen Mode"
-msgstr ""
+#~ msgid "     Enable the selected options"
+#~ msgstr "     Habilitar as opções selecionadas"
+
+#~ msgid "    Disable the selected options"
+#~ msgstr "     Desabilitar as opções selecionadas"
+
+#~ msgid "                 Shows mouseTrap version"
+#~ msgstr "                     Mostra a versão do mouseTrap"
+
+#~ msgid "Report bugs to flaper87@flaper87.org"
+#~ msgstr "Relatar bugs para flaper87@flaper87.org"

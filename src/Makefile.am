@@ -1,1 +1,1 @@
-SUBDIRS = mousetrap ocvfw
+SUBDIRS = mousetrap

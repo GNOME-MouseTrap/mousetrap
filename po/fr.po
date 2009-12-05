@@ -1,230 +1,191 @@
+# French translation of mousetrap.
+# Copyright (C) 2000-2009 Free Software Foundation, Inc.
+# This file is distributed under the same license as the mousetrap package.
+#
+# laurent coudeur <laurentc@iol.ie>, 2009
+# Bruno Brouard <annoa.b@gmail.com>, 2009
+# Claude Paroz <claude@2xlibre.net>, 2009
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: mousetrap-0.2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-19 19:01-0000\n"
-"PO-Revision-Date: \n"
-"Last-Translator: Flavio Percoco Premoli <flaper87@flaper87.org>\n"
-"Language-Team: \n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=mousetrap\n"
+"POT-Creation-Date: 2009-12-05 10:33+0000\n"
+"PO-Revision-Date: 2009-12-05 11:45+0100\n"
+"Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
+"Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: French\n"
-"X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-Basepath: .\n"
-"X-Poedit-SearchPath-0: /home/flaper87/MouseTrap\n"
 
-#: /home/flaper87/MouseTrap/src/mouseTrap/cam.py:135
-#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:59
-#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:106
-#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:121
-#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:136
-#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:147
-#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:249
-msgid "Highest"
-msgstr ""
+#: ../src/mousetrap/app/addons/recalc.py:41
+msgid "Recalc Point"
+msgstr "Recalculer les points"
 
-#: /home/flaper87/MouseTrap/src/mouseTrap/cam.py:403
-msgid "Viewer Frame"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/cam.py:420
-msgid "Start Point Mapper: "
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/cam.py:425
-msgid "Show Capture: "
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/cam.py:430
-msgid "Flip Image"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/cam.py:664
-msgid "Cancel"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/cam.py:665
-#: /home/flaper87/MouseTrap/src/mouseTrap/preffGui.py:108
-#: /home/flaper87/MouseTrap/src/mouseTrap/preffGui.py:112
-#: /home/flaper87/MouseTrap/src/mouseTrap/preffGui.py:116
-msgid "Accept"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/cam.py:703
-msgid "Clicks Panel"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/cam.py:717
-msgid "Left Click"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/cam.py:724
-msgid "Double Click"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/cam.py:731
-msgid "Drag/Drop Click"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/cam.py:745
-msgid "Right Click"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/mainGui.py:90
-msgid "_Preferences"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/mainGui.py:95
-msgid "_Exit"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrapPreff.py:80
-msgid ""
-"\n"
-"# This is the user settings File"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrapPreff.py:81
-msgid ""
-"\n"
-"# Please Try to don't edit this file manually"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrapPreff.py:82
-msgid ""
-"\n"
-"# Use the preffGui of mouseTrap.\n"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:259
+#: ../src/mousetrap/app/main.py:181
 msgid "Usage: mouseTrap [OPTION...]"
-msgstr ""
+msgstr "Utilisation : mouseTrap [OPTION...]"
 
-#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:264
+#. '-?, --help' that is used to display usage information.
+#.
+#: ../src/mousetrap/app/main.py:186
 msgid "        Show this help message"
-msgstr ""
+msgstr "        Montre ce message d'aide"
 
-#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:270
-msgid "              Input video device index. E.g -i 0"
+#. Option:
+#. '-i' that is used to set the input camera index. E.g: -i 0
+#: ../src/mousetrap/app/main.py:192
+msgid ""
+"              Sets new value to Non Boolean options E.g -s inputDevIndex-1"
 msgstr ""
+"              Définit une nouvelle valeur aux options non booléennes (par ex "
+"-s inputDevIndex-1"
 
-#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:275
-#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:283
+#. Options:
+#. -e, --enable Allow the users to enable modules not permantly
+#. Options:
+#. -d, --disable Allow the users to disable modules not permanently.
+#: ../src/mousetrap/app/main.py:197 ../src/mousetrap/app/main.py:205
 msgid "main-window"
-msgstr ""
+msgstr "main-window"
 
-#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:276
-#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:284
+#: ../src/mousetrap/app/main.py:198 ../src/mousetrap/app/main.py:206
 msgid "cam"
-msgstr ""
+msgstr "cam"
 
-#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:278
+#: ../src/mousetrap/app/main.py:200
 msgid "     Enable the selected options"
-msgstr ""
+msgstr "     Activer les options sélectionnées"
 
-#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:286
+#: ../src/mousetrap/app/main.py:208
 msgid "    Disable the selected options"
-msgstr ""
+msgstr "    Désactiver les options sélectionnées"
 
-#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:291
+#. Options:
+#. -t --timeout To change the mouse timeout not permanently.
+#: ../src/mousetrap/app/main.py:213
 msgid "                 Shows mouseTrap version"
-msgstr ""
+msgstr "                 Affiche la version de mouseTrap"
 
-#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:294
-msgid "Report bugs to flaper87@flaper87.org"
+#: ../src/mousetrap/app/main.py:215
+msgid ""
+"\n"
+"Report bugs to flaper87@flaper87.org"
 msgstr ""
+"\n"
+"Signalez les anomalies à flaper87@flaper87.org"
 
-#: /home/flaper87/MouseTrap/src/mouseTrap/preffGui.py:88
-msgid "mouseTrap Preferences"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/preffGui.py:139
-msgid "Show main window"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/preffGui.py:150
-msgid "General"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/preffGui.py:164
-msgid "Activate Camera module"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/preffGui.py:170
-msgid "Flip Image: "
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/preffGui.py:176
-msgid "Show Point Mapper"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/preffGui.py:182
-msgid "Show Capture"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/preffGui.py:188
-msgid "Step Speed: "
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/preffGui.py:191
-msgid "Required Movement: "
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/preffGui.py:194
-msgid "Input Video Device Index: "
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/preffGui.py:197
-msgid "Select Mouse Mode:"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/preffGui.py:199
-msgid "Holding With Constant Speed"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/preffGui.py:200
-msgid "Holding With Automatic Acceleration"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/preffGui.py:201
-msgid "Mouse Screen Mode"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/preffGui.py:227
-msgid "Camera"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/preffGui.py:244
-msgid "Debugging Level:"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/preffGui.py:262
-msgid "Debug"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/events.py:81
-msgid "Normal"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/events.py:116
-msgid "Higest"
-msgstr ""
-
-#: /home/flaper87/MouseTrap/src/mouseTrap/dialogs.py:77
+#: ../src/mousetrap/app/ui/dialogs.py:76
 msgid "Confirmation Dialog"
-msgstr ""
+msgstr "Boîte de dialogue de confirmation"
 
-#: /home/flaper87/MouseTrap/src/mouseTrap/dialogs.py:93
+#: ../src/mousetrap/app/ui/dialogs.py:92
 msgid "Error Dialog"
-msgstr ""
+msgstr "Boîte de dialogue des messages d'erreur"
 
-#: /home/flaper87/MouseTrap/src/mouseTrap/dialogs.py:103
-#: /home/flaper87/MouseTrap/src/mouseTrap/dialogs.py:113
+#: ../src/mousetrap/app/ui/dialogs.py:102
+#: ../src/mousetrap/app/ui/dialogs.py:112
 msgid "Information Dialog"
-msgstr ""
+msgstr "Boîte de dialogue d'information"
 
-#: /home/flaper87/MouseTrap/src/mouseTrap/ocvfw.py:99
-msgid "Required"
-msgstr ""
+#. self.set_size_request( 500 , 120)
+#. self.set_default_size( 500 , 120)
+#: ../src/mousetrap/app/ui/dialogs.py:212
+#, python-format
+msgid "%s Config's Dialog"
+msgstr "Boîte de dialogue de configuration de %s"
 
+#: ../src/mousetrap/app/ui/dialogs.py:219
+#: ../src/mousetrap/app/ui/settings_gui.py:113
+#: ../src/mousetrap/app/ui/settings_gui.py:117
+#: ../src/mousetrap/app/ui/settings_gui.py:121
+msgid "Accept"
+msgstr "Accepter"
+
+#: ../src/mousetrap/app/ui/dialogs.py:223
+msgid "Cancel"
+msgstr "Annuler"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:90
+msgid "mouseTrap Preferences"
+msgstr "Préférences mouseTrap"
+
+# Je pense que c'est une caméra car il s'agit de capture de mouvement de la tête
+#. mWindowActive = gtk.CheckButton( _("Show main window") )
+#. mWindowActive.set_active( self.cfg.getboolean( "gui", "showMainGui" ) )
+#. mWindowActive.connect( "toggled", self._checkToggled, "gui", "showMainGui" )
+#.
+#. mainGuiBox.pack_start( mWindowActive, False, False )
+#: ../src/mousetrap/app/ui/settings_gui.py:150
+msgid "Activate Camera module"
+msgstr "Activer le module de la webcam"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:156
+msgid "Flip Image"
+msgstr "Retourner l'image"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:162
+msgid "Input Video Device Index: "
+msgstr "Index du périphérique d'entrée vidéo : "
+
+#: ../src/mousetrap/app/ui/settings_gui.py:171
+msgid "General"
+msgstr "Général"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:185
+msgid "Show Point Mapper"
+msgstr "Afficher le mappeur de point"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:191
+msgid "Show Capture"
+msgstr "Afficher la capture"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:202
+msgid "Camera"
+msgstr "Caméra"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:234
+msgid "Active Algorithms"
+msgstr "Algorithmes actifs"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:235
+msgid "Installed Algorithms"
+msgstr "Algorithmes installés"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:236
+#: ../src/mousetrap/app/ui/settings_gui.py:301
+msgid "Description"
+msgstr "Description"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:269
+msgid "Algorithm"
+msgstr "Algorithme"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:299
+msgid "Active"
+msgstr "Actif"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:300
+msgid "Name"
+msgstr "Nom"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:331
+msgid "Addons"
+msgstr "Extensions"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:345
+msgid "Step Speed: "
+msgstr "Vitesse du pas : "
+
+#: ../src/mousetrap/app/ui/settings_gui.py:386
+msgid "Mouse"
+msgstr "Souris"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:403
+msgid "Debugging Level:"
+msgstr "Niveau de débogage :"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:421
+msgid "Debug"
+msgstr "Débogage"

@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the mousetrap package.
 # Mario Blättermann <mariobl@gnome.org>, 2009.
 # Christian Kirbach <Christian.Kirbach@googlemail.com>, 2009.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: mousetrap master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mousetrap\n"
-"POT-Creation-Date: 2009-08-25 20:05+0000\n"
-"PO-Revision-Date: 2009-08-30 11:53+0200\n"
-"Last-Translator: Christian Kirbach <Christian.Kirbach@googlemail.com>\n"
+"POT-Creation-Date: 2009-12-05 10:33+0000\n"
+"PO-Revision-Date: 2009-12-12 09:20+0100\n"
+"Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,40 +20,95 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 
-#: ../src/mousetrap/addons/recalc.py:41
+#: ../src/mousetrap/app/addons/recalc.py:41
 msgid "Recalc Point"
 msgstr "Punkt neu berechnen"
 
-#: ../src/mousetrap/ui/dialogs.py:76
+#: ../src/mousetrap/app/main.py:181
+msgid "Usage: mouseTrap [OPTION...]"
+msgstr "Aufruf: mouseTrap [OPTION...]"
+
+#. '-?, --help' that is used to display usage information.
+#.
+#: ../src/mousetrap/app/main.py:186
+msgid "        Show this help message"
+msgstr "        Zeigt diese Hilfe an"
+
+#. Option:
+#. '-i' that is used to set the input camera index. E.g: -i 0
+#: ../src/mousetrap/app/main.py:192
+msgid ""
+"              Sets new value to Non Boolean options E.g -s inputDevIndex-1"
+msgstr ""
+"              Setzt den neuen Wert auf nicht-boolesche Optionen, z.B. -s "
+"inputDevIndex-1"
+
+#. Options:
+#. -e, --enable Allow the users to enable modules not permantly
+#. Options:
+#. -d, --disable Allow the users to disable modules not permanently.
+#: ../src/mousetrap/app/main.py:197 ../src/mousetrap/app/main.py:205
+msgid "main-window"
+msgstr "main-window"
+
+#: ../src/mousetrap/app/main.py:198 ../src/mousetrap/app/main.py:206
+msgid "cam"
+msgstr "cam"
+
+#: ../src/mousetrap/app/main.py:200
+msgid "     Enable the selected options"
+msgstr "     Gewählte Optionen aktivieren"
+
+#: ../src/mousetrap/app/main.py:208
+msgid "    Disable the selected options"
+msgstr "    Gewählte Optionen deaktivieren"
+
+#. Options:
+#. -t --timeout To change the mouse timeout not permanently.
+#: ../src/mousetrap/app/main.py:213
+msgid "                 Shows mouseTrap version"
+msgstr "                 Zeigt die mouseTrap-Version"
+
+#: ../src/mousetrap/app/main.py:215
+msgid ""
+"\n"
+"Report bugs to flaper87@flaper87.org"
+msgstr ""
+"\n"
+"Fehler bitte melden an flaper87@flaper87.org"
+
+#: ../src/mousetrap/app/ui/dialogs.py:76
 msgid "Confirmation Dialog"
 msgstr "Bestätigungsdialog"
 
-#: ../src/mousetrap/ui/dialogs.py:92
+#: ../src/mousetrap/app/ui/dialogs.py:92
 msgid "Error Dialog"
 msgstr "Fehlerdialog"
 
-#: ../src/mousetrap/ui/dialogs.py:102 ../src/mousetrap/ui/dialogs.py:112
+#: ../src/mousetrap/app/ui/dialogs.py:102
+#: ../src/mousetrap/app/ui/dialogs.py:112
 msgid "Information Dialog"
 msgstr "Informationsdialog"
 
 #. self.set_size_request( 500 , 120)
 #. self.set_default_size( 500 , 120)
-#: ../src/mousetrap/ui/dialogs.py:212
+#: ../src/mousetrap/app/ui/dialogs.py:212
 #, python-format
 msgid "%s Config's Dialog"
 msgstr "Konfigurationsdialog von %s"
 
-#: ../src/mousetrap/ui/dialogs.py:219 ../src/mousetrap/ui/settings_gui.py:113
-#: ../src/mousetrap/ui/settings_gui.py:117
-#: ../src/mousetrap/ui/settings_gui.py:121
+#: ../src/mousetrap/app/ui/dialogs.py:219
+#: ../src/mousetrap/app/ui/settings_gui.py:113
+#: ../src/mousetrap/app/ui/settings_gui.py:117
+#: ../src/mousetrap/app/ui/settings_gui.py:121
 msgid "Accept"
 msgstr "Annehmen"
 
-#: ../src/mousetrap/ui/dialogs.py:223
+#: ../src/mousetrap/app/ui/dialogs.py:223
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: ../src/mousetrap/ui/settings_gui.py:90
+#: ../src/mousetrap/app/ui/settings_gui.py:90
 msgid "mouseTrap Preferences"
 msgstr "mouseTrap-Einstellungen"
 
@@ -61,75 +117,75 @@ msgstr "mouseTrap-Einstellungen"
 #. mWindowActive.connect( "toggled", self._checkToggled, "gui", "showMainGui" )
 #.
 #. mainGuiBox.pack_start( mWindowActive, False, False )
-#: ../src/mousetrap/ui/settings_gui.py:150
+#: ../src/mousetrap/app/ui/settings_gui.py:150
 msgid "Activate Camera module"
 msgstr "Kameramodul aktivieren"
 
-#: ../src/mousetrap/ui/settings_gui.py:156
+#: ../src/mousetrap/app/ui/settings_gui.py:156
 msgid "Flip Image"
 msgstr "Bild spiegeln"
 
-#: ../src/mousetrap/ui/settings_gui.py:162
+#: ../src/mousetrap/app/ui/settings_gui.py:162
 msgid "Input Video Device Index: "
 msgstr "Index des Videoeingabegerätes:"
 
-#: ../src/mousetrap/ui/settings_gui.py:171
+#: ../src/mousetrap/app/ui/settings_gui.py:171
 msgid "General"
 msgstr "Allgemein"
 
-#: ../src/mousetrap/ui/settings_gui.py:185
+#: ../src/mousetrap/app/ui/settings_gui.py:185
 msgid "Show Point Mapper"
 msgstr "Position des Punkts anzeigen"
 
-#: ../src/mousetrap/ui/settings_gui.py:191
+#: ../src/mousetrap/app/ui/settings_gui.py:191
 msgid "Show Capture"
 msgstr "Aufnahme zeigen"
 
-#: ../src/mousetrap/ui/settings_gui.py:202
+#: ../src/mousetrap/app/ui/settings_gui.py:202
 msgid "Camera"
 msgstr "Kamera"
 
-#: ../src/mousetrap/ui/settings_gui.py:234
+#: ../src/mousetrap/app/ui/settings_gui.py:234
 msgid "Active Algorithms"
-msgstr "Ative Algorithmen"
+msgstr "Aktive Algorithmen"
 
-#: ../src/mousetrap/ui/settings_gui.py:235
+#: ../src/mousetrap/app/ui/settings_gui.py:235
 msgid "Installed Algorithms"
 msgstr "Installierte Algorithmen"
 
-#: ../src/mousetrap/ui/settings_gui.py:236
-#: ../src/mousetrap/ui/settings_gui.py:301
+#: ../src/mousetrap/app/ui/settings_gui.py:236
+#: ../src/mousetrap/app/ui/settings_gui.py:301
 msgid "Description"
 msgstr "Beschreibung"
 
-#: ../src/mousetrap/ui/settings_gui.py:269
+#: ../src/mousetrap/app/ui/settings_gui.py:269
 msgid "Algorithm"
 msgstr "Algorithmus"
 
-#: ../src/mousetrap/ui/settings_gui.py:299
+#: ../src/mousetrap/app/ui/settings_gui.py:299
 msgid "Active"
 msgstr "Aktiv"
 
-#: ../src/mousetrap/ui/settings_gui.py:300
+#: ../src/mousetrap/app/ui/settings_gui.py:300
 msgid "Name"
 msgstr "Name"
 
-#: ../src/mousetrap/ui/settings_gui.py:331
+#: ../src/mousetrap/app/ui/settings_gui.py:331
 msgid "Addons"
 msgstr "Erweiterungen"
 
-#: ../src/mousetrap/ui/settings_gui.py:345
+#: ../src/mousetrap/app/ui/settings_gui.py:345
 msgid "Step Speed: "
 msgstr "Schrittgeschwindigkeit:"
 
-#: ../src/mousetrap/ui/settings_gui.py:386
+#: ../src/mousetrap/app/ui/settings_gui.py:386
 msgid "Mouse"
 msgstr "Maus"
 
-#: ../src/mousetrap/ui/settings_gui.py:403
+#: ../src/mousetrap/app/ui/settings_gui.py:403
 msgid "Debugging Level:"
 msgstr "Intensität der Fehlerdiagnose:"
 
-#: ../src/mousetrap/ui/settings_gui.py:421
+#: ../src/mousetrap/app/ui/settings_gui.py:421
 msgid "Debug"
 msgstr "Fehlerdiagnose"

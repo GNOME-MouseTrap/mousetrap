@@ -1,0 +1,187 @@
+# Czech translation for mousetrap.
+# Copyright (C) 2009 mousetrap's COPYRIGHT HOLDER
+# This file is distributed under the same license as the mousetrap package.
+# Marek Černocký <marek@manet.cz>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mousetrap master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-01-12 23:35+0100\n"
+"PO-Revision-Date: 2009-12-10 11:08+0100\n"
+"Last-Translator: Marek Černocký <marek@manet.cz>\n"
+"Language-Team: Czech <gnome-cs-list@gnome.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Poedit-Language: Czech\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../src/mousetrap/app/addons/recalc.py:41
+msgid "Recalc Point"
+msgstr "Přepočítat bod"
+
+#: ../src/mousetrap/app/main.py:181
+msgid "Usage: mouseTrap [OPTION...]"
+msgstr "Použití: mousetrap [PŘEPÍNAČ…]"
+
+#. '-?, --help' that is used to display usage information.
+#.
+#: ../src/mousetrap/app/main.py:186
+msgid "        Show this help message"
+msgstr "        Zobrazit tuto nápovědu"
+
+#. Option:
+#. '-i' that is used to set the input camera index. E.g: -i 0
+#: ../src/mousetrap/app/main.py:192
+msgid ""
+"              Sets new value to Non Boolean options E.g -s inputDevIndex-1"
+msgstr "              Nastaví novou hodnotu do nepravdivostní volby"
+
+#. Options:
+#. -e, --enable Allow the users to enable modules not permantly
+#. Options:
+#. -d, --disable Allow the users to disable modules not permanently.
+#: ../src/mousetrap/app/main.py:197 ../src/mousetrap/app/main.py:205
+msgid "main-window"
+msgstr "hlavní-okno"
+
+#: ../src/mousetrap/app/main.py:198 ../src/mousetrap/app/main.py:206
+msgid "cam"
+msgstr "kamera"
+
+#: ../src/mousetrap/app/main.py:200
+msgid "     Enable the selected options"
+msgstr "     Zapnout vybrané volby"
+
+#: ../src/mousetrap/app/main.py:208
+msgid "    Disable the selected options"
+msgstr "    Vypnout vybrané volby"
+
+#. Options:
+#. -t --timeout To change the mouse timeout not permanently.
+#: ../src/mousetrap/app/main.py:213
+msgid "                 Shows mouseTrap version"
+msgstr "                 Zobrazit verzi aplikace mouseTrap"
+
+#: ../src/mousetrap/app/main.py:215
+msgid ""
+"\n"
+"Report bugs to flaper87@flaper87.org"
+msgstr ""
+"\n"
+"Chyby hlaste na flaper87@flaper87.org"
+
+#: ../src/mousetrap/app/ui/dialogs.py:76
+msgid "Confirmation Dialog"
+msgstr "Potvrzovací dialogové okno"
+
+#: ../src/mousetrap/app/ui/dialogs.py:92
+msgid "Error Dialog"
+msgstr "Chybové dialogové okno"
+
+#: ../src/mousetrap/app/ui/dialogs.py:102
+#: ../src/mousetrap/app/ui/dialogs.py:112
+msgid "Information Dialog"
+msgstr "Informační dialogové okno"
+
+#. self.set_size_request( 500 , 120)
+#. self.set_default_size( 500 , 120)
+#: ../src/mousetrap/app/ui/dialogs.py:212
+#, python-format
+msgid "%s Config's Dialog"
+msgstr "Dialogové okno s nastavením %s"
+
+#: ../src/mousetrap/app/ui/dialogs.py:219
+#: ../src/mousetrap/app/ui/settings_gui.py:113
+#: ../src/mousetrap/app/ui/settings_gui.py:117
+#: ../src/mousetrap/app/ui/settings_gui.py:121
+msgid "Accept"
+msgstr "Přijmout"
+
+#: ../src/mousetrap/app/ui/dialogs.py:223
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:90
+msgid "mouseTrap Preferences"
+msgstr "Předvolby mouseTrap"
+
+#. mWindowActive = gtk.CheckButton( _("Show main window") )
+#. mWindowActive.set_active( self.cfg.getboolean( "gui", "showMainGui" ) )
+#. mWindowActive.connect( "toggled", self._checkToggled, "gui", "showMainGui" )
+#.
+#. mainGuiBox.pack_start( mWindowActive, False, False )
+#: ../src/mousetrap/app/ui/settings_gui.py:150
+msgid "Activate Camera module"
+msgstr "Aktivovat modul kamery"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:156
+msgid "Flip Image"
+msgstr "Překlápět obraz"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:162
+msgid "Input Video Device Index: "
+msgstr "Číslo vstupního obrazového zařízení:"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:171
+msgid "General"
+msgstr "Obecné"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:185
+msgid "Show Point Mapper"
+msgstr "Zobrazit mapovač bodů"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:191
+msgid "Show Capture"
+msgstr "Zobrazit snímky"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:202
+msgid "Camera"
+msgstr "Kamera"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:234
+msgid "Active Algorithms"
+msgstr "Aktivní algoritmus"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:235
+msgid "Installed Algorithms"
+msgstr "Instalovaný algoritmus"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:236
+#: ../src/mousetrap/app/ui/settings_gui.py:301
+msgid "Description"
+msgstr "Popis"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:269
+msgid "Algorithm"
+msgstr "Algoritmus"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:299
+msgid "Active"
+msgstr "Aktivní"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:300
+msgid "Name"
+msgstr "Název"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:331
+msgid "Addons"
+msgstr "Doplňky"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:345
+msgid "Step Speed: "
+msgstr "Rychlost kroku:"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:386
+msgid "Mouse"
+msgstr "Myš"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:403
+msgid "Debugging Level:"
+msgstr "Úroveň ladění:"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:421
+msgid "Debug"
+msgstr "Ladit"

@@ -1,0 +1,185 @@
+# Chinese (China) translation for mousetrap.
+# Copyright (C) 2010 mousetrap's COPYRIGHT HOLDER
+# This file is distributed under the same license as the mousetrap package.
+# YunQiang Su <wzssyqa@gmail.com>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mousetrap master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=mousetrap\n"
+"POT-Creation-Date: 2010-01-12 22:37+0000\n"
+"PO-Revision-Date: 2010-02-24 18:46+0800\n"
+"Last-Translator: YunQiang Su <wzssyqa@gmail.com>\n"
+"Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/mousetrap/app/addons/recalc.py:41
+msgid "Recalc Point"
+msgstr "重新计算点"
+
+#: ../src/mousetrap/app/main.py:181
+msgid "Usage: mouseTrap [OPTION...]"
+msgstr "用法：mouseTrap [选项...]"
+
+#. '-?, --help' that is used to display usage information.
+#.
+#: ../src/mousetrap/app/main.py:186
+msgid "        Show this help message"
+msgstr "        显示本帮助消息"
+
+#. Option:
+#. '-i' that is used to set the input camera index. E.g: -i 0
+#: ../src/mousetrap/app/main.py:192
+msgid ""
+"              Sets new value to Non Boolean options E.g -s inputDevIndex-1"
+msgstr "              设置新值为非布尔选项，即 -s inputDevIndex-1"
+
+#. Options:
+#. -e, --enable Allow the users to enable modules not permantly
+#. Options:
+#. -d, --disable Allow the users to disable modules not permanently.
+#: ../src/mousetrap/app/main.py:197 ../src/mousetrap/app/main.py:205
+msgid "main-window"
+msgstr "main-window"
+
+#: ../src/mousetrap/app/main.py:198 ../src/mousetrap/app/main.py:206
+msgid "cam"
+msgstr "cam"
+
+#: ../src/mousetrap/app/main.py:200
+msgid "     Enable the selected options"
+msgstr "     启用选中的选项"
+
+#: ../src/mousetrap/app/main.py:208
+msgid "    Disable the selected options"
+msgstr "     禁用选中的选项"
+
+#. Options:
+#. -t --timeout To change the mouse timeout not permanently.
+#: ../src/mousetrap/app/main.py:213
+msgid "                 Shows mouseTrap version"
+msgstr "                 显示 mouseTrap 版本"
+
+#: ../src/mousetrap/app/main.py:215
+msgid ""
+"\n"
+"Report bugs to flaper87@flaper87.org"
+msgstr ""
+"\n"
+"向 flaper87@flaper87.org 报告 bug"
+
+#: ../src/mousetrap/app/ui/dialogs.py:76
+msgid "Confirmation Dialog"
+msgstr "确认对话框"
+
+#: ../src/mousetrap/app/ui/dialogs.py:92
+msgid "Error Dialog"
+msgstr "错误对话框"
+
+#: ../src/mousetrap/app/ui/dialogs.py:102
+#: ../src/mousetrap/app/ui/dialogs.py:112
+msgid "Information Dialog"
+msgstr "信息对话框"
+
+#. self.set_size_request( 500 , 120)
+#. self.set_default_size( 500 , 120)
+#: ../src/mousetrap/app/ui/dialogs.py:212
+#, python-format
+msgid "%s Config's Dialog"
+msgstr "%s 配置的对话框"
+
+#: ../src/mousetrap/app/ui/dialogs.py:219
+#: ../src/mousetrap/app/ui/settings_gui.py:113
+#: ../src/mousetrap/app/ui/settings_gui.py:117
+#: ../src/mousetrap/app/ui/settings_gui.py:121
+msgid "Accept"
+msgstr "接受"
+
+#: ../src/mousetrap/app/ui/dialogs.py:223
+msgid "Cancel"
+msgstr "取消"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:90
+msgid "mouseTrap Preferences"
+msgstr "mouseTrap 首选项"
+
+#. mWindowActive = gtk.CheckButton( _("Show main window") )
+#. mWindowActive.set_active( self.cfg.getboolean( "gui", "showMainGui" ) )
+#. mWindowActive.connect( "toggled", self._checkToggled, "gui", "showMainGui" )
+#.
+#. mainGuiBox.pack_start( mWindowActive, False, False )
+#: ../src/mousetrap/app/ui/settings_gui.py:150
+msgid "Activate Camera module"
+msgstr "激活相机模块"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:156
+msgid "Flip Image"
+msgstr "翻转图像"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:162
+msgid "Input Video Device Index: "
+msgstr "输入视频设备索引："
+
+#: ../src/mousetrap/app/ui/settings_gui.py:171
+msgid "General"
+msgstr "常规"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:185
+msgid "Show Point Mapper"
+msgstr "显示点映射"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:191
+msgid "Show Capture"
+msgstr "显示获取"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:202
+msgid "Camera"
+msgstr "相机"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:234
+msgid "Active Algorithms"
+msgstr "活跃算法"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:235
+msgid "Installed Algorithms"
+msgstr "已经安装的算法"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:236
+#: ../src/mousetrap/app/ui/settings_gui.py:301
+msgid "Description"
+msgstr "描述"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:269
+msgid "Algorithm"
+msgstr "算法"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:299
+msgid "Active"
+msgstr "活跃"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:300
+msgid "Name"
+msgstr "名称"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:331
+msgid "Addons"
+msgstr "附加组件"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:345
+msgid "Step Speed: "
+msgstr "步速："
+
+#: ../src/mousetrap/app/ui/settings_gui.py:386
+msgid "Mouse"
+msgstr "鼠标"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:403
+msgid "Debugging Level:"
+msgstr "调试级别："
+
+#: ../src/mousetrap/app/ui/settings_gui.py:421
+msgid "Debug"
+msgstr "调试"

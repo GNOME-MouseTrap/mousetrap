@@ -151,7 +151,7 @@ class MainGui( gtk.Window ):
         self.add(self.vBox)
         self.show()
         
-        debug.debug("ui.main", "Interface Builded")
+        debug.debug("ui.main", "Interface Built")
 
 
     def load_addons(self):

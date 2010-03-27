@@ -101,7 +101,7 @@ class Controller():
         self.itf = MainGui(self)
         self.itf.build_interface()
         self.itf.load_addons()
-        debug.info("mousetrap", "MouseTrap's Interface Builded and Loaded")
+        debug.info("mousetrap", "MouseTrap's Interface Built and Loaded")
 
         gobject.threads_init()
         self.loop.run()

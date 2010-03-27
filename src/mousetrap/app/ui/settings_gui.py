@@ -237,6 +237,10 @@ class PreffGui( gtk.Window ):
 
         for alg in pocv.get_idms_list():
             alg_inf = pocv.get_idm_inf(alg)
+            
+            if not alg_inf:
+                continue
+            
             state = False
             if alg_inf["name"].lower() in self.cfg.get("main", "algorithm").lower():
                 state = True
@@ -302,6 +306,10 @@ class PreffGui( gtk.Window ):
 
         for add in self.adds.get_addons_list():
             add_inf = self.adds.get_addon_inf(add)
+            
+            if not add_inf:
+                continue
+            
             state = False
             if add_inf["name"].lower() in self.cfg.getList("main", "addon"):
                 state = True

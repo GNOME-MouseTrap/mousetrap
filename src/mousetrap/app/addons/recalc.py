@@ -20,9 +20,9 @@
 
 import os
 import gtk, gobject
+import mousetrap.app.debug as debug
 import mousetrap.app.environment as env
 
-from mousetrap import debug
 from subprocess import Popen, PIPE
 from mousetrap.app.ui.i18n import _
 from mousetrap.app.addons.handler import AddonsBase

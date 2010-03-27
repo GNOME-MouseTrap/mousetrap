@@ -228,7 +228,7 @@ class Capture(object):
             co.cv.cvRectangle( self.__image, co.cv.cvPoint(rect.x, rect.y), co.cv.cvPoint(rect.size[0], rect.size[1]), co.cv.CV_RGB(255,0,0), 3, 8, 0 )
 
     def draw_point(self, x, y):
-        co.cv.cvCircle(self.__image, [x,y], 3, co.cv.cvScalar(0, 255, 0, 0), -1, 8, 0)
+        co.cv.cvCircle(self.__image, co.cv.cvPoint(x,y), 3, co.cv.cvScalar(0, 255, 0, 0), -1, 8, 0)
 
     def original(self):
         """

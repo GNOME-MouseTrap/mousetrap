@@ -54,12 +54,16 @@ class AddonsHandler(object):
         - self: The main object pointer.
         - addon: The addon to explore.
         """
-        tmp = __import__("mousetrap.app.addons.%s" % addon,
-                      globals(),
-                      locals(),
-                      [''])
-        
-        return { "name" : tmp.a_name, "dsc" : tmp.a_description, "stgs" : tmp.a_settings}
+        try:
+            tmp = __import__("mousetrap.app.addons.%s" % addon,
+                          globals(),
+                          locals(),
+                          [''])
+            
+            return { "name" : tmp.a_name, "dsc" : tmp.a_description, "stgs" : tmp.a_settings}
+        except:
+            print("Problems loading mousetrap.app.addons.%s" % addon)
+            
 
 class AddonsBase(object):
 

@@ -48,9 +48,12 @@ def get_idms_list():
     return [ mod[0] for mod in [ reg.findall(f) for f in os.listdir("%s/idm/" % dirname)] if mod ]
 
 def get_idm_inf(idm):
-    tmp = __import__("mousetrap.ocvfw.idm.%s" % idm,
-                      globals(),
-                      locals(),
-                      [''])
-    return { "name" : tmp.a_name, "dsc" : tmp.a_description, "stgs" : tmp.a_settings}
+    try:
+        tmp = __import__("mousetrap.ocvfw.idm.%s" % idm,
+                          globals(),
+                          locals(),
+                          [''])
+        return { "name" : tmp.a_name, "dsc" : tmp.a_description, "stgs" : tmp.a_settings}
+    except:
+        print("Problems loading mousetrap.ocvfw.idm.%s" % idm)
 

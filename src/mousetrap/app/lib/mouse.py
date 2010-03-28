@@ -120,17 +120,41 @@ def move( x=0, y=0, point=None ):
 
     if point is not None:
         x, y = point.x, point.y
-
-    if isGnome:
-        try:
-            reg.generateMouseEvent( x, y, 'abs' )
-        except:
-            isGnome = False
-    else:
-        xtest.fake_input( xDisplay, X.MotionNotify, x = x, y = y)
-        #display.sync()
-        xDisplay.flush()
-
+        
+    
+    old_x, old_y = position()
+    x_diff = abs(old_x - x) 
+    y_diff = abs(old_y - y) 
+    
+    while True:
+        old_x, old_y = position()
+        
+        if x_diff <= 0 and y_diff <= 0:
+            break
+        
+        x_diff -= 1
+        y_diff -= 1
+        
+        if x > old_x:
+             new_x = x + 1
+        else:
+             new_x = x - 1
+             
+        if y > old_y:
+             new_y = y + 1
+        else:
+             new_y = y - 1
+             
+        if isGnome:
+            try:
+                reg.generateMouseEvent( x, y, 'abs' )
+            except:
+                isGnome = False
+        else:
+            xtest.fake_input( xDisplay, X.MotionNotify, x = x, y = y)
+            #display.sync()
+            xDisplay.flush()
+            
     return True
 
 ###########################################

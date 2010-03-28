@@ -86,6 +86,9 @@ class Settings( ConfigParser.ConfigParser ):
 
             conf.write("\n\n[access]")
             conf.write("\nreqMovement = 10")
+            
+            conf.write("\n\n[scripts]")
+            conf.write("\nname = joystick")
 
             conf.write("\n\n[cam]")
             conf.write("\nmouseMode = forehead")

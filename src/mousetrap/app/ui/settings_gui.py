@@ -32,6 +32,8 @@ import dialogs
 from i18n import _
 from mousetrap.ocvfw import pocv
 import mousetrap.app.environment as env
+
+from mousetrap.app.ui.scripts import get_scripts_list
 from mousetrap.app.addons.handler import AddonsHandler
 
 class PreffGui( gtk.Window ):
@@ -219,6 +221,16 @@ class PreffGui( gtk.Window ):
         conf_button.connect('clicked', self.show_alg_pref, liststore)
         conf_button.set_sensitive(False)
 
+        scripts_combo = gtk.combo_box_new_text()
+        scripts_combo.append_text(self.cfg.get("scripts", "name"))
+        
+        for script in get_scripts_list():
+            if script.lower() != self.cfg.get("scripts", "name"):
+                scripts_combo.append_text(script)
+
+        scripts_combo.connect('changed', self._comboChanged, "scripts", "name")
+        scripts_combo.set_active(0)
+        
         tree_view = gtk.TreeView(liststore)
         tree_view.connect("cursor-changed", self._tree_view_click, conf_button)
 
@@ -262,8 +274,7 @@ class PreffGui( gtk.Window ):
 
         algo_box.pack_start(tree_view)
         algo_box.pack_start(conf_button, False, False)
-
-
+        algo_box.pack_start(scripts_combo, False, False)
 
         algo_box.show_all()
 
@@ -535,7 +546,7 @@ class PreffGui( gtk.Window ):
         """
         self.cfg.write( open( env.configPath + 'userSettings.cfg', "w" ) )
 
-    def _comboChanged( self, widget, section, option, modes ):
+    def _comboChanged( self, widget, section, option, modes=None ):
         """
         On combo change. This function is the callback for the on_change
         event.
@@ -553,7 +564,8 @@ class PreffGui( gtk.Window ):
 
         model = widget.get_model()
         index = widget.get_active()
-        self.cfg.set( section, option, modes[model[index][0]] )
+        val = (modes and modes[model[index][0]]) or model[index][0] 
+        self.cfg.set( section, option, val)
 
     def addSpin( self, label, var, startValue, section, option, min_ = 1, max_ = 15):
         """

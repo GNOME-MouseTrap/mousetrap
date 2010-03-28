@@ -45,7 +45,7 @@ from mousetrap.ocvfw import pocv
 
 from ui.i18n import _
 from ui.main import MainGui
-from ui.scripts.screen import ScriptClass
+from ui.scripts import get_script_class
 
 from lib import httpd, dbusd, settings
 
@@ -221,7 +221,7 @@ class Controller():
         Arguments:
         - self: The main object pointer.
         """
-        return ScriptClass()
+        return get_script_class(self.cfg.get("scripts", "name"))()
 
     def update_frame(self):
         """

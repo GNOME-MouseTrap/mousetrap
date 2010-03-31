@@ -48,8 +48,15 @@ datadirname = "%s/@DATADIRNAME@" % prefix
 ## Directly mouseTrap data dir
 mTDataDir = "%s/mouseTrap" % datadirname
 
-## The actuall running desktop manager.
-desktop = os.getenv("DESKTOP_MANAGER")
+## The username
+username = os.getlogin()
+
+## The current running desktop manager.
+try:
+    dbusd.bus.get_object("org.gnome.SessionManager", "/")
+    desktop = "gnome"
+except:
+    desktop = "other"
 
 ## The name of the O.S
 osName = os.name

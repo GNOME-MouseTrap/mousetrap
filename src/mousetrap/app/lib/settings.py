@@ -107,12 +107,13 @@ class Settings( ConfigParser.ConfigParser ):
 
 def load():
     cfg = Settings()
+    created = False
     if not os.path.exists( env.configPath ):
         os.mkdir( env.configPath )
-        cfg.write_first(env.configFile)
 
     if not os.path.exists( env.configFile ):
         cfg.write_first(env.configFile)
+        created = True
 
     cfg.readfp(open( env.configFile ))
-    return cfg
+    return created, cfg

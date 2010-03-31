@@ -79,7 +79,7 @@ class Controller():
         """
 
         if self.cfg is None:
-            self.cfg = settings.load()
+            conf_created, self.cfg = settings.load()
 
         self.proc_args()
 
@@ -101,6 +101,11 @@ class Controller():
         self.itf = MainGui(self)
         self.itf.build_interface()
         self.itf.load_addons()
+        
+        if conf_created:
+            from ui import settings_gui
+            settings_gui.showPreffGui(self)
+            
         debug.info("mousetrap", "MouseTrap's Interface Built and Loaded")
 
         gobject.threads_init()

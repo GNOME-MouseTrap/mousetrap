@@ -8,4 +8,4 @@ SUBDIRS = app ocvfw
 mousetrap_pythondir=$(pyexecdir)/mousetrap/
 
 install-exec-hook:
-	chmod a+rx $(mousetrap_pythondir) -R
+	chmod a+rx $(DESTDIR)$(mousetrap_pythondir) -R

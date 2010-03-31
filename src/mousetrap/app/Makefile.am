@@ -18,4 +18,4 @@ SUBDIRS = lib ui addons
 mousetrap_pythondir=$(pyexecdir)/mousetrap/app
 
 install-exec-hook:
-	chmod a+rx $(mousetrap_pythondir) -R
+	chmod a+rx $(DESTDIR)$(mousetrap_pythondir) -R

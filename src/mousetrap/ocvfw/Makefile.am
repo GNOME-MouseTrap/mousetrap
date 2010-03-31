@@ -13,4 +13,4 @@ SUBDIRS = dev haars idm
 ocvfw_pythondir=$(pyexecdir)/mousetrap/ocvfw
 
 install-exec-hook:
-	chmod a+rx $(ocvfw_pythondir) -R
+	chmod a+rx $(DESTDIR)$(ocvfw_pythondir) -R

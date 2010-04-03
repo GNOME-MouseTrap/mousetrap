@@ -199,16 +199,16 @@ class Controller():
         # Options:
         # -e, --enable Allow the users to enable modules not permantly
         print( "-e, --enable=[" \
-            + _("main-window") + "|" \
-            + _("cam") + "]"),
+            + "main-window" + "|" \
+            + "cam") + "]",
         
         print( _("     Enable the selected options"))
         
         # Options:
         # -d, --disable Allow the users to disable modules not permanently.
         print( "-d, --disable=[" \
-            + _("main-window") + "|" \
-            + _("cam") + "]"),
+            + "main-window" + "|" \
+            + "cam" + "]"),
             
         print( _("    Disable the selected options"))
         

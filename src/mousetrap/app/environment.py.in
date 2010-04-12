@@ -49,7 +49,7 @@ datadirname = "%s/@DATADIRNAME@" % prefix
 mTDataDir = "%s/mouseTrap" % datadirname
 
 ## The username
-username = os.getlogin()
+# username = os.getlogin()
 
 ## The current running desktop manager.
 try:

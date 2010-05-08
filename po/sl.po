@@ -1,13 +1,15 @@
+# Slovenian translation of mousetrap.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the mousetrap package.
+#
 # Andrej Žndaršič <andrej.znidarsic@gmail.com>, 2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Mousetrap\n"
+"Project-Id-Version: mousetrap master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mousetrap\n"
 "POT-Creation-Date: 2009-12-19 10:32+0000\n"
-"PO-Revision-Date: 2010-01-02 21:55+0100\n"
+"PO-Revision-Date: 2010-05-08 11:45+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -36,7 +38,7 @@ msgstr "         Pokaže to sporočilo pomoči"
 #. '-i' that is used to set the input camera index. E.g: -i 0
 #: ../src/mousetrap/app/main.py:192
 msgid "              Sets new value to Non Boolean options E.g -s inputDevIndex-1"
-msgstr "              Nastavi novo vrednost ne boolovim možnostim, npr. -s inputDevIndex-1"
+msgstr "              Nastavi novo vrednost na ne-boolovo možnost, npr. -s inputDevIndex-1"
 
 #. Options:
 #. -e, --enable Allow the users to enable modules not permantly
@@ -72,7 +74,7 @@ msgid ""
 "Report bugs to flaper87@flaper87.org"
 msgstr ""
 "\n"
-"Hrošče pošiljajte na flaper87@flaper87.org"
+"Poročila o hroščih pošiljajte na flaper87@flaper87.org"
 
 #: ../src/mousetrap/app/ui/dialogs.py:76
 msgid "Confirmation Dialog"

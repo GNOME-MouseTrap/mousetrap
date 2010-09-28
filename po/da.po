@@ -1,0 +1,175 @@
+# Danish translation for mousetrap.
+# Copyright (C) 2010 mousetrap's COPYRIGHT HOLDER
+# This file is distributed under the same license as the mousetrap package.
+# Joe Hansen <joedalton2@yahoo.dk>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mousetrap master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-09-28 13:53+0200\n"
+"PO-Revision-Date: 2010-09-25 09:46+0000\n"
+"Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
+"Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../src/mousetrap/app/addons/recalc.py:41
+msgid "Recalc Point"
+msgstr "Genberegningspunkt"
+
+#: ../src/mousetrap/app/main.py:186
+msgid "Usage: mouseTrap [OPTION...]"
+msgstr "Brug: mouseTrap [TILVALG...]"
+
+#. '-?, --help' that is used to display usage information.
+#.
+#: ../src/mousetrap/app/main.py:191
+msgid "        Show this help message"
+msgstr "        Vis denne hjælpetekst"
+
+#. Option:
+#. '-i' that is used to set the input camera index. E.g: -i 0
+#: ../src/mousetrap/app/main.py:197
+msgid ""
+"              Sets new value to Non Boolean options E.g -s inputDevIndex-1"
+msgstr ""
+"              Angiver ny værdi til tilvalg der ikke er booleske f.eks. -s "
+"inputDevIndex-1"
+
+#: ../src/mousetrap/app/main.py:205
+msgid "     Enable the selected options"
+msgstr "     Aktiver de valgte tilvalg"
+
+#: ../src/mousetrap/app/main.py:213
+msgid "    Disable the selected options"
+msgstr "    Deaktiver de valgte tilvalg"
+
+#. Options:
+#. -t --timeout To change the mouse timeout not permanently.
+#: ../src/mousetrap/app/main.py:218
+msgid "                 Shows mouseTrap version"
+msgstr "                 Viser mouseTrap-version"
+
+#: ../src/mousetrap/app/main.py:220
+msgid ""
+"\n"
+"Report bugs to flaper87@flaper87.org"
+msgstr ""
+"\n"
+"Rapporter fejl til flaper87@flaper87.org"
+
+#: ../src/mousetrap/app/ui/dialogs.py:76
+msgid "Confirmation Dialog"
+msgstr "Bekræftelsesdialog"
+
+#: ../src/mousetrap/app/ui/dialogs.py:92
+msgid "Error Dialog"
+msgstr "Fejldialog"
+
+#: ../src/mousetrap/app/ui/dialogs.py:102
+#: ../src/mousetrap/app/ui/dialogs.py:112
+msgid "Information Dialog"
+msgstr "Informationdialog"
+
+#. self.set_size_request( 500 , 120)
+#. self.set_default_size( 500 , 120)
+#: ../src/mousetrap/app/ui/dialogs.py:212
+#, python-format
+msgid "%s Config's Dialog"
+msgstr "konfigurationsdialog for %s"
+
+#: ../src/mousetrap/app/ui/dialogs.py:219
+#: ../src/mousetrap/app/ui/settings_gui.py:115
+#: ../src/mousetrap/app/ui/settings_gui.py:119
+#: ../src/mousetrap/app/ui/settings_gui.py:123
+msgid "Accept"
+msgstr "Accepter"
+
+#: ../src/mousetrap/app/ui/dialogs.py:223
+msgid "Cancel"
+msgstr "Afbryd"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:92
+msgid "mouseTrap Preferences"
+msgstr "Indstillinger for mouseTrap"
+
+#. mWindowActive = gtk.CheckButton( _("Show main window") )
+#. mWindowActive.set_active( self.cfg.getboolean( "gui", "showMainGui" ) )
+#. mWindowActive.connect( "toggled", self._checkToggled, "gui", "showMainGui" )
+#.
+#. mainGuiBox.pack_start( mWindowActive, False, False )
+#: ../src/mousetrap/app/ui/settings_gui.py:152
+msgid "Activate Camera module"
+msgstr "Aktiver kameramodul"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:158
+msgid "Flip Image"
+msgstr "Vend billede"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:164
+msgid "Input Video Device Index: "
+msgstr "Indeks for inddatavideoenhed: "
+
+#: ../src/mousetrap/app/ui/settings_gui.py:173
+msgid "General"
+msgstr "Generelt"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:187
+msgid "Show Point Mapper"
+msgstr "Vis punktkortlægger"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:193
+msgid "Show Capture"
+msgstr "Vis optagelse"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:204
+msgid "Camera"
+msgstr "Kamera"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:246
+msgid "Active Algorithms"
+msgstr "Aktiv algoritme"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:247
+msgid "Installed Algorithms"
+msgstr "Installerede algoritmer"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:248
+#: ../src/mousetrap/app/ui/settings_gui.py:316
+msgid "Description"
+msgstr "Beskrivelse"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:284
+msgid "Algorithm"
+msgstr "Algoritme"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:314
+msgid "Active"
+msgstr "Aktiv"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:315
+msgid "Name"
+msgstr "Navn"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:350
+msgid "Addons"
+msgstr "Tilføjelser"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:364
+msgid "Step Speed: "
+msgstr "Trinhastighed: "
+
+#: ../src/mousetrap/app/ui/settings_gui.py:405
+msgid "Mouse"
+msgstr "Mus"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:422
+msgid "Debugging Level:"
+msgstr "Fejlsøgningsniveau:"
+
+#: ../src/mousetrap/app/ui/settings_gui.py:440
+msgid "Debug"
+msgstr "Fejlsøg"

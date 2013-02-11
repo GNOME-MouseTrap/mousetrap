@@ -37,9 +37,9 @@ import sys
 sys.argv[0] = "mousetrap"
 
 from gi.repository import GObject
-from . import debug
+import debug
 import getopt
-from . import environment as env
+import environment as env
 
 from mousetrap.ocvfw import pocv
 
@@ -65,7 +65,7 @@ class Controller():
         # We don't want to load the settings each time we need them. do we?
         self.cfg = None
 
-        self.loop = gobject.MainLoop()
+        self.loop = GObject.MainLoop()
         self.httpd = httpd.HttpdServer(20433)
         self.dbusd = dbusd.DbusServer()
 
@@ -77,7 +77,6 @@ class Controller():
         Arguments:
         - self: The main object pointer.
         """
-
         if self.cfg is None:
             conf_created, self.cfg = settings.load()
 
@@ -92,8 +91,9 @@ class Controller():
             self.idm = idm.Module(self)
             self.idm.set_capture(self.cfg.getint("cam", "inputDevIndex"))
 
-            gobject.timeout_add(150, self.update_frame)
-            gobject.timeout_add(50, self.update_pointers)
+            #Will return false when cap.image() is false in ui/main
+            GObject.timeout_add(150, self.update_frame)    #Thread that updates the image on the screen
+            GObject.timeout_add(50, self.update_pointers)   #Thread that moves the mouse
             
             debug.info("mousetrap", "Idm loaded and started")
 
@@ -108,7 +108,7 @@ class Controller():
             
         debug.info("mousetrap", "MouseTrap's Interface Built and Loaded")
 
-        gobject.threads_init()
+        GObject.threads_init()
         self.loop.run()
 
     def proc_args(self):
@@ -236,7 +236,7 @@ class Controller():
         - self: The main object pointer.
         """
         self.itf.update_frame(self.idm.get_capture(), self.idm.get_pointer())
-        return True
+        return True 
 
     def update_pointers(self):
         """

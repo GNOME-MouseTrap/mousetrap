@@ -29,7 +29,7 @@ __license__   = "GPLv2"
 
 import mousetrap.ocvfw.debug as debug
 import mousetrap.ocvfw.commons as commons
-from mousetrap.ocvfw.dev.camera import Capture, Point
+from mousetrap.ocvfw.dev.camera import Capture, Point, Graphic
 
 a_name = "Forehead"
 a_description = "Forehead point tracker based on LK Algorithm"
@@ -104,12 +104,10 @@ class Module(object):
         """
         
         debug.debug("mousetrap.ocvfw.idm", "Setting Capture")
-        
         self.cap = Capture(async=True, idx=cam, backend="OcvfwPython")
         self.cap.change(color="rgb")
         self.cap.set_camera("lk_swap", True)
-
-
+	
     def calc_motion(self):
         if not hasattr(self.cap, "forehead"):
             self.get_forehead()
@@ -127,9 +125,11 @@ class Module(object):
         if not hasattr(self.cap, "forehead"):
             self.get_forehead()
 
+	#self.get_forehead()
+
         #return self.cap.resize(200, 160, True)
         return self.cap
-
+	
     def get_pointer(self):
         """
         Returns the new MousePosition
@@ -139,39 +139,51 @@ class Module(object):
         """
 
         if hasattr(self.cap, "forehead"):
+	    #debug.debug("Forehead Point", self.cap.forehead)
             return self.cap.forehead
 
     def get_forehead(self):
         eyes = False
-        #self.cap.add_message("Getting Forehead!!!")
-
+        #self.cap.message("Getting Forehead!!!")
         face     = self.cap.get_area(commons.haar_cds['Face'])
 
         if face:
-            areas    = [ (pt[1].x - pt[0].x)*(pt[1].y - pt[0].y) for pt in face ]
+	    debug.debug("face", face)
+
+            areas    = [ (pt[1][0] - pt[0][0])*(pt[1][1] - pt[0][1]) for pt in face ] #replaced x with [0] and y with [1]
             startF   = face[areas.index(max(areas))][0]
-            endF     = face[areas.index(max(areas))][1]
+	    #startF = face[0][0]
+	    endF     = face[areas.index(max(areas))][1]
+	    #endF = face[0][1]
 
             # Shows the face rectangle
-            #self.cap.add( Graphic("rect", "Face", ( startF.x, startF.y ), (endF.x, endF.y), parent=self.cap) )
+            self.cap.add( Graphic("rect", "Face", ( startF[0], startF[1] ), (endF[0], endF[1]), parent=self.cap) )
 
-            eyes = self.cap.get_area( commons.haar_cds['Eyes'], {"start" : startF.x,
-                                                         "end" : startF.y,
-                                                         "width" : endF.x - startF.x,
-                                                         "height" : endF.y - startF.y}, (startF.x, startF.y) )
+            eyes = self.cap.get_area( 
+                commons.haar_cds['Eyes'],
+		{"start" : startF[0], "end" : startF[1], "width" : endF[0] - startF[0],"height" : endF[1] - startF[1]},
+                (startF[0], startF[1]) ) # replaced x and y
+	    debug.debug("eyes - get_area", eyes)
 
         if eyes:
-            areas = [ (pt[1].x - pt[0].x)*(pt[1].y - pt[0].y) for pt in eyes ]
+            areas = [ (pt[1][0] - pt[0][0])*(pt[1][1] - pt[0][1]) for pt in eyes ] #replaced x with [0] and y with [1]
 
             point1, point2   = eyes[areas.index(max(areas))][0], eyes[areas.index(max(areas))][1]
+	    point1, point2 = eyes[0][0], eyes[0][1]
+	    debug.debug("eyes", point1)
 
             # Shows the eyes rectangle
-            #self.cap.add(Graphic("rect", "Face", ( point1.x, point1.y ), (point2.x, point2.y), parent=self.cap))
+            #self.cap.add(Graphic("rect", "Eyes", ( point1[0], point1[1] ), (point2[0], point2[1]), parent=self.cap))
 
-            X, Y = ( (point1.x + point2.x) / 2 ), ( point1.y + ( (point1.y + point2.y) / 2 ) ) / 2
-            self.cap.add( Point("point", "forehead", ( X, Y ), parent=self.cap, follow=True) )
+            X, Y = ( (point1[0] + point2[0]) / 2 ), ( point1[1] + ( (point1[1] + point2[1]) / 2 ) ) / 2 #replaced x and y
+	    self.cap.forehead = (X,Y)
+
+	    self.cap.forehead = (((startF[0] + endF[0])/2),((startF[1] + endF[1])/2))
+            self.cap.add( Point("point", "forehead-point", self.cap.forehead, parent=self.cap, follow=True) )
+	    debug.debug("forehead point", self.cap.forehead)
             return True
 
         self.foreheadOrig = None
 
         return False
+

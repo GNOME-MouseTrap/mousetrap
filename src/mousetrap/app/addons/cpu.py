@@ -19,7 +19,7 @@
 # along with mouseTrap.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import gobject
+from gi.repository import GObject
 import mousetrap.app.debug as debug
 import mousetrap.app.environment as env
 
@@ -35,7 +35,7 @@ class Addon(AddonsBase):
     def __init__(self, controller):
         AddonsBase.__init__(self, controller)
         
-        gobject.timeout_add(1000, self.check_cpu)
+        GObject.timeout_add(1000, self.check_cpu)
         debug.debug("addon.cpu", "CPU addon started")
 
     def check_cpu(self):

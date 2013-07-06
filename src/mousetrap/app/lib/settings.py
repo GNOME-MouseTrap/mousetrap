@@ -28,10 +28,10 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import os
-import ConfigParser
+import ConfigParser as configparser #FIXME should be configparser
 import mousetrap.app.environment as env
 
-class Settings( ConfigParser.ConfigParser ):
+class Settings( configparser.ConfigParser ):
 
     def optionxform( self, optionstr ):
         """

@@ -55,5 +55,5 @@ def get_idm_inf(idm):
                           [''])
         return { "name" : tmp.a_name, "dsc" : tmp.a_description, "stgs" : tmp.a_settings}
     except:
-        print("Problems loading mousetrap.ocvfw.idm.%s" % idm)
+        print(("Problems loading mousetrap.ocvfw.idm.%s" % idm))
 

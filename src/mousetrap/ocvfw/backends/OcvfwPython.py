@@ -27,7 +27,7 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import time
-from OcvfwBase import OcvfwBase
+from .OcvfwBase import OcvfwBase
 from .. import debug
 from .. import commons as co
 

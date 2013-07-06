@@ -36,18 +36,18 @@ __license__   = "GPLv2"
 import sys
 sys.argv[0] = "mousetrap"
 
-import gobject
-import debug
+from gi.repository import GObject
+from . import debug
 import getopt
-import environment as env
+from . import environment as env
 
 from mousetrap.ocvfw import pocv
 
-from ui.i18n import _
-from ui.main import MainGui
-from ui.scripts import get_script_class
+from .ui.i18n import _
+from .ui.main import MainGui
+from .ui.scripts import get_script_class
 
-from lib import httpd, dbusd, settings
+from .lib import httpd, dbusd, settings
 
 class Controller():
     """
@@ -103,7 +103,7 @@ class Controller():
         self.itf.load_addons()
         
         if conf_created:
-            from ui import settings_gui
+            from .ui import settings_gui
             settings_gui.showPreffGui(self)
             
         debug.info("mousetrap", "MouseTrap's Interface Built and Loaded")
@@ -161,7 +161,7 @@ class Controller():
                     self.quit(2)
                          
                 if opt in ("-v", "--version"):
-                    print(env.version)
+                    print((env.version))
                     self.quit(0)
                     
                 # This will show the usage of mouseTrap
@@ -169,8 +169,8 @@ class Controller():
                     self.usage()
                     self.quit(0)
                     
-        except getopt.GetoptError, err:
-            print str(err)
+        except getopt.GetoptError as err:
+            print(str(err))
             self.usage()
             self.quit(2)
             pass
@@ -183,41 +183,41 @@ class Controller():
         - self: The main object pointer
         """
 
-        print( _("Usage: mouseTrap [OPTION...]"))
+        print(( _("Usage: mouseTrap [OPTION...]")))
     
         # '-?, --help' that is used to display usage information.
         #
-        print( "-?, -h, --help              " + \
-                _("        Show this help message"))
+        print(( "-?, -h, --help              " + \
+                _("        Show this help message")))
                 
         
         # Option:
         # '-i' that is used to set the input camera index. E.g: -i 0
-        print( "-s, --set            " + \
-                _("              Sets new value to Non Boolean options E.g -s inputDevIndex-1"))
+        print(( "-s, --set            " + \
+                _("              Sets new value to Non Boolean options E.g -s inputDevIndex-1")))
     
         # Options:
         # -e, --enable Allow the users to enable modules not permantly
-        print( "-e, --enable=[" \
+        print(( "-e, --enable=[" \
             + "main-window" + "|" \
-            + "cam") + "]",
+            + "cam") + "]")
         
-        print( _("     Enable the selected options"))
+        print(( _("     Enable the selected options")))
         
         # Options:
         # -d, --disable Allow the users to disable modules not permanently.
-        print( "-d, --disable=[" \
+        print(( "-d, --disable=[" \
             + "main-window" + "|" \
-            + "cam" + "]"),
+            + "cam" + "]"))
             
-        print( _("    Disable the selected options"))
+        print(( _("    Disable the selected options")))
         
         # Options:
         # -t --timeout To change the mouse timeout not permanently.
-        print( "-v, --version      " + \
-                _("                 Shows mouseTrap version"))
+        print(( "-v, --version      " + \
+                _("                 Shows mouseTrap version")))
         
-        print( _("\nReport bugs to flaper87@flaper87.org"))
+        print(( _("\nReport bugs to flaper87@flaper87.org")))
     
     def script(self):
         """

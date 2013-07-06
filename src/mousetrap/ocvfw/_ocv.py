@@ -27,8 +27,12 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import time
-import debug
-import commons as co
+from . import debug
+from . import commons as co
+import cv2 #remove
+import cv2.cv as cv
+import numpy
+import array
 
 class OcvfwBase:
     

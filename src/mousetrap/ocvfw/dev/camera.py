@@ -80,7 +80,7 @@ class Capture(object):
         self.__image_orig  = None
 
         color_vars         = [x for x in dir(co.cv) if '2' in x and str(getattr(co.cv, x)).isdigit()]
-        self.__color_int   = dict(zip([x.lower() for x in color_vars], [getattr(co.cv,x) for x in color_vars]))
+        self.__color_int   = dict(list(zip([x.lower() for x in color_vars], [getattr(co.cv,x) for x in color_vars])))
 
         self.roi           = None
 

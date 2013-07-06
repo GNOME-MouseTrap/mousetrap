@@ -28,7 +28,7 @@ __date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
-import mouse
+from . import mouse
 import thread
 import BaseHTTPServer
 

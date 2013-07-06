@@ -27,9 +27,10 @@ __date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
-import gtk
-import dialogs
-from i18n import _
+from gi.repository import GObject
+from gi.repository import Gtk
+from . import dialogs
+from .i18n import _
 from mousetrap.ocvfw import pocv
 import mousetrap.app.environment as env
 

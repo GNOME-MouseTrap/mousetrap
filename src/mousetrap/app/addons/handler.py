@@ -62,7 +62,7 @@ class AddonsHandler(object):
             
             return { "name" : tmp.a_name, "dsc" : tmp.a_description, "stgs" : tmp.a_settings}
         except:
-            print("Problems loading mousetrap.app.addons.%s" % addon)
+            print(("Problems loading mousetrap.app.addons.%s" % addon))
             
 
 class AddonsBase(object):

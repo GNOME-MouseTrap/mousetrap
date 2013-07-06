@@ -285,7 +285,7 @@ class Module(object):
         co.cv.cvConvertScale( hbins, hbins, 255. / max_val if max_val else 0., 0 )
         co.cv.cvZero( self.histimg )
         bin_w = self.histimg.width / self.hdims
-        for i in xrange(self.hdims):
+        for i in range(self.hdims):
             val = co.cv.cvRound( co.cv.cvGetReal1D(hbins,i)*self.histimg.height/255 )
             color = self.hsv2rgb(i*180./self.hdims)            co.cv.cvRectangle( self.histimg, co.cv.cvPoint(i*bin_w,self.histimg.height),
                              co.cv.cvPoint((i+1)*bin_w,self.histimg.height - val),

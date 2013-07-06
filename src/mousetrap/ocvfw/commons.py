@@ -27,7 +27,7 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import os
-import debug
+from . import debug
 
 abs_path = os.path.abspath(os.path.dirname(__file__))
 

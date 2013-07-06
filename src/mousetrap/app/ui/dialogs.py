@@ -26,8 +26,8 @@ __date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
-import gtk
-from i18n import _
+from gi.repository import Gtk
+from .i18n import _
 
 def addLabelMessage( dialog, message ):
     """
@@ -385,11 +385,11 @@ class IdmSettings(gtk.Window):
 #         # We'll change the click panel position to be sure that
 #         # it won't appear under another window or worse under a
 #         # popup menu.
-#         if poss[0] in xrange( env.screen["width"]/2 ):
+#         if poss[0] in range( env.screen["width"]/2 ):
 #             X = env.screen["width"] - self.width
 #
 #
-#         if poss[1] in xrange( env.screen["height"]/2 ):
+#         if poss[1] in range( env.screen["height"]/2 ):
 #             Y = env.screen["height"] - self.height
 #
 #

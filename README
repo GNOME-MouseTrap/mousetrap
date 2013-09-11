@@ -1,4 +1,1 @@
-To test the new generation MouseTrap:
-
-$ cd src/mousetrap
-$ ./start
+See README.md

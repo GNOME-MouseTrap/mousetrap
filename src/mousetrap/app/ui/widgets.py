@@ -27,10 +27,10 @@ __date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
-import gtk
 import cairo
-import gobject
-from gtk import gdk
+from gi.repository import Gdk
+from gi.repository import GObject
+from gi.repository import Gtk
 from math import pi
 
 BORDER_WIDTH = 0
@@ -38,10 +38,10 @@ BORDER_WIDTH = 0
 # A quite simple gtk.Widget subclass which demonstrates how to subclass
 # and do realizing, sizing and drawing.
 
-class Mapper(gtk.Widget):
+class Mapper(Gtk.Widget):
 
     def __init__(self, width, height):
-        gtk.Widget.__init__(self)
+        GObject.GObject.__init__(self)
 
         self.width   = width
         self.height  = height
@@ -64,22 +64,22 @@ class Mapper(gtk.Widget):
         # Mapper.do_realize: Class 'style' has no 'fg_gc' member
 
         # First set an internal flag telling that we're realized
-        self.set_flags(self.flags() | gtk.REALIZED)
+        self.set_flags(self.flags() | Gtk.REALIZED)
 
         # Create a new gdk.Window which we can draw on.
         # Also say that we want to receive exposure events
         # and button click and button press events
 
-        self.window = gdk.Window(
+        self.window = Gdk.Window(
                 self.get_parent_window(),
                 width=self.allocation.width,
                 height=self.allocation.height,
-                window_type=gdk.WINDOW_CHILD,
-                wclass=gdk.INPUT_OUTPUT,
-                event_mask=self.get_events() | gdk.EXPOSURE_MASK
-                        | gdk.BUTTON1_MOTION_MASK | gdk.BUTTON_PRESS_MASK
-                        | gtk.gdk.POINTER_MOTION_MASK
-                        | gtk.gdk.POINTER_MOTION_HINT_MASK)
+                window_type=Gdk.WINDOW_CHILD,
+                wclass=Gdk.INPUT_OUTPUT,
+                event_mask=self.get_events() | Gdk.EventMask.EXPOSURE_MASK
+                        | Gdk.EventMask.BUTTON1_MOTION_MASK | Gdk.EventMask.BUTTON_PRESS_MASK
+                        | Gdk.EventMask.POINTER_MOTION_MASK
+                        | Gdk.EventMask.POINTER_MOTION_HINT_MASK)
 
         # Associate the gdk.Window with ourselves, Gtk+ needs a reference
         # between the widget and the gdk window
@@ -91,13 +91,13 @@ class Mapper(gtk.Widget):
 
         # The default color of the background should be what
         # the style (theme engine) tells us.
-        self.style.set_background(self.window, gtk.STATE_NORMAL)
+        self.style.set_background(self.window, Gtk.StateType.NORMAL)
         self.window.move_resize(*self.allocation)
 
         # self.style is a gtk.Style object, self.style.fg_gc is
         # an array or graphic contexts used for drawing the forground
         # colours
-        self.gc = self.style.fg_gc[gtk.STATE_NORMAL]
+        self.gc = self.style.fg_gc[Gtk.StateType.NORMAL]
         # pylint: enable-msg=E1101
 
         #self.connect("motion_notify_event", self.motion_notify_event)
@@ -128,7 +128,7 @@ class Mapper(gtk.Widget):
         # pylint: disable-msg=W0142
         # Mapper.do_size_allocate: Used * or ** magic
         # WE DO NEED THE *
-        if self.flags() & gtk.REALIZED:
+        if self.get_realized():
             self.window.move_resize(*allocation)
         # pylint: enable-msg=W0142
 
@@ -233,4 +233,4 @@ class Mapper(gtk.Widget):
                 reg_event["callback"]()
 
 
-gobject.type_register(Mapper)
+GObject.type_register(Mapper)

@@ -28,7 +28,7 @@ __license__   = "GPLv2"
 
 import sys
 import os
-import gtk
+from gi.repository import Gdk
 
 ## MouseTrap's PID
 pid = os.getpid()
@@ -89,8 +89,9 @@ debugFile = configPath + "mouseTrap.debug"
 langPath = "%s/locale/" % datadirname
 
 ## Screen Resolution
-screen       = { 'width'  : gtk.gdk.screen_width(),
-                 'height' : gtk.gdk.screen_height()}
+defaultScreen = Gdk.Screen.get_default()
+screen       = { 'width'  : defaultScreen.width(),
+                 'height' : defaultScreen.height()}
 
 ## Mose Movement Modes
 mouseModes = { }

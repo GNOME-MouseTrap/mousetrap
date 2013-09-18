@@ -98,4 +98,4 @@ class AddonsBase(object):
         - self: The main object pointer.
         - item: The item to add.
         """
-        self.itf.adds_vbox.pack_start(item, True, True)
+        self.itf.addonBox.add(item)

@@ -26,8 +26,10 @@ __date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
-import gtk
 import pyatspi
+#import gtk #FIXME: Remove this
+from gi.repository import Gdk
+from gi.repository import Gtk
 import mousetrap.app.debug as debug
 import mousetrap.app.environment as env
 import Xlib.ext.xtest as xtest
@@ -45,7 +47,9 @@ clickType = { 'p' : [ X.ButtonPress ],
 
 
 ## GTK Display for any user
-gtkDisplay = gtk.gdk.Display( "" )
+#FIXME: Swap these
+#gtkDisplay = gtk.gdk.Display( "" )
+gtkDisplay = Gdk.Display()
 
 ## X Display for non gnome users
 xDisplay   = display.Display()

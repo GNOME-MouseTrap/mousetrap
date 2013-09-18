@@ -19,7 +19,8 @@
 # along with mouseTrap.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import gtk, gobject
+from gi.repository import Gtk
+from gi.repository import GObject
 import mousetrap.app.debug as debug
 import mousetrap.app.environment as env
 
@@ -38,7 +39,7 @@ class Addon(AddonsBase):
 
         if self.cfg.getboolean("main", "startCam") and \
                 self.cfg.get("main", "algorithm") == "forehead":
-            self.button = gtk.Button(_("Recalc Point"))
+            self.button = Gtk.Button(_("Recalc Point"))
             self.button.connect("clicked", self.recalc)
             self.button.show()
             self.add_item(self.button)

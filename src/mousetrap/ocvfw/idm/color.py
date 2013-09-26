@@ -29,7 +29,7 @@ __license__   = "GPLv2"
 
 import mousetrap.ocvfw.commons as co
 from mousetrap.ocvfw.dev.camera import Camera, Capture, Point
-from ctypes import c_int 
+from ctypes import c_int
 """ Using ctypes-opencv, instead of the python bindings provided by OpenCV. """
 from sys import argv, exit
 import math
@@ -51,26 +51,26 @@ class Module(object):
     def __init__(self, controller, stgs = {}):
         """
         IDM's init function.
-        
+
         Arguments:
         - self: The main object pointer.
         - controller: mousetrap main class pointer. This is passed by MouseTrap's controller (mousetrap.py) when loaded.
         - stgs: Possible settings loaded from the user's settings file. If there aren't settings the IDM will use the a_settings dict.
         """
-        
+
 
         # Controller instance
         self.ctr          = controller
-        
+
         self.cfg = self.ctr.cfg
 
         if not self.cfg.has_section("color"):
             self.cfg.add_section("color")
         # Capture instance
-        # The capture is the object containing the image 
+        # The capture is the object containing the image
         # and all the possible methods to modify it.
         self.cap          = None
-        
+
         # IDM's Settings dict
         self.stgs         = stgs
 
@@ -107,16 +107,16 @@ class Module(object):
     def prepare_config(self):
         """
         Prepares the IDM using the settings
-        
+
         Arguments:
         - self: The main object pointer
         """
         global a_settings
-        
-        self.debugLevel = self.ctr.cfg.getint("main", "debugLevel")
-        print self.debugLevel        
 
-        # If the dict is empty then 
+        self.debugLevel = self.ctr.cfg.getint("main", "debugLevel")
+        print self.debugLevel
+
+        # If the dict is empty then
         # use the default settings defined in a_settings
         if not self.stgs:
             self.stgs = a_settings
@@ -128,13 +128,13 @@ class Module(object):
     def hsv2rgb(self, hue):
         """
         Converts an HSV hue to RGB.
-        
+
         Arguments:
         - self: The main object pointer
         - hue: the hue to convert to RGB.
         """
         rgb=[0,0,0]
-        
+
         sector_data= ((0,2,1), (1,2,0), (1,0,2), (2,0,1), (2,1,0), (0,1,2))
         hue *= 0.033333333333333333333333333333333
         sector = co.cv.cvFloor(hue)
@@ -150,17 +150,17 @@ class Module(object):
     def set_capture(self, cam):
         """
         Initialize the capture and sets the main settings.
-        
+
         Arguments:
         - self: The main object pointer
         - cam: The camera device index. For Example: 0 = /dev/video0, 1 = /dev/video1
         """
-        
+
         # Starts the Capture using the async method.
         # This means that self.cap.sync() wont be called periodically
         # by the idm because the Capture syncs the image asynchronously (See dev/camera.py)
         self.cap = Capture(async=False, idx=cam, backend="OcvfwCtypes")
-        
+
         #for some reason this is necessary! why?!?
 
         co.hg.cvNamedWindow( "Histogram", 1 )
@@ -186,7 +186,7 @@ class Module(object):
         for OpenCV functions and GDK colors to interact as the
         former expects colors from 0-255 and the latter expects
         0-65535.
-        
+
         Arguments:
         - self: The main object pointer
         - color: The integer color value to convert to 0-255
@@ -200,13 +200,13 @@ class Module(object):
         """
 
         hue = 0.0
-          
+
         if (red > green):
             if (red > blue):
                 cmax = red
             else:
                 cmax = blue
-            
+
             if (green < blue):
                 cmin = green
             else:
@@ -216,33 +216,33 @@ class Module(object):
                 cmax = green
             else:
                 cmax = blue
-           
+
             if (red < blue):
                 cmin = red
             else:
                 cmin = blue
-        
+
         val = cmax
-        
+
         if (cmax != 0.0):
             sat = (cmax - cmin) / cmax
         else:
             sat = 0.0
-        
+
         if (sat == 0.0):
             hue = 0.0
         else:
             delta = cmax - cmin
-            
+
             if (red == cmax):
                 hue = (green - blue) / delta
             elif (green == cmax):
                 hue = 2 + (blue - red) / delta
             elif (blue == cmax):
                 hue = 4 + (red - green) / delta
-            
+
             hue /= 6.0;
-            
+
             if (hue < 0.0):
                 hue += 1.0
             elif (hue > 1.0):
@@ -258,7 +258,7 @@ class Module(object):
         the hue min/max in this idm whenever the user saves a new color.
         However, we can't poll a file's status to see if it's changed, so
         we routed the event to two callbacks.
-        
+
         Suggestion: Maybe use a dictionary for configure settings and
         serialize it on quit. This would trivialize querying a settings
         structure and allow us comparatively free use of the data. Right now
@@ -287,7 +287,8 @@ class Module(object):
         bin_w = self.histimg.width / self.hdims
         for i in range(self.hdims):
             val = co.cv.cvRound( co.cv.cvGetReal1D(hbins,i)*self.histimg.height/255 )
-            color = self.hsv2rgb(i*180./self.hdims)            co.cv.cvRectangle( self.histimg, co.cv.cvPoint(i*bin_w,self.histimg.height),
+            color = self.hsv2rgb(i*180./self.hdims)
+            co.cv.cvRectangle( self.histimg, co.cv.cvPoint(i*bin_w,self.histimg.height),
                              co.cv.cvPoint((i+1)*bin_w,self.histimg.height - val),
                              color, -1, 8, 0 )
         if self.debugLevel >= 30:
@@ -296,7 +297,7 @@ class Module(object):
     def get_capture(self):
         """
         Gets the last queried and formated image.
-        Function used by the mousetrap/ui/main.py 
+        Function used by the mousetrap/ui/main.py
         to get the output image
 
         Arguments:
@@ -304,16 +305,16 @@ class Module(object):
 
         returns self.cap.resize(200, 160, True)
         """
-        
-        
-        
+
+
+
         # Called to update image with latest frame from webcam
         self.cap.sync()
 
         #self.image = self.cap.image().origin needed??
         self.image = self.cap.image()
 
-        
+
         if self.first_time:
             # Initialization of images.  Only needs to happen once.
 
@@ -346,14 +347,14 @@ class Module(object):
 
             #Masks pixels that fall outside desired range
             scalar1=co.cv.cvScalar(self.hmin.value,self.smin.value,min(self.vmin.value,self.vmax.value),0)
-            scalar2=co.cv.cvScalar(self.hmax.value,self.smax.value,max(self.vmin.value,self.vmax.value),0)       
+            scalar2=co.cv.cvScalar(self.hmax.value,self.smax.value,max(self.vmin.value,self.vmax.value),0)
             co.cv.cvInRangeS( self.hsv, scalar1, scalar2, self.mask )
 
             co.cv.cvSplit(self.hsv, self.hue)
 
             # If tracking, first time
             if self.track_object < 0:
-                co.cv.cvSetImageROI( self.hue, self.selection) 
+                co.cv.cvSetImageROI( self.hue, self.selection)
                 co.cv.cvSetImageROI( self.mask, self.selection)
 
                 self.histogram_init()
@@ -361,7 +362,7 @@ class Module(object):
                 co.cv.cvResetImageROI( self.hue )
                 co.cv.cvResetImageROI( self.mask )
                 self.track_window = self.selection
-                self.track_object = 1
+                self.track_object = 1
             co.cv.cvCalcBackProject( [self.hue], self.backproject, self.hist )
             co.cv.cvAnd(self.backproject, self.mask, self.backproject)
 
@@ -369,14 +370,14 @@ class Module(object):
             niter, self.track_comp, self.track_box = co.cv.cvCamShift( self.backproject, self.track_window,
                         co.cv.cvTermCriteria( co.cv.CV_TERMCRIT_EPS | co.cv.CV_TERMCRIT_ITER, 10, 1 ))
             self.track_window = self.track_comp.rect
-            
+
             if not self.origin:
                 self.track_box.angle = -self.track_box.angle
 
             # Ensures that track_box size is always at least 0x0
-            if math.isnan(self.track_box.size.height): 
+            if math.isnan(self.track_box.size.height):
                 self.track_box.size.height = 0
-            if math.isnan(self.track_box.size.width): 
+            if math.isnan(self.track_box.size.width):
                 self.track_box.size.width = 0
 
             #Creates the ellipse around the tracked object
@@ -393,10 +394,10 @@ class Module(object):
             co.cv.cvSetImageROI( self.image, self.selection )
             co.cv.cvXorS( self.image, co.cv.cvScalarAll(255), self.image )
             co.cv.cvResetImageROI( self.image )
-        
+
         if self.debugLevel >= 30:
             co.hg.cvShowImage( "Mask", self.mask)
-        
+
         self.cap.color("rgb", channel=3, copy=True)
 
         # Calls the resize method passing the new with, height
@@ -410,30 +411,30 @@ class Module(object):
         we set up keyboard input in the main view to start
         and stop tracking. Maybe generalize this functionality
         to all idms?
-        
+
         Arguments:
         - self: The main object pointer
-        
+
         Raises:
         - ValueError: If either the selection height or width are less
         than or equal to zero.
         """
         if (self.selection.width and self.selection.height <= 0):
             raise ValueError()
-        
+
         self.track_object = -1
-    
+
     def stopTracking(self):
         """
         Stops the tracking algorithm. This exists because
         we set up keyboard input in the main view to start
         and stop tracking. Maybe generalize this functionality
         to all idms?
-        
+
         Arguments:
         - self: The main object pointer
         """
-        
+
         self.track_object = 0
 
     def selSizeUp(self):
@@ -456,7 +457,7 @@ class Module(object):
 
         if self.selection.width > 10 and self.selection.height > 10:
             self.selection = co.cv.cvRect(self.selection.x+5,self.selection.y+5,self.selection.width-10,self.selection.height-10)
-    
+
     def selPositionLeft(self):
         """
         Changes the location of the selection window.
@@ -465,7 +466,7 @@ class Module(object):
         - self: The main object pointer
         """
 
-        if 6 <= self.selection.x <= self.image.width: 
+        if 6 <= self.selection.x <= self.image.width:
             self.selection=co.cv.cvRect(self.selection.x-5,self.selection.y,self.selection.width,self.selection.height)
 
 
@@ -479,7 +480,7 @@ class Module(object):
 
         if 0 <= self.selection.x <= self.image.width-self.selection.width-6:
             self.selection=co.cv.cvRect(self.selection.x+5,self.selection.y,self.selection.width,self.selection.height)
-        
+
 
     def selPositionUp(self):
         """
@@ -500,8 +501,8 @@ class Module(object):
         """
         if 0 <= self.selection.y <= self.image.height-self.selection.height-6:
             self.selection=co.cv.cvRect(self.selection.x,self.selection.y+5,self.selection.width,self.selection.height)
-    
-        
+
+
     def get_pointer(self):
         """
         Returns the new MousePosition.

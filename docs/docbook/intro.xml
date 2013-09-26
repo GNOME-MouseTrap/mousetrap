@@ -10,12 +10,12 @@
       <title>Why Python?</title>
 
       <para>    Python as we all know is a dynamic, flexible and object-oriented programming language with a low learning curve which means that anyone with few programming knowledges can develop applications using python in a short time.</para>
-<para> 
+<para>
     For the last 3 years Python has been my favourite programming language and the fact that OpenCV offers python bindings helped me to erase any doubt of using it, but, there were a few more things to consider before choosing python definitely, one of them is the OpenCV hardware requirements. To keep track of the reference points it is necessary to continuously scan and process the new frames captured and this is performed with the OpenCV library. At the beginning the definitely use of python was being affected by this point considering that OpenCV was written in C and the hardware requirements could increase using bindings of the library. After executing some tests with both languages I saw the requirements where almost the same in both cases so, I made my decision.
 </para>
     </sect2>
     <sect2>
-   <title> OpenCV in mouseTrap </title> 
+   <title> OpenCV in mouseTrap </title>
 <para>
     MouseTrap process the captured frames and calculates the reference points using OpenCV and following this steps:</para>
 <orderedlist numeration="arabic">
@@ -25,6 +25,6 @@
 <listitem><para>Calculates the Optical Flow of the detected point using Lucas-Kanade method to keep its track.</para></listitem>
 <listitem><para>Depending of the selected movement method mouseTrap will execute different calculations to get the new position if the mouse should be move.</para></listitem>
 </orderedlist>
-   </sect2> 
+   </sect2>
 
 </sect1>

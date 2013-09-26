@@ -65,7 +65,7 @@ class Mapper(Gtk.Widget):
 
         # First set an internal flag telling that we're realized
         #self.set_flags(self.flags() | Gtk.REALIZED)
-	self.set_realized(True)
+        self.set_realized(True)
 
         # Create a new gdk.Window which we can draw on.
         # Also say that we want to receive exposure events
@@ -80,8 +80,8 @@ class Mapper(Gtk.Widget):
                         | Gdk.EventMask.BUTTON1_MOTION_MASK | Gdk.EventMask.BUTTON_PRESS_MASK
                         | Gdk.EventMask.POINTER_MOTION_MASK
                         | Gdk.EventMask.POINTER_MOTION_HINT_MASK,
-		wclass=Gdk.INPUT_OUTPUT
-	)
+                wclass=Gdk.INPUT_OUTPUT
+        )
 
         # Associate the gdk.Window with ourselves, Gtk+ needs a reference
         # between the widget and the gdk window

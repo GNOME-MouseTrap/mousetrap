@@ -34,7 +34,7 @@ class Addon(AddonsBase):
 
     def __init__(self, controller):
         AddonsBase.__init__(self, controller)
-        
+
         GObject.timeout_add(1000, self.check_cpu)
         debug.debug("addon.cpu", "CPU addon started")
 

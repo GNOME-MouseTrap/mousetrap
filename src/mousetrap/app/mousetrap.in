@@ -150,7 +150,7 @@ mousetrap() {
 
     getDesktop
 
-	/usr/bin/python -c "import mousetrap.app.main as mousetrap; mousetrap.Controller().start();" "$ARGS"
+        /usr/bin/python -c "import mousetrap.app.main as mousetrap; mousetrap.Controller().start();" "$ARGS"
 }
 
 getDesktop() {

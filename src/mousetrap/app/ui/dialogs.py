@@ -28,257 +28,257 @@ from gi.repository import Gtk
 from i18n import _
 
 def addLabelMessage( dialog, message ):
-	"""
-	Adds a label to the dialog
+    """
+    Adds a label to the dialog
 
-	Arguments:
-	- dialog: The dialog object pointer.
-	- message: The dialog message
-	"""
+    Arguments:
+    - dialog: The dialog object pointer.
+    - message: The dialog message
+    """
 
-	label = Gtk.Label()
-	label.set_use_markup(True)
-	label.set_markup("<span>" + message + "</span>")
-	label.show()
-#	dialog.hbox.attach(label, left=, top=, width=, height=, )
+    label = Gtk.Label()
+    label.set_use_markup(True)
+    label.set_markup("<span>" + message + "</span>")
+    label.show()
+#    dialog.hbox.attach(label, left=, top=, width=, height=, )
 
 def addImage( dialog, stockImage, stock=False):
-	"""
-	Adds an image to a dialog.
+    """
+    Adds an image to a dialog.
 
-	Arguments:
-	- dialog: The dialog object pointer.
-	- stockImage: The image to set.
-	- stock. is it a stock image? False if it isn't.
-	"""
+    Arguments:
+    - dialog: The dialog object pointer.
+    - stockImage: The image to set.
+    - stock. is it a stock image? False if it isn't.
+    """
 
-	image = Gtk.Image()
-	if stock:
-		image.set_from_stock( stockImage, Gtk.IconSize.DIALOG )
-	else:
-		pass
-	image.set_alignment( 0.0, 0.5 )
-	image.show()
-#	dialog.hbox.attach(label, left=, top=, width=, height=, )
+    image = Gtk.Image()
+    if stock:
+        image.set_from_stock( stockImage, Gtk.IconSize.DIALOG )
+    else:
+        pass
+    image.set_alignment( 0.0, 0.5 )
+    image.show()
+#    dialog.hbox.attach(label, left=, top=, width=, height=, )
 
 def confirmDialog( message, parent ):
-	"""
-	Creates a confirmation dialog.
+    """
+    Creates a confirmation dialog.
 
-	Arguments:
-	- message: The dialog message
-	- parent: The parent window. None if there's not one.
-	"""
+    Arguments:
+    - message: The dialog message
+    - parent: The parent window. None if there's not one.
+    """
 
-	dialog = createDialog( _( "Confirmation Dialog" ), parent,
-				Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, \
-				(Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT, \
-				Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT))
-	addImage( dialog, Gtk.STOCK_DIALOG_WARNING, True)
-	addLabelMessage( dialog, message )
-	return dialog.run()
+    dialog = createDialog( _( "Confirmation Dialog" ), parent,
+                Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, \
+                (Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT, \
+                Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT))
+    addImage( dialog, Gtk.STOCK_DIALOG_WARNING, True)
+    addLabelMessage( dialog, message )
+    return dialog.run()
 
 def errorDialog( message, parent ):
-	"""
-	Creates an error dialog using the messageDialog function.
+    """
+    Creates an error dialog using the messageDialog function.
 
-	Arguments:
-	- message: The dialog message
-	- parent: The parent window. None if there's not one.
-	"""
-	return messageDialog( _("Error Dialog"), message, parent,  Gtk.STOCK_DIALOG_ERROR )
+    Arguments:
+    - message: The dialog message
+    - parent: The parent window. None if there's not one.
+    """
+    return messageDialog( _("Error Dialog"), message, parent,  Gtk.STOCK_DIALOG_ERROR )
 
 def warningDialog( message, parent ):
-	"""
-	Creates a warning dialog using the messageDialog function.
+    """
+    Creates a warning dialog using the messageDialog function.
 
-	Arguments:
-	- message: The dialog message
-	- parent: The parent window. None if there's not one.
-	"""
-	return messageDialog( _("Information Dialog"), message, parent,  Gtk.STOCK_DIALOG_WARNING )
+    Arguments:
+    - message: The dialog message
+    - parent: The parent window. None if there's not one.
+    """
+    return messageDialog( _("Information Dialog"), message, parent,  Gtk.STOCK_DIALOG_WARNING )
 
 def informationDialog( message, parent ):
-	"""
-	Creates an information dialog using the messageDialog function.
+    """
+    Creates an information dialog using the messageDialog function.
 
-	Arguments:
-	- message: The dialog message
-	- parent: The parent window. None if there's not one.
-	"""
-	return messageDialog( _("Information Dialog"), message, parent,  Gtk.STOCK_DIALOG_INFO )
+    Arguments:
+    - message: The dialog message
+    - parent: The parent window. None if there's not one.
+    """
+    return messageDialog( _("Information Dialog"), message, parent,  Gtk.STOCK_DIALOG_INFO )
 
 def messageDialog( title, message, parent, stockImage, stock = True ):
-	"""
-	Creates a simple message dialog. E.g: Error, Warnings, Informations.
+    """
+    Creates a simple message dialog. E.g: Error, Warnings, Informations.
 
-	Arguments:
-	- title: The dialog title.
-	- message: The dialog message.
-	- parent: The parent Window, None if there's not one.
-	- stockImage: The image to show.
-	- stock: If the image is a stock image.
-	"""
-	dialog = createDialog( title, parent, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, \
-				(Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT))
+    Arguments:
+    - title: The dialog title.
+    - message: The dialog message.
+    - parent: The parent Window, None if there's not one.
+    - stockImage: The image to show.
+    - stock: If the image is a stock image.
+    """
+    dialog = createDialog( title, parent, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, \
+                (Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT))
 
-	addImage( dialog, stockImage, stock)
-	addLabelMessage( dialog, message )
-	return dialog.run()
+    addImage( dialog, stockImage, stock)
+    addLabelMessage( dialog, message )
+    return dialog.run()
 
 def closeDialog( dialog, *args ):
-	"""
-	Close Function for dialogs.
+    """
+    Close Function for dialogs.
 
-	Arguments:
-	- dialog: the dialog to destroy.
-	- *args: The widget event arguments.
-	"""
-	dialog.destroy()
+    Arguments:
+    - dialog: the dialog to destroy.
+    - *args: The widget event arguments.
+    """
+    dialog.destroy()
 
 def createDialog( title, parent, flags, buttons ):
-	"""
-	Creates a Dialog Window.
+    """
+    Creates a Dialog Window.
 
-	Arguments:
-	- self: The main object pointer.
-	- title: The Dialog window Title
-	- parent: The parent window.
-	- message: A message to show in the dialog.
-	- stockImage: A GTK+ stock image.
-	- flags: gtk.Dialog Flags to set the typo of dialog. E.g: gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT
-	- buttons: A tuple with the gtk.Buttons to show. E.g: ( gtk.STOCK_OK, gtk.STOCK_CANCEL )
-	"""
+    Arguments:
+    - self: The main object pointer.
+    - title: The Dialog window Title
+    - parent: The parent window.
+    - message: A message to show in the dialog.
+    - stockImage: A GTK+ stock image.
+    - flags: gtk.Dialog Flags to set the typo of dialog. E.g: gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT
+    - buttons: A tuple with the gtk.Buttons to show. E.g: ( gtk.STOCK_OK, gtk.STOCK_CANCEL )
+    """
 
-	dialog = Gtk.Dialog(title, parent, flags, buttons)
-	dialog.set_default_size(150, 100)
-	dialog.set_position(Gtk.WindowPosition.CENTER)
-	dialog.set_border_width(8)
-	
-	vbox = Gtk.Grid()
-	vbox.set_column_spacing(4)
-	hbox = Gtk.Grid()
-	hbox.set_row_spacing(4)
-	bbox = Gtk.ButtonBox()
-	bbox.set_layout(Gtk.BUTTONBOX_END)
-	
-	vbox.add(hbox)
-	vbox.attach_next_to(bbox, hbox, Gtk.PositionType.BOTTOM, 1, 1)
-	dialog.add(vbox)
-	
-	setattr(dialog, 'vbox', vbox)
-	setattr(dialog, 'hbox', hbox)
-	setattr(dialog, 'bbox', bbox)
-	
-	args = list(args)
-	args.insert(0, stock.CLOSE)
-	dialog.connect('delete-event', closeDialog, dialog)
-	
-	dialog.show_all()
-	return dialog
+    dialog = Gtk.Dialog(title, parent, flags, buttons)
+    dialog.set_default_size(150, 100)
+    dialog.set_position(Gtk.WindowPosition.CENTER)
+    dialog.set_border_width(8)
+
+    vbox = Gtk.Grid()
+    vbox.set_column_spacing(4)
+    hbox = Gtk.Grid()
+    hbox.set_row_spacing(4)
+    bbox = Gtk.ButtonBox()
+    bbox.set_layout(Gtk.BUTTONBOX_END)
+
+    vbox.add(hbox)
+    vbox.attach_next_to(bbox, hbox, Gtk.PositionType.BOTTOM, 1, 1)
+    dialog.add(vbox)
+
+    setattr(dialog, 'vbox', vbox)
+    setattr(dialog, 'hbox', hbox)
+    setattr(dialog, 'bbox', bbox)
+
+    args = list(args)
+    args.insert(0, stock.CLOSE)
+    dialog.connect('delete-event', closeDialog, dialog)
+
+    dialog.show_all()
+    return dialog
 
 class IdmSettings(Gtk.Window):
 
-	def __init__(self, cfg, name, stgs):
-		"""
-		Idm Settings window.
+    def __init__(self, cfg, name, stgs):
+        """
+        Idm Settings window.
 
-		Arguments:
-		self: The main object pointer.
-		cfg: The config object.
-		stgs: The idm's settings dict to parse.
-		"""
-		GObject.GObject.__init__(self)
+        Arguments:
+        self: The main object pointer.
+        cfg: The config object.
+        stgs: The idm's settings dict to parse.
+        """
+        GObject.GObject.__init__(self)
 
-		self.cfg = cfg
-		self.idm_stgs = eval(stgs)
- 		self.idm = name.lower()
- 		self.tmp = {}
+        self.cfg = cfg
+        self.idm_stgs = eval(stgs)
+        self.idm = name.lower()
+        self.tmp = {}
 
- 		#self.set_size_request( 500 , 120)
- 		self.set_default_size( 500 , 120)
- 		self.set_title(_("%s Config's Dialog" % self.idm.capitalize()))
+        #self.set_size_request( 500 , 120)
+        self.set_default_size( 500 , 120)
+        self.set_title(_("%s Config's Dialog" % self.idm.capitalize()))
 
-		self.main_vbox = Gtk.Grid()
-		self.main_vbox.set_column_spacing(6)
-		self.add_widgets()
-		
-		buttons_box = Gtk.Grid()
-		buttons_box.set_row_spacing(6)
-		
-		button = Gtk.Button( _("Accept"), stock=Gtk.STOCK_OK )
-		button.connect("clicked", self.accept_button)
-		buttons_box.add(button)
-		
-		button = Gtk.Button( _("Cancel"), stock=Gtk.STOCK_CANCEL )
-		button.connect("clicked", self.cancel_button)
-		buttons_box.add(button)
-		
-		buttons_box.show_all()
-		
-		self.main_vbox.add(buttons_box)
-		
-		self.main_vbox.show_all()
-		# Switched the two lines below around.
-		self.add(self.main_vbox)
-		self.show_all()
-		
-		if not self.cfg.has_section(self.idm):
-			self.cfg.add_section(self.idm)
-	
-	def accept_button(self, widget, *args):
-		for key in self.tmp:
-			self.cfg.set(self.idm, key, self.tmp[key])
-		self.destroy()
-	
-	def cancel_button(self, widget, *args):
-		self.destroy()
-	
-	def add_widgets(self):
-		'''
-		Dynamically adds the widgets to the dialog.
-		
-		Arguments:
-		- self: The main object pointer.
-		'''
-		for key in self.idm_stgs:
-			# This line might need to be edited..
-			self.main_vbox.add(self.create_labled_input(key, True, True, 0))
-	
-	def value_changed(self, widget, key):
-		self.tmp[key] = widget.get_text()
-	
-	def create_labled_input(self, key):
-		'''
-		Creates a textbox with a label.
-		
-		Arguments:
-		- self: The main object pointer.
-		- key: The parent key.
-		'''
-		hbox = Gtk.Grid()
-		label = Gtk.Label( _(key.capitalize()) )
-		label.set_use_underline(True)
-		label.show()
-		hbox.add(label)
-		
-		val = str(self.idm_stgs[key]["value"])
-		if self.cfg.get(self.idm, key):
-			val = self.cfg.get(self.idm, key)
-		
-		entry = Gtk.Entry()
-		entry.set_text(val)
-		entry.connect("changed", self.value_changed, key)
-		entry.show()
-		hbox.add(entry)
-		hbox.show_all()
-		return hbox
+        self.main_vbox = Gtk.Grid()
+        self.main_vbox.set_column_spacing(6)
+        self.add_widgets()
+
+        buttons_box = Gtk.Grid()
+        buttons_box.set_row_spacing(6)
+
+        button = Gtk.Button( _("Accept"), stock=Gtk.STOCK_OK )
+        button.connect("clicked", self.accept_button)
+        buttons_box.add(button)
+
+        button = Gtk.Button( _("Cancel"), stock=Gtk.STOCK_CANCEL )
+        button.connect("clicked", self.cancel_button)
+        buttons_box.add(button)
+
+        buttons_box.show_all()
+
+        self.main_vbox.add(buttons_box)
+
+        self.main_vbox.show_all()
+        # Switched the two lines below around.
+        self.add(self.main_vbox)
+        self.show_all()
+
+        if not self.cfg.has_section(self.idm):
+            self.cfg.add_section(self.idm)
+
+    def accept_button(self, widget, *args):
+        for key in self.tmp:
+            self.cfg.set(self.idm, key, self.tmp[key])
+        self.destroy()
+
+    def cancel_button(self, widget, *args):
+        self.destroy()
+
+    def add_widgets(self):
+        '''
+        Dynamically adds the widgets to the dialog.
+
+        Arguments:
+        - self: The main object pointer.
+        '''
+        for key in self.idm_stgs:
+            # This line might need to be edited..
+            self.main_vbox.add(self.create_labled_input(key, True, True, 0))
+
+    def value_changed(self, widget, key):
+        self.tmp[key] = widget.get_text()
+
+    def create_labled_input(self, key):
+        '''
+        Creates a textbox with a label.
+
+        Arguments:
+        - self: The main object pointer.
+        - key: The parent key.
+        '''
+        hbox = Gtk.Grid()
+        label = Gtk.Label( _(key.capitalize()) )
+        label.set_use_underline(True)
+        label.show()
+        hbox.add(label)
+
+        val = str(self.idm_stgs[key]["value"])
+        if self.cfg.get(self.idm, key):
+            val = self.cfg.get(self.idm, key)
+
+        entry = Gtk.Entry()
+        entry.set_text(val)
+        entry.connect("changed", self.value_changed, key)
+        entry.show()
+        hbox.add(entry)
+        hbox.show_all()
+        return hbox
 
 ###############################################
-#                                             #
+#                         #
 #    THE WHEEL HAS ALREADY BEEN DISCOVERED    #
 #     SO, LETS USE MOUSETWEAK INSTEAD OF      #
-#      ADD THIS SUPPORT TO MOUSETRAP.         #
+#      ADD THIS SUPPORT TO MOUSETRAP.     #
 ###############################################
 # class ClicksDialog( gtk.Window ):
 #     """
@@ -289,252 +289,252 @@ class IdmSettings(Gtk.Window):
 #     """
 #
 #     def __init__( self, gui ):
-#         """
-#         Initialize the Clicks Dialog.
+#     """
+#     Initialize the Clicks Dialog.
 #
-#         Arguments:
-#         - self: The main object pointer.
-#         - mouseTrap: The mouseTrap object pointer.
-#         - cAm: The camera object pointer
-#         """
+#     Arguments:
+#     - self: The main object pointer.
+#     - mouseTrap: The mouseTrap object pointer.
+#     - cAm: The camera object pointer
+#     """
 #
-#         gtk.Window.__init__( self )
+#     gtk.Window.__init__( self )
 #
-#         self.gui = gui
+#     self.gui = gui
 #
-#         self.set_property("skip-taskbar-hint", True)
-#         self.set_keep_above( True )
-#         self.set_size_request( 500 , 120)
-#         self.set_default_size( 500 , 120)
-#         self.width, self.height = self.get_default_size()
+#     self.set_property("skip-taskbar-hint", True)
+#     self.set_keep_above( True )
+#     self.set_size_request( 500 , 120)
+#     self.set_default_size( 500 , 120)
+#     self.width, self.height = self.get_default_size()
 #
-#         self.set_title(_('Clicks Panel'))
+#     self.set_title(_('Clicks Panel'))
 #
-#         self.set_app_paintable(True)
-#         #self.set_decorated(False)
+#     self.set_app_paintable(True)
+#     #self.set_decorated(False)
 #
-#         self.buttons = []
-#         self.blue  = '#1161d9'
-#         self.green = '#60da11'
-#         evtBox = gtk.EventBox()
+#     self.buttons = []
+#     self.blue  = '#1161d9'
+#     self.green = '#60da11'
+#     evtBox = gtk.EventBox()
 #
-#         buttonsBox = gtk.HBox( spacing = 6 )
-#         buttonsBox.show_all()
+#     buttonsBox = gtk.HBox( spacing = 6 )
+#     buttonsBox.show_all()
 #
-#         self.leftClick = gtk.Button()
-#         self.leftClick.add(self._newImageButton(_("Left Click"),
-#                                                   "%s/images/leftClick.png" % env.mTDataDir))
-#         self.leftClick.connect("clicked", self.executeClick, 'b1c')
-#         self.leftClick.show()
-#         self.buttons.append( self.leftClick )
-#         buttonsBox.pack_start( self.leftClick )
+#     self.leftClick = gtk.Button()
+#     self.leftClick.add(self._newImageButton(_("Left Click"),
+#                           "%s/images/leftClick.png" % env.mTDataDir))
+#     self.leftClick.connect("clicked", self.executeClick, 'b1c')
+#     self.leftClick.show()
+#     self.buttons.append( self.leftClick )
+#     buttonsBox.pack_start( self.leftClick )
 #
-#         self.doubleClick = gtk.Button()
-#         self.doubleClick.add(self._newImageButton(_("Double Click"),
-#                                                     "%s/images/doubleClick.png" % env.mTDataDir))
-#         self.doubleClick.connect("clicked", self.executeClick, 'b1d')
-#         self.doubleClick.show()
-#         self.buttons.append( self.doubleClick )
-#         buttonsBox.pack_start( self.doubleClick )
+#     self.doubleClick = gtk.Button()
+#     self.doubleClick.add(self._newImageButton(_("Double Click"),
+#                             "%s/images/doubleClick.png" % env.mTDataDir))
+#     self.doubleClick.connect("clicked", self.executeClick, 'b1d')
+#     self.doubleClick.show()
+#     self.buttons.append( self.doubleClick )
+#     buttonsBox.pack_start( self.doubleClick )
 #
-#         self.leftHold = gtk.Button()
-#         self.leftHold.add(self._newImageButton(_("Drag/Drop Click"),
-#                                                  "%s/images/leftHold.png" % env.mTDataDir))
-#         self.leftHold.connect("clicked", self.executeClick, 'b1p')
-#         self.leftHold.show()
-#         self.buttons.append( self.leftHold )
-#         buttonsBox.pack_start( self.leftHold )
+#     self.leftHold = gtk.Button()
+#     self.leftHold.add(self._newImageButton(_("Drag/Drop Click"),
+#                          "%s/images/leftHold.png" % env.mTDataDir))
+#     self.leftHold.connect("clicked", self.executeClick, 'b1p')
+#     self.leftHold.show()
+#     self.buttons.append( self.leftHold )
+#     buttonsBox.pack_start( self.leftHold )
 #
-#         #~ self.middleClick = gtk.Button()
-#         #~ self.middleClick.add(self._newImageButton(_("Middle Click"), "%s/images/middleClick.png" % env.mTDataDir))
-#         #~ self.middleClick.connect("clicked", self.executeClick, 'b2c')
-#         #~ self.middleClick.show()
-#         #~ self.buttons.append( self.middleClick )
-#         #~ buttonsBox.pack_start( self.middleClick )
+#     #~ self.middleClick = gtk.Button()
+#     #~ self.middleClick.add(self._newImageButton(_("Middle Click"), "%s/images/middleClick.png" % env.mTDataDir))
+#     #~ self.middleClick.connect("clicked", self.executeClick, 'b2c')
+#     #~ self.middleClick.show()
+#     #~ self.buttons.append( self.middleClick )
+#     #~ buttonsBox.pack_start( self.middleClick )
 #
-#         self.rightClick = gtk.Button()
-#         self.rightClick.add(self._newImageButton(_("Right Click"),
-#                                                    "%s/images/rightClick.png" % env.mTDataDir))
-#         self.rightClick.connect("clicked", self.executeClick, 'b3c')
-#         self.rightClick.show()
-#         self.buttons.append( self.rightClick )
-#         buttonsBox.pack_start( self.rightClick )
+#     self.rightClick = gtk.Button()
+#     self.rightClick.add(self._newImageButton(_("Right Click"),
+#                            "%s/images/rightClick.png" % env.mTDataDir))
+#     self.rightClick.connect("clicked", self.executeClick, 'b3c')
+#     self.rightClick.show()
+#     self.buttons.append( self.rightClick )
+#     buttonsBox.pack_start( self.rightClick )
 #
-#         self.add( buttonsBox  )
+#     self.add( buttonsBox  )
 #
 #     def showPanel( self ):
-#         """
-#         Shows the panel
+#     """
+#     Shows the panel
 #
-#         Arguments:
-#         - self: The main object pointer.
-#         """
+#     Arguments:
+#     - self: The main object pointer.
+#     """
 #
-#         X = Y = 0
+#     X = Y = 0
 #
-#         poss = mouseTrap.mice( "position" )
+#     poss = mouseTrap.mice( "position" )
 #
-#         # We'll change the click panel position to be sure that
-#         # it won't appear under another window or worse under a
-#         # popup menu.
-#         if poss[0] in xrange( env.screen["width"]/2 ):
-#             X = env.screen["width"] - self.width
-#
-#
-#         if poss[1] in xrange( env.screen["height"]/2 ):
-#             Y = env.screen["height"] - self.height
+#     # We'll change the click panel position to be sure that
+#     # it won't appear under another window or worse under a
+#     # popup menu.
+#     if poss[0] in xrange( env.screen["width"]/2 ):
+#         X = env.screen["width"] - self.width
 #
 #
-#         self.move(X, Y)
+#     if poss[1] in xrange( env.screen["height"]/2 ):
+#         Y = env.screen["height"] - self.height
 #
-#         if self.get_focus():
-#             self.buttons[ self.buttons.index(self.get_focus()) ].get_child().modify_bg( gtk.STATE_NORMAL,
-#                                                                                         gtk.gdk.color_parse(self.blue))
 #
-#         self.set_focus(self.buttons[0])
-#         self.buttons[0].get_child().modify_bg( gtk.STATE_NORMAL, gtk.gdk.color_parse(self.green))
-#         self.show_all()
+#     self.move(X, Y)
 #
-#         mouseTrap.setState( "clk-dialog" )
+#     if self.get_focus():
+#         self.buttons[ self.buttons.index(self.get_focus()) ].get_child().modify_bg( gtk.STATE_NORMAL,
+#                                             gtk.gdk.color_parse(self.blue))
+#
+#     self.set_focus(self.buttons[0])
+#     self.buttons[0].get_child().modify_bg( gtk.STATE_NORMAL, gtk.gdk.color_parse(self.green))
+#     self.show_all()
+#
+#     mouseTrap.setState( "clk-dialog" )
 #
 #     def hidePanel( self, *args ):
-#         """
-#         Hides the panel
+#     """
+#     Hides the panel
 #
-#         Arguments:
-#         - self: The main object pointer.
-#         - args: The event arguments
-#         """
-#         self.hide()
-#         mouseTrap.setState( "active" )
+#     Arguments:
+#     - self: The main object pointer.
+#     - args: The event arguments
+#     """
+#     self.hide()
+#     mouseTrap.setState( "active" )
 #
 #     def pressButton( self, *args ):
-#         """
-#         Press the focused button
+#     """
+#     Press the focused button
 #
-#         Arguments:
-#         - self: The main object pointer.
-#         - args: The event arguments
-#         """
+#     Arguments:
+#     - self: The main object pointer.
+#     - args: The event arguments
+#     """
 #
-#         self.get_focus().clicked()
+#     self.get_focus().clicked()
 #
 #     def prevBtn( self, *args ):
-#         """
-#         Move to the prev button
+#     """
+#     Move to the prev button
 #
-#         Arguments:
-#         - self: The main object pointer.
-#         - args: The event arguments
-#         """
+#     Arguments:
+#     - self: The main object pointer.
+#     - args: The event arguments
+#     """
 #
-#         self.buttons[ self.buttons.index(self.get_focus()) ].get_child().modify_bg( gtk.STATE_NORMAL,
-#                                                                                     gtk.gdk.color_parse(self.blue))
-#         self.buttons[ self.buttons.index(self.get_focus()) - 1 ].grab_focus()
-#         self.buttons[ self.buttons.index(self.get_focus()) ].get_child().modify_bg( gtk.STATE_NORMAL,
-#                                                                                     gtk.gdk.color_parse(self.green))
+#     self.buttons[ self.buttons.index(self.get_focus()) ].get_child().modify_bg( gtk.STATE_NORMAL,
+#                                             gtk.gdk.color_parse(self.blue))
+#     self.buttons[ self.buttons.index(self.get_focus()) - 1 ].grab_focus()
+#     self.buttons[ self.buttons.index(self.get_focus()) ].get_child().modify_bg( gtk.STATE_NORMAL,
+#                                             gtk.gdk.color_parse(self.green))
 #
 #     def nextBtn( self, *args ):
-#         """
-#         Move to the next button
+#     """
+#     Move to the next button
 #
-#         Arguments:
-#         - self: The main object pointer.
-#         - args: The event arguments
-#         """
+#     Arguments:
+#     - self: The main object pointer.
+#     - args: The event arguments
+#     """
 #
-#         index = self.buttons.index(self.get_focus()) + 1
-#         if index >= len(self.buttons):
-#             index = 0
-#         self.buttons[ index -1 ].get_child().modify_bg( gtk.STATE_NORMAL,
-#                                                         gtk.gdk.color_parse(self.blue))
-#         self.buttons[ index ].grab_focus()
-#         self.buttons[ index ].get_child().modify_bg( gtk.STATE_NORMAL,
-#                                                      gtk.gdk.color_parse(self.green))
+#     index = self.buttons.index(self.get_focus()) + 1
+#     if index >= len(self.buttons):
+#         index = 0
+#     self.buttons[ index -1 ].get_child().modify_bg( gtk.STATE_NORMAL,
+#                             gtk.gdk.color_parse(self.blue))
+#     self.buttons[ index ].grab_focus()
+#     self.buttons[ index ].get_child().modify_bg( gtk.STATE_NORMAL,
+#                              gtk.gdk.color_parse(self.green))
 #
 #     def executeClick( self, widget, button ):
-#         """
-#         Execute the selected click
+#     """
+#     Execute the selected click
 #
-#         Arguments:
-#         - self: The main object pointer.
-#         - widget: The button clicked.
-#         - button: The mouse button that should be pressed.
-#         """
+#     Arguments:
+#     - self: The main object pointer.
+#     - widget: The button clicked.
+#     - button: The mouse button that should be pressed.
+#     """
 #
-#         self.gui.clickDlgHandler( button )
-#         self.hidePanel()
+#     self.gui.clickDlgHandler( button )
+#     self.hidePanel()
 #
 #     def _newImageButton( self, label, image ):
-#         """
-#         Creates an image button from an image file
+#     """
+#     Creates an image button from an image file
 #
-#         Arguments:
-#         - self: The main object pointer
-#         - label: The buttons label
-#         - image: The image path
+#     Arguments:
+#     - self: The main object pointer
+#     - label: The buttons label
+#     - image: The image path
 #
-#         Returns ButtonLabelBox A gtk.HBox that contains the new image stock button.
-#         """
-#         evt = gtk.EventBox()
+#     Returns ButtonLabelBox A gtk.HBox that contains the new image stock button.
+#     """
+#     evt = gtk.EventBox()
 #
-#         buttonLabelBox = gtk.VBox()
+#     buttonLabelBox = gtk.VBox()
 #
-#         im = gtk.Image()
-#         im.set_from_file( image )
-#         im.show
+#     im = gtk.Image()
+#     im.set_from_file( image )
+#     im.show
 #
-#         label = gtk.Label( label )
-#         label.set_alignment( 0.0, 0.5 )
-#         label.set_use_underline( True )
+#     label = gtk.Label( label )
+#     label.set_alignment( 0.0, 0.5 )
+#     label.set_use_underline( True )
 #
-#         buttonLabelBox.pack_start( im )
-#         buttonLabelBox.pack_start( label )
-#         buttonLabelBox.show_all()
+#     buttonLabelBox.pack_start( im )
+#     buttonLabelBox.pack_start( label )
+#     buttonLabelBox.show_all()
 #
-#         evt.add(buttonLabelBox)
-#         evt.modify_bg( gtk.STATE_NORMAL, gtk.gdk.color_parse(self.blue))
-#         evt.modify_bg( gtk.STATE_PRELIGHT, gtk.gdk.color_parse(self.green))
-#         return evt
+#     evt.add(buttonLabelBox)
+#     evt.modify_bg( gtk.STATE_NORMAL, gtk.gdk.color_parse(self.blue))
+#     evt.modify_bg( gtk.STATE_PRELIGHT, gtk.gdk.color_parse(self.green))
+#     return evt
 
 
 class CairoTransGui( Gtk.Window ):
 
-	def __init__( self, message ):
-		GObject.GObject.__init__(self)
+    def __init__( self, message ):
+        GObject.GObject.__init__(self)
 
-		self.set_property("skip-taskbar-hint", True)
-		self.connect("expose-event", self.expose)
-		self.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
-		self.connect('button-press-event', self.clicked)
-		self.set_size_request( 700 , 100)
-		#self.connect('screen-changed', self.screenChanged)
+        self.set_property("skip-taskbar-hint", True)
+        self.connect("expose-event", self.expose)
+        self.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
+        self.connect('button-press-event', self.clicked)
+        self.set_size_request( 700 , 100)
+        #self.connect('screen-changed', self.screenChanged)
 
-		self.set_title('MouseTrap Message!!!')
+        self.set_title('MouseTrap Message!!!')
 
 
-		self.set_app_paintable(True)
-		self.set_decorated(False)
+        self.set_app_paintable(True)
+        self.set_decorated(False)
 
-		self.message = message
+        self.message = message
 
-		self.show_all()
+        self.show_all()
 
-	def expose( self, widget, event):
+    def expose( self, widget, event):
 
-		cr = widget.window.cairo_create()
+        cr = widget.window.cairo_create()
 
-		cr.set_operator(1)
-		cr.paint()
+        cr.set_operator(1)
+        cr.paint()
 
-		cr.set_source_rgba (255.0, 255.0, 255.0, 100.0)
-		cr.set_font_size (50)
-		cr.move_to (0, 70)
-		cr.show_text (self.message)
-		cr.fill()
-		cr.stroke()
-		return False
+        cr.set_source_rgba (255.0, 255.0, 255.0, 100.0)
+        cr.set_font_size (50)
+        cr.move_to (0, 70)
+        cr.show_text (self.message)
+        cr.fill()
+        cr.stroke()
+        return False
 
-	def clicked(self, widget, event):
-		#If a shift key is pressed, start resizing
-		self.begin_move_drag(event.button, int(event.x_root), int(event.y_root), event.time)
+    def clicked(self, widget, event):
+        #If a shift key is pressed, start resizing
+        self.begin_move_drag(event.button, int(event.x_root), int(event.y_root), event.time)

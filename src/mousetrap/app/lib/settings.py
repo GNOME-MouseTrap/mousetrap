@@ -35,7 +35,7 @@ class Settings( configparser.ConfigParser ):
 
     def optionxform( self, optionstr ):
         """
-        Keeps the options cases instead of 
+        Keeps the options cases instead of
         converting them in lowercase.
 
         Arguments:
@@ -86,7 +86,7 @@ class Settings( configparser.ConfigParser ):
 
             conf.write("\n\n[access]")
             conf.write("\nreqMovement = 10")
-            
+
             conf.write("\n\n[scripts]")
             conf.write("\nname = joystick")
 

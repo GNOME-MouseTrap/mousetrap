@@ -43,7 +43,7 @@ def _camera(backend):
     if not hasattr(ocv, backend):
         debug.warning("Camera", "Not such backend %s falling back to OcvfwPython" % backend)
         backend = "OcvfwPython"
-    
+
     bknd = getattr(ocv, backend)
 
     @co.singleton
@@ -84,7 +84,7 @@ class Capture(object):
 
         self.last_update   = 0
         self.last_duration = 0
-            
+
         self.set_async(fps, async)
 
     def set_async(self, fps=100, async=False):
@@ -112,7 +112,7 @@ class Capture(object):
         """
         Camera.query_image()
         #cv.ShowImage("webcam", self.img)
-	
+
         if not self.__image:
             self.__images_cn   = { 1 : co.cv.CreateImage ( Camera.imgSize, 8, 1 ),
                                    3 : co.cv.CreateImage ( Camera.imgSize, 8, 3 ),
@@ -132,14 +132,14 @@ class Capture(object):
             Camera.swap_lkpoints()
 
         self.show_rectangles(self.rectangles())
-	self.draw_point(self.points())
+        self.draw_point(self.points())
 
         return self.async
 
     def set_camera(self, key, value):
-      """
-      """
-      Camera.set(key, value)
+        """
+        """
+        Camera.set(key, value)
 
     def image(self, new_img = None):
         """
@@ -187,17 +187,17 @@ class Capture(object):
 
         if "as_numpy_array" in dir(img):
             buff = GdkPixbuf.Pixbuf.new_from_array(img.as_numpy_array(),
-                                                 GdkPixbuf.Colorspace.RGB,  
+                                                 GdkPixbuf.Colorspace.RGB,
                                                  img.depth)
         else:
             buff = GdkPixbuf.Pixbuf.new_from_data(img.tostring(),
-                                                GdkPixbuf.Colorspace.RGB, 
-						False,                      # has alpha channel
+                                                GdkPixbuf.Colorspace.RGB,
+                                                False,                      # has alpha channel
                                                 img.depth,
                                                 img.width,
                                                 img.height,
-                                                img.width*img.nChannels, 	# stride or widthStep
-						None, None)			#Bug workaround for memory management
+                                                img.width*img.nChannels,         # stride or widthStep
+                                                None, None)                        #Bug workaround for memory management
         return buff
 
     def points(self):
@@ -231,8 +231,8 @@ class Capture(object):
             co.cv.Rectangle( self.__image, (rect.x, rect.y), (rect.size[0], rect.size[1]), co.cv.CV_RGB(255,0,0), 3, 8, 0 )
 
     def draw_point(self, points):
-	for point in points:
-        	co.cv.Circle(self.__image, (point.x,point.y), 3, co.cv.Scalar(0, 255, 0, 0), 3, 8, 0)
+        for point in points:
+            co.cv.Circle(self.__image, (point.x,point.y), 3, co.cv.Scalar(0, 255, 0, 0), 3, 8, 0)
 
     def original(self):
         """
@@ -376,11 +376,11 @@ class Capture(object):
         if roi is None:
             return Camera.get_haar_points(haar_csd)
 
-	#FIXME:This should not be hard coded
-	#roi = (250, 120, 390, 360)
+        #FIXME:This should not be hard coded
+        #roi = (250, 120, 390, 360)
         roi = (roi["start"], roi["end"], roi["width"], roi["height"]) #get_haar_roi_points needs a list
-        #roi = co.cv.Rectangle(self.__image, (roi[0], roi[1]), (roi[2], roi[3]), (0,0,255)) 
-						# was roi["start"], roi["end"]), (roi["width"], roi["height"]
+        #roi = co.cv.Rectangle(self.__image, (roi[0], roi[1]), (roi[2], roi[3]), (0,0,255))
+                                                # was roi["start"], roi["end"]), (roi["width"], roi["height"]
             #roi pt1 and pt2 needs to be a vertex and added color
         #might need to remove and reestablish point values
         return Camera.get_haar_roi_points(haar_csd, roi, orig)

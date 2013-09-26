@@ -35,13 +35,13 @@ class AddonsHandler(object):
 
     def get_addons_list(self):
         """
-        Checks the addons folder and gets the 
+        Checks the addons folder and gets the
         list of present addons.
 
         Arguments:
         - self: The main object pointer.
         """
-        
+
         reg = re.compile(r'([A-Za-z0-9]+)\.py$', re.DOTALL)
         dirname = os.path.dirname(__file__)
         return [ mod[0] for mod in [ reg.findall(f) for f in os.listdir("%s/" % dirname) if "handler" not in f] if mod ]
@@ -59,11 +59,11 @@ class AddonsHandler(object):
                           globals(),
                           locals(),
                           [''])
-            
+
             return { "name" : tmp.a_name, "dsc" : tmp.a_description, "stgs" : tmp.a_settings}
         except:
             print(("Problems loading mousetrap.app.addons.%s" % addon))
-            
+
 
 class AddonsBase(object):
 
@@ -89,7 +89,7 @@ class AddonsBase(object):
         - msg: The message.
         """
         self.itf.statusbar.push(self.itf.statusbar_id, msg)
-    
+
     def add_item(self, item):
         """
         Adds any gtk widget to the addons vbox.

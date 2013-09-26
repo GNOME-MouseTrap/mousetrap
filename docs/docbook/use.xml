@@ -13,33 +13,33 @@
 
       <para> There are also 3 other widgets above the previusly explaned, those widgets are:</para>
 <para>
-	<varlistentry>
+        <varlistentry>
             <term>Show Point Mapper</term>
-		  <listitem> 
-		  <para> Hide or Show the point Mapper</para>
-		</listitem>
-	</varlistentry>
+                  <listitem>
+                  <para> Hide or Show the point Mapper</para>
+                </listitem>
+        </varlistentry>
 </para>
 
 <para>
-	<varlistentry>
+        <varlistentry>
             <term>Show Capture</term>
-		  <listitem> 
-		  <para> Hide or Show the capture widget</para>
-		</listitem>
-	</varlistentry>
+                  <listitem>
+                  <para> Hide or Show the capture widget</para>
+                </listitem>
+        </varlistentry>
 </para>
 
 <para>
-	<varlistentry>
+        <varlistentry>
             <term>Flip Image</term>
-		  <listitem> 
-		  <para>This will flip the captured image horizontaly inverting the X axis.</para>
-		  <para>
-			In some cases the webcams capture images working as a mirror and this will make mousetrap invert the X axis, so it is possible in those cases to flip the image.
-		  </para>
-		</listitem>
-	</varlistentry>
+                  <listitem>
+                  <para>This will flip the captured image horizontaly inverting the X axis.</para>
+                  <para>
+                        In some cases the webcams capture images working as a mirror and this will make mousetrap invert the X axis, so it is possible in those cases to flip the image.
+                  </para>
+                </listitem>
+        </varlistentry>
 </para>
 
 <para><emphasis>NOTE:</emphasis> It is hardly not recomended to hide the Point Mapper and the Capture view, this widgets are really useful for users to understand whats happening with mousetrap and how it is working.</para>

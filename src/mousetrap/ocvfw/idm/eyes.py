@@ -56,7 +56,7 @@ class Module(object):
         - stgs: Possible settings loaded from the user's settings file. If there aren't settings the IDM will use the a_settings dict.
         """
         debug.debug("mousetrap.ocvfw.idm", "Starting %s idm" % a_name)
-        
+
         self.img          = None
         self.ctr          = controller
         self.cap          = None
@@ -102,9 +102,9 @@ class Module(object):
         - self: The main object pointer
         - cam: The camera device index. For Example: 0 = /dev/video0, 1 = /dev/video1
         """
-        
+
         debug.debug("mousetrap.ocvfw.idm", "Setting Capture")
-        
+
         self.cap = Capture(async=False, idx=cam, backend="OcvfwPython")
         self.cap.change(color="rgb")
         self.cap.set_camera("lk_swap", True)
@@ -125,7 +125,7 @@ class Module(object):
         self.cap.sync()
         if not hasattr(self.cap, "leye") or not hasattr(self.cap, "reye"):
             self.get_eye()
-            
+
         return self.cap
 
     def get_pointer(self):

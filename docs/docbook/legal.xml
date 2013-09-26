@@ -1,38 +1,38 @@
   <legalnotice id="legalnotice">
-	<para>
-	  Permission is granted to copy, distribute and/or modify this
-	  document under the terms of the GNU Free Documentation
-	  License (GFDL), Version 1.1 or any later version published
-	  by the Free Software Foundation with no Invariant Sections,
-	  no Front-Cover Texts, and no Back-Cover Texts.  You can find
-	  a copy of the GFDL at this <ulink type="help"
-	  url="ghelp:fdl">link</ulink> or in the file COPYING-DOCS
-	  distributed with this manual.
+        <para>
+          Permission is granted to copy, distribute and/or modify this
+          document under the terms of the GNU Free Documentation
+          License (GFDL), Version 1.1 or any later version published
+          by the Free Software Foundation with no Invariant Sections,
+          no Front-Cover Texts, and no Back-Cover Texts.  You can find
+          a copy of the GFDL at this <ulink type="help"
+          url="ghelp:fdl">link</ulink> or in the file COPYING-DOCS
+          distributed with this manual.
          </para>
          <para> This manual is part of a collection of GNOME manuals
           distributed under the GFDL.  If you want to distribute this
           manual separately from the collection, you can do so by
           adding a copy of the license to the manual, as described in
-          section 6 of the license. 
-	</para>
+          section 6 of the license.
+        </para>
 
-	<para>
-	  Many of the names used by companies to distinguish their
-	  products and services are claimed as trademarks. Where those
-	  names appear in any GNOME documentation, and the members of
-	  the GNOME Documentation Project are made aware of those
-	  trademarks, then the names are in capital letters or initial
-	  capital letters.
-	</para>
+        <para>
+          Many of the names used by companies to distinguish their
+          products and services are claimed as trademarks. Where those
+          names appear in any GNOME documentation, and the members of
+          the GNOME Documentation Project are made aware of those
+          trademarks, then the names are in capital letters or initial
+          capital letters.
+        </para>
 
-	<para>
-	  DOCUMENT AND MODIFIED VERSIONS OF THE DOCUMENT ARE PROVIDED
-	  UNDER  THE TERMS OF THE GNU FREE DOCUMENTATION LICENSE
-	  WITH THE FURTHER UNDERSTANDING THAT:
+        <para>
+          DOCUMENT AND MODIFIED VERSIONS OF THE DOCUMENT ARE PROVIDED
+          UNDER  THE TERMS OF THE GNU FREE DOCUMENTATION LICENSE
+          WITH THE FURTHER UNDERSTANDING THAT:
 
-	  <orderedlist>
-		<listitem>
-		  <para>DOCUMENT IS PROVIDED ON AN "AS IS" BASIS,
+          <orderedlist>
+                <listitem>
+                  <para>DOCUMENT IS PROVIDED ON AN "AS IS" BASIS,
                     WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR
                     IMPLIED, INCLUDING, WITHOUT LIMITATION, WARRANTIES
                     THAT THE DOCUMENT OR MODIFIED VERSION OF THE
@@ -49,10 +49,10 @@
                     LICENSE. NO USE OF ANY DOCUMENT OR MODIFIED
                     VERSION OF THE DOCUMENT IS AUTHORIZED HEREUNDER
                     EXCEPT UNDER THIS DISCLAIMER; AND
-		  </para>
-		</listitem>
-		<listitem>
-		  <para>UNDER NO CIRCUMSTANCES AND UNDER NO LEGAL
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>UNDER NO CIRCUMSTANCES AND UNDER NO LEGAL
                        THEORY, WHETHER IN TORT (INCLUDING NEGLIGENCE),
                        CONTRACT, OR OTHERWISE, SHALL THE AUTHOR,
                        INITIAL WRITER, ANY CONTRIBUTOR, OR ANY
@@ -68,9 +68,9 @@
                        DOCUMENT AND MODIFIED VERSIONS OF THE DOCUMENT,
                        EVEN IF SUCH PARTY SHALL HAVE BEEN INFORMED OF
                        THE POSSIBILITY OF SUCH DAMAGES.
-		  </para>
-		</listitem>
-	  </orderedlist>
-	</para>
+                  </para>
+                </listitem>
+          </orderedlist>
+        </para>
   </legalnotice>
 

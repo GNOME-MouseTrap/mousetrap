@@ -43,7 +43,7 @@ class Module(object):
     def __init__(self, controller, stgs = {}):
         """
         IDM's init function.
-        
+
         Arguments:
         - self: The main object pointer.
         - controller: mousetrap main class pointer. This is passed by MouseTrap's controller (mousetrap.py) when loaded.
@@ -51,7 +51,7 @@ class Module(object):
         """
 
         debug.debug("mousetrap.ocvfw.idm", "Starting %s idm" % a_name)
-        
+
         self.ctr          = controller
         self.cap          = None
         self.stgs         = stgs
@@ -85,7 +85,7 @@ class Module(object):
     def prepare_config(self):
         """
         Prepares the IDM using the settings
-        
+
         Arguments:
         - self: The main object pointer
         """
@@ -97,17 +97,17 @@ class Module(object):
     def set_capture(self, cam):
         """
         Initialize the capture and sets the main settings.
-        
+
         Arguments:
         - self: The main object pointer
         - cam: The camera device index. For Example: 0 = /dev/video0, 1 = /dev/video1
         """
-        
+
         debug.debug("mousetrap.ocvfw.idm", "Setting Capture")
         self.cap = Capture(async=True, idx=cam, backend="OcvfwPython")
         self.cap.change(color="rgb")
         self.cap.set_camera("lk_swap", True)
-	
+
     def calc_motion(self):
         if not hasattr(self.cap, "forehead"):
             self.get_forehead()
@@ -125,11 +125,11 @@ class Module(object):
         if not hasattr(self.cap, "forehead"):
             self.get_forehead()
 
-	#self.get_forehead()
+        #self.get_forehead()
 
         #return self.cap.resize(200, 160, True)
         return self.cap
-	
+
     def get_pointer(self):
         """
         Returns the new MousePosition
@@ -139,7 +139,7 @@ class Module(object):
         """
 
         if hasattr(self.cap, "forehead"):
-	    #debug.debug("Forehead Point", self.cap.forehead)
+            #debug.debug("Forehead Point", self.cap.forehead)
             return self.cap.forehead
 
     def get_forehead(self):
@@ -148,39 +148,39 @@ class Module(object):
         face     = self.cap.get_area(commons.haar_cds['Face'])
 
         if face:
-	    debug.debug("face", face)
+            debug.debug("face", face)
 
             areas    = [ (pt[1][0] - pt[0][0])*(pt[1][1] - pt[0][1]) for pt in face ] #replaced x with [0] and y with [1]
             startF   = face[areas.index(max(areas))][0]
-	    #startF = face[0][0]
-	    endF     = face[areas.index(max(areas))][1]
-	    #endF = face[0][1]
+            #startF = face[0][0]
+            endF     = face[areas.index(max(areas))][1]
+            #endF = face[0][1]
 
             # Shows the face rectangle
             self.cap.add( Graphic("rect", "Face", ( startF[0], startF[1] ), (endF[0], endF[1]), parent=self.cap) )
 
-            eyes = self.cap.get_area( 
+            eyes = self.cap.get_area(
                 commons.haar_cds['Eyes'],
-		{"start" : startF[0], "end" : startF[1], "width" : endF[0] - startF[0],"height" : endF[1] - startF[1]},
+                {"start" : startF[0], "end" : startF[1], "width" : endF[0] - startF[0],"height" : endF[1] - startF[1]},
                 (startF[0], startF[1]) ) # replaced x and y
-	    debug.debug("eyes - get_area", eyes)
+            debug.debug("eyes - get_area", eyes)
 
         if eyes:
             areas = [ (pt[1][0] - pt[0][0])*(pt[1][1] - pt[0][1]) for pt in eyes ] #replaced x with [0] and y with [1]
 
             point1, point2   = eyes[areas.index(max(areas))][0], eyes[areas.index(max(areas))][1]
-	    point1, point2 = eyes[0][0], eyes[0][1]
-	    debug.debug("eyes", point1)
+            point1, point2 = eyes[0][0], eyes[0][1]
+            debug.debug("eyes", point1)
 
             # Shows the eyes rectangle
             #self.cap.add(Graphic("rect", "Eyes", ( point1[0], point1[1] ), (point2[0], point2[1]), parent=self.cap))
 
             X, Y = ( (point1[0] + point2[0]) / 2 ), ( point1[1] + ( (point1[1] + point2[1]) / 2 ) ) / 2 #replaced x and y
-	    self.cap.forehead = (X,Y)
+            self.cap.forehead = (X,Y)
 
-	    self.cap.forehead = (((startF[0] + endF[0])/2),((startF[1] + endF[1])/2))
+            self.cap.forehead = (((startF[0] + endF[0])/2),((startF[1] + endF[1])/2))
             self.cap.add( Point("point", "forehead-point", self.cap.forehead, parent=self.cap, follow=True) )
-	    debug.debug("forehead point", self.cap.forehead)
+            debug.debug("forehead point", self.cap.forehead)
             return True
 
         self.foreheadOrig = None

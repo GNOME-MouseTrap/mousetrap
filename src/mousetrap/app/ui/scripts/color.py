@@ -58,19 +58,19 @@ class ScriptClass(Mapper):
         self.point       = None
         self.border_with = 0
         """
-        self.threshold = 1 # Threshold for mouse movement.  If any mouse movement is 
+        self.threshold = 1 # Threshold for mouse movement.  If any mouse movement is
                            # smaller than self.threshold pixels (I guess) then the mouse is not moved.
                            # Trying to reduce jitteriness. Not working.
         self.same_location_count = 0 # Yeah this variable name is bad.  It means the number of times
                                      # that the cursor has been in the same location under the threshold.
         """
         self.connect("expose_event", self.expose_event)
-        
+
         self.cfg = settings.load()
-    
+
         algorithm_info = pocv.get_idm_inf("color")
-        
-        self.scale = self.cfg.get("color", "vscale") 
+
+        self.scale = self.cfg.get("color", "vscale")
 
     def update_items(self, point):
         self.point = point

@@ -35,7 +35,7 @@ from threading import Timer
 
 a_name = "Finger"
 a_description = "Finger point tracker based on LK Algorithm"
-a_settings = { "speed" : {"value":2 }, 
+a_settings = { "speed" : {"value":2 },
                "conf_path" : "%s/.finger" % os.path.expanduser("~")}
 
 class Module(object):
@@ -46,7 +46,7 @@ class Module(object):
     def __init__(self, controller, stgs = {}):
         """
         IDM's init function.
-        
+
         Arguments:
         - self: The main object pointer.
         - controller: mousetrap main class pointer. This is passed by MouseTrap's controller (mousetrap.py) when loaded.
@@ -54,7 +54,7 @@ class Module(object):
         """
 
         debug.debug("mousetrap.ocvfw.idm", "Starting %s idm" % a_name)
-        
+
         self.ctr          = controller
         self.cap          = None
         self.stgs         = stgs
@@ -74,7 +74,7 @@ class Module(object):
     def prepare_config(self):
         """
         Prepares the IDM using the settings
-        
+
         Arguments:
         - self: The main object pointer
         """
@@ -88,14 +88,14 @@ class Module(object):
     def set_capture(self, cam):
         """
         Initialize the capture and sets the main settings.
-        
+
         Arguments:
         - self: The main object pointer
         - cam: The camera device index. For Example: 0 = /dev/video0, 1 = /dev/video1
         """
-        
+
         debug.debug("mousetrap.ocvfw.idm", "Setting Capture")
-        
+
         self.cap = Capture(async=True, idx=cam, backend="OcvfwPython")
         self.cap.change(color="rgb")
         self.cap.set_camera("lk_swap", True)

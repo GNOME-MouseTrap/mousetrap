@@ -53,7 +53,7 @@ class ScriptClass(Mapper):
         self.point       = None
         self.border_width = 0
 
-	#FIXME: uncommenting this results in tracebacks and the window not showing.
+        #FIXME: uncommenting this results in tracebacks and the window not showing.
         #self.connect("expose_event", self.expose_event)
 
     def update_items(self, point):
@@ -63,7 +63,7 @@ class ScriptClass(Mapper):
 
     def expose_event(self, widget, event):
         self.width, self.height = self.allocation[2], self.allocation[3]
-        
+
 #        self.draw_rectangle(0,
 #                            0,
 #                            self.width,
@@ -92,22 +92,22 @@ class ScriptClass(Mapper):
     def calc_move(self):
         if not hasattr(self, "vpoint"):
             return False
-        
+
         x, y = mouse.position()
 
         par = ["width", "height"]
-        
+
         if self.vpoint["x"] > (self.safe_area["x"] + 20):
-            x = x + abs((self.safe_area["x"] + 20) - self.vpoint["x"]) 
-        elif self.vpoint["x"] < self.safe_area["x"]: 
+            x = x + abs((self.safe_area["x"] + 20) - self.vpoint["x"])
+        elif self.vpoint["x"] < self.safe_area["x"]:
             x = x - abs((self.safe_area["x"]) - self.vpoint["x"])
-            
+
         if self.vpoint["y"] > (self.safe_area["y"] + 20):
             y = y + abs((self.safe_area["y"] + 20) - self.vpoint["y"])
-        elif self.vpoint["y"] < self.safe_area["y"]: 
+        elif self.vpoint["y"] < self.safe_area["y"]:
             y = y - abs((self.safe_area["y"]) - self.vpoint["y"])
-            
-        
+
+
         mouse.move( x, y)
 
     def prefferences(self):

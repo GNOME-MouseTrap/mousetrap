@@ -31,16 +31,16 @@ import re
 
 def get_py_list(dirlist):
     """
-    Checks for .py files on directories in dirlist 
-    and removes the extensions. 
-        
+    Checks for .py files on directories in dirlist
+    and removes the extensions.
+
     Arguments:
     - dirlist: The directories list.
     """
 
     if not type(dirlist) is list:
         dirlist = [dirlist]
-        
+
     reg = re.compile(r'([A-Za-z0-9]+)\.py$', re.DOTALL)
 
     group = []

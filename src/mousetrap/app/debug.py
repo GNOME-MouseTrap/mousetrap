@@ -33,7 +33,7 @@ modules = {}
 
 
 class StreamFileHandler(logging.Handler):
-    
+
     def emit(self, record):
         final_msg = "%s: %s - %s" % (record.levelname, record.name, record.getMessage())
         print(final_msg)

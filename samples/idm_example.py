@@ -48,7 +48,7 @@ class Module(object):
     def __init__(self, controller, stgs = {}):
         """
         IDM's init function.
-        
+
         Arguments:
         - self: The main object pointer.
         - controller: mousetrap main class pointer. This is passed by MouseTrap's controller (mousetrap.py) when loaded.
@@ -56,33 +56,33 @@ class Module(object):
         """
         # Debugging is always important
         debug.debug("ocvfw.idm", "Starting %s idm" % a_name)
-        
+
         # Controller instance
         self.ctr          = controller
-        
+
         # Capture instance
-        # The capture is the object containing the image 
+        # The capture is the object containing the image
         # and all the possible methods to modify it.
         self.cap          = None
-        
+
         # IDM's Settings dict
         self.stgs         = stgs
 
         # Prepares the IDM using the settings.
         self.prepare_config()
-        
+
         debug.info("ocvfw.idm", "%s Algorithm loaded" % a_name)
 
     def prepare_config(self):
         """
         Prepares the IDM using the settings
-        
+
         Arguments:
         - self: The main object pointer
         """
         global a_settings
-        
-        # If the dict is empty then 
+
+        # If the dict is empty then
         # use the default settings defined in a_settings
         if not self.stgs:
             self.stgs = a_settings
@@ -94,28 +94,28 @@ class Module(object):
     def set_capture(self, cam):
         """
         Initialize the capture and sets the main settings.
-        
+
         Arguments:
         - self: The main object pointer
         - cam: The camera device index. For Example: 0 = /dev/video0, 1 = /dev/video1
         """
-        
+
         debug.debug("ocvfw.idm", "Setting Capture")
-        
+
         # Starts the Capture using the async method.
         # This means that self.cap.sync() wont be called periodically
         # by the idm because the Capture syncs the image asynchronously (See dev/camera.py)
         # The default backend used is OcvfwPython but it is possible to chose other backends
         # that will use other libs to process images.
         self.cap = Capture(async=True, idx=cam, backend="OcvfwPython")
-        
+
         # This sets the final image default color to rgb. The default color is bgr.
         self.cap.change(color="rgb")
 
     def get_capture(self):
         """
         Gets the last queried and formated image.
-        Function used by the mousetrap/ui/main.py 
+        Function used by the mousetrap/ui/main.py
         to get the output image
 
         Arguments:

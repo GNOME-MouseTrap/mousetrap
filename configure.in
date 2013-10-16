@@ -84,7 +84,6 @@ images/Makefile
 src/Makefile
 src/mousetrap/Makefile
 src/mousetrap/app/Makefile
-src/mousetrap/app/mousetrap
 src/mousetrap/app/environment.py
 src/mousetrap/app/lib/Makefile
 src/mousetrap/app/ui/Makefile
@@ -96,3 +95,15 @@ src/mousetrap/ocvfw/dev/Makefile
 src/mousetrap/ocvfw/idm/Makefile
 src/mousetrap/ocvfw/haars/Makefile
 ],[chmod +x run_pylint.sh])
+
+###############################################################################
+# Don't include src/mousetrap/app/mousetrap.in in AC_OUTPUT.  It will be
+# processed by make (see src/mousetrap/app/Makefile.am), not by autoconf or
+# automake. For more information read
+# http://www.gnu.org/software/autoconf/manual/autoconf.html#Installation-Directory-Variables
+#
+# Other files may require this same "fix" (e.g., i18n.py, environment.py,
+# mousetrap.desktop).
+#
+#   - Stoney Jackson, dr.stoney@gmail.com, 10/10/2013
+###############################################################################

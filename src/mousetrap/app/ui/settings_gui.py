@@ -485,12 +485,13 @@ class PreffGui( Gtk.Window ):
         """
 
         ts = widget.get_selection()
-        model, it = ts.get_selected()
-        path = model.get_path(it)[0]
-        if model[path][0] and model[path][3]:
-            self.selected_idm = model[path][1]
-            self.selected_idm_stgs = model[path][3]
-            conf_button.set_sensitive(True)
+        if(ts):
+            model, it = ts.get_selected()
+            path = model.get_path(it)[0]
+            if model[path][0] and model[path][3]:
+                self.selected_idm = model[path][1]
+                self.selected_idm_stgs = model[path][3]
+                conf_button.set_sensitive(True)
 
     def _toggle_cell_changed(self, cell, path, model):
         """

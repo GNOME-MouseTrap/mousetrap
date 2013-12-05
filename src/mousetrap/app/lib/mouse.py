@@ -45,6 +45,11 @@ clickType = { 'p' : [ X.ButtonPress ],
               'd' : [ X.ButtonPress, X.ButtonRelease,
                       X.ButtonPress, X.ButtonRelease ] }
 
+# Gets GDK Screen and Pointer - LMH 11/13/13
+gdkDisplay = Gdk.Display.get_default()
+manager = gdkDisplay.get_device_manager()
+pointer = manager.get_client_pointer()
+screen = gdkDisplay.get_default_screen()
 
 ## GTK Display for any user
 #FIXME: Swap these
@@ -72,7 +77,7 @@ def position( *arg ):
 
     Returns A list with the X and Y coordinates.
     """
-    return list(gtkDisplay.get_pointer()[1:3])
+    return list(pointer.get_position()[1:3])
 
 def click( x = None, y = None, button = "bc1" ):
     """
@@ -151,7 +156,7 @@ def move( x=0, y=0, point=None ):
 
         if isGnome:
             try:
-                reg.generateMouseEvent( x, y, 'abs' )
+                pointer.warp(screen,x,y)
             except:
                 isGnome = False
         else:
@@ -160,32 +165,3 @@ def move( x=0, y=0, point=None ):
             xDisplay.flush()
 
     return True
-
-###########################################
-#               DEPRECATED
-# Dictionary Dispatcher
-# dsp = { "move"      : move,
-#         "click"     : click,
-#         "position"  : position }
-#
-# def handler( func ):
-#     """
-#     Mouse functions decorator.
-#
-#     Arguments:
-#     - func: The function called to access the decorator.
-#
-#     Return The wrapper
-#     """
-#
-#     def wrapper( *arg, **kw ):
-#         """
-#         Wrapper function.
-#
-#         This functions will execute the required function passing the arguments to it.
-#
-#         Return the function executed
-#         """
-#         return dsp[arg[0]]( *arg[1:], **kw )
-#
-#     return wrapper

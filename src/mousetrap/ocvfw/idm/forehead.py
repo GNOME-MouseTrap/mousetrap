@@ -125,9 +125,6 @@ class Module(object):
         if not hasattr(self.cap, "forehead"):
             self.get_forehead()
 
-        #self.get_forehead()
-
-        #return self.cap.resize(200, 160, True)
         return self.cap
 
     def get_pointer(self):
@@ -139,7 +136,6 @@ class Module(object):
         """
 
         if hasattr(self.cap, "forehead"):
-            #debug.debug("Forehead Point", self.cap.forehead)
             return self.cap.forehead
 
     def get_forehead(self):
@@ -148,39 +144,28 @@ class Module(object):
         face     = self.cap.get_area(commons.haar_cds['Face'])
 
         if face:
-            debug.debug("face", face)
 
             areas    = [ (pt[1][0] - pt[0][0])*(pt[1][1] - pt[0][1]) for pt in face ] #replaced x with [0] and y with [1]
             startF   = face[areas.index(max(areas))][0]
-            #startF = face[0][0]
             endF     = face[areas.index(max(areas))][1]
-            #endF = face[0][1]
 
             # Shows the face rectangle
             self.cap.add( Graphic("rect", "Face", ( startF[0], startF[1] ), (endF[0], endF[1]), parent=self.cap) )
 
-            eyes = self.cap.get_area(
-                commons.haar_cds['Eyes'],
-                {"start" : startF[0], "end" : startF[1], "width" : endF[0] - startF[0],"height" : endF[1] - startF[1]},
-                (startF[0], startF[1]) ) # replaced x and y
-            debug.debug("eyes - get_area", eyes)
+            eyes = self.cap.get_area(commons.haar_cds['Eyes'])
 
         if eyes:
-            areas = [ (pt[1][0] - pt[0][0])*(pt[1][1] - pt[0][1]) for pt in eyes ] #replaced x with [0] and y with [1]
+            areas = [ (pt[1][0] - pt[0][0])*(pt[1][1] - pt[0][1]) for pt in eyes ]
 
             point1, point2   = eyes[areas.index(max(areas))][0], eyes[areas.index(max(areas))][1]
             point1, point2 = eyes[0][0], eyes[0][1]
-            debug.debug("eyes", point1)
 
             # Shows the eyes rectangle
             #self.cap.add(Graphic("rect", "Eyes", ( point1[0], point1[1] ), (point2[0], point2[1]), parent=self.cap))
 
-            X, Y = ( (point1[0] + point2[0]) / 2 ), ( point1[1] + ( (point1[1] + point2[1]) / 2 ) ) / 2 #replaced x and y
-            self.cap.forehead = (X,Y)
-
-            self.cap.forehead = (((startF[0] + endF[0])/2),((startF[1] + endF[1])/2))
-            self.cap.add( Point("point", "forehead-point", self.cap.forehead, parent=self.cap, follow=True) )
-            debug.debug("forehead point", self.cap.forehead)
+            #FIXME: Not correct
+            X, Y = (((startF[0] + endF[0])/2),((startF[1] + endF[1])/3))
+            self.cap.add( Point("point", "forehead", (X,Y), parent=self.cap, follow=True) )
             return True
 
         self.foreheadOrig = None

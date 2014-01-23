@@ -36,6 +36,8 @@ from .. import debug
 from .. import commons as co
 from mousetrap.ocvfw import _ocv as ocv
 from gi.repository import GObject
+import numpy
+import cv2
 
 Camera = None
 
@@ -111,12 +113,11 @@ class Capture(object):
         - self: The main object pointer.
         """
         Camera.query_image()
-        #cv.ShowImage("webcam", self.img)
 
-        if not self.__image:
-            self.__images_cn   = { 1 : co.cv.CreateImage ( Camera.imgSize, 8, 1 ),
-                                   3 : co.cv.CreateImage ( Camera.imgSize, 8, 3 ),
-                                   4 : co.cv.CreateImage ( Camera.imgSize, 8, 4 ) }
+        if not numpy.any(self.__image):
+            self.__images_cn   = { 1 : numpy.zeros((Camera.imgSize[0], Camera.imgSize[1], 1), numpy.uint8),
+                                   3 : numpy.zeros((Camera.imgSize[0], Camera.imgSize[1], 3), numpy.uint8),
+                                   4 : numpy.zeros((Camera.imgSize[0], Camera.imgSize[1], 4), numpy.uint8)}
 
         self.__color       = "bgr"
         self.__image_orig  = self.__image = Camera.img
@@ -132,7 +133,8 @@ class Capture(object):
             Camera.swap_lkpoints()
 
         self.show_rectangles(self.rectangles())
-        self.draw_point(self.points())
+        if(self.points()):
+            self.draw_point(self.points()[0].orig)
 
         return self.async
 
@@ -167,8 +169,8 @@ class Capture(object):
         if self.__image is None:
             return False
 
-        tmp = co.cv.CreateImage( ( width, height ), 8, self.__ch )
-        co.cv.Resize( self.__image, tmp, co.cv.CV_INTER_AREA )
+        tmp = numpy.zeros((width, height, self.__ch), numpy.uint8)
+        tmp = cv2.resize(self.__image,(width,height),tmp,0,0,cv2.INTER_LINEAR)
 
         if not copy:
             self.__image = tmp
@@ -186,18 +188,18 @@ class Capture(object):
         img = self.__image
 
         if "as_numpy_array" in dir(img):
-            buff = GdkPixbuf.Pixbuf.new_from_array(img.as_numpy_array(),
+            buff = GdkPixbuf.new_from_array(img.as_numpy_array(),
                                                  GdkPixbuf.Colorspace.RGB,
                                                  img.depth)
         else:
             buff = GdkPixbuf.Pixbuf.new_from_data(img.tostring(),
                                                 GdkPixbuf.Colorspace.RGB,
                                                 False,                      # has alpha channel
-                                                img.depth,
-                                                img.width,
-                                                img.height,
-                                                img.width*img.nChannels,         # stride or widthStep
-                                                None, None)                        #Bug workaround for memory management
+                                                8, #depth
+                                                img.shape[1], #width
+                                                img.shape[0], #height
+                                                img.shape[1]*img.shape[2],
+                                                None, None)
         return buff
 
     def points(self):
@@ -228,11 +230,11 @@ class Capture(object):
         #debug.debug("Camera", "Showing existing rectangles -> %d" % len(rectangles))
 
         for rect in rectangles:
-            co.cv.Rectangle( self.__image, (rect.x, rect.y), (rect.size[0], rect.size[1]), co.cv.CV_RGB(255,0,0), 3, 8, 0 )
+            cv2.rectangle( self.__image,(rect.x, rect.y), (rect.size[0], rect.size[1]),(255, 0, 0),3,8,0)
 
     def draw_point(self, points):
-        for point in points:
-            co.cv.Circle(self.__image, (point.x,point.y), 3, co.cv.Scalar(0, 255, 0, 0), 3, 8, 0)
+        #for point in points:
+        cv2.circle(self.__image,(int(points[0]),int(points[1])),3,(0, 255, 0),3,8,0)
 
     def original(self):
         """
@@ -273,10 +275,10 @@ class Capture(object):
         """
 
         if "hor" or "both" in flip:
-            co.cv.Flip( self.__image, self.__image, 1)
+            self.__image = cv2.flip(self.__image, 1)
 
         if "ver" or "both" in flip:
-            co.cv.Flip( self.__image, self.__image, 0)
+            self.__image = cv2.flip(self.__image, 0)
 
         return self.__image
 
@@ -295,7 +297,7 @@ class Capture(object):
 
         if new_color:
             tmp = self.__images_cn[channel]
-            co.cv.CvtColor( self.__image, tmp, self.__color_int['cv_%s2%s' % (self.__color, new_color) ])
+            tmp = cv2.cvtColor(self.__image, self.__color_int['cv_%s2%s' % (self.__color, new_color) ])
             self.__color = new_color
             self.__ch = channel
 
@@ -329,7 +331,8 @@ class Capture(object):
             warn("The Capture is locked, no changes can be done", RuntimeWarning)
             return False
 
-        if not hasattr(self, graphic.label):
+        #FIXME: Change this to show only 1 or many rectangles
+        if True:
             setattr(self, graphic.label, graphic)
             self.__graphics[graphic.type].append(graphic)
 
@@ -376,13 +379,8 @@ class Capture(object):
         if roi is None:
             return Camera.get_haar_points(haar_csd)
 
-        #FIXME:This should not be hard coded
-        #roi = (250, 120, 390, 360)
         roi = (roi["start"], roi["end"], roi["width"], roi["height"]) #get_haar_roi_points needs a list
-        #roi = co.cv.Rectangle(self.__image, (roi[0], roi[1]), (roi[2], roi[3]), (0,0,255))
-                                                # was roi["start"], roi["end"]), (roi["width"], roi["height"]
-            #roi pt1 and pt2 needs to be a vertex and added color
-        #might need to remove and reestablish point values
+
         return Camera.get_haar_roi_points(haar_csd, roi, orig)
 
     def message(self, message):
@@ -485,19 +483,19 @@ class Point(Graphic):
         """
 
         # Update the current attrs
-        self.x = opencv.x
-        self.y = opencv.y
+        self.x = opencv[0]
+        self.y = opencv[1]
 
         if self.__ocv is not None:
             # Update the last attr
             self.last = self.__ocv
 
             # Update the diff attr
-            self.rel_diff = ( self.last.x - self.x,
-                                        self.last.y - self.y )
+            self.rel_diff = ( self.last[0] - self.x,
+                                        self.last[1] - self.y )
 
-            self.abs_diff = ( self.x - self.orig.x,
-                                        self.y - self.orig.y )
+            self.abs_diff = ( self.x - self.orig[0],
+                                        self.y - self.orig[1] )
 
         self.__ocv = opencv
 

@@ -33,6 +33,7 @@ import settings_gui
 import mousetrap.app.debug as debug
 import mousetrap.app.environment as env
 from mousetrap.app.addons import cpu
+import numpy
 
 class MainGui( Gtk.Window ):
     '''
@@ -87,8 +88,6 @@ class MainGui( Gtk.Window ):
 
         self.set_title("MouseTrap")
         self.connect("destroy", self.close)
-        # Why does this appear twice?? (line below)
-        self.setWindowsIcon()
 
         self.vbox = Gtk.Grid()
 
@@ -118,29 +117,13 @@ class MainGui( Gtk.Window ):
             self.cap_expander = Gtk.Expander.new_with_mnemonic("_Camera Image")
             self.cap_expander.add(self.cap_image)
             self.cap_expander.set_expanded(True)
-            #expander.connect('notify::expanded', self.expaned_cb)
             self.vbox.attach_next_to(self.cap_expander, self.addonBox, Gtk.PositionType.BOTTOM, 1, 1)
 
         if self.cfg.getboolean("gui", "showPointMapper"):
             self.map_expander = Gtk.Expander.new_with_mnemonic("_Script Mapper")
             self.map_expander.add(self.script)
             self.map_expander.set_expanded(True)
-            #expander.connect('notify::expanded', self.expaned_cb)
-            self.vbox.attach_next_to(self.map_expander, self.addonBox, Gtk.PositionType.BOTTOM, 1, 1)
-
-#        self.hbox = Gtk.Grid()
-#
-#        flipButton = Gtk.Button( _("Flip Image") )
-#        flipButton.connect("clicked", self.recalcPoint, "flip" )
-#        hbox.add(flipButton)
-#
-#        recalcButton = Gtk.Button( _("Recalc Point") )
-#        recalcButton.connect("clicked", self.recalcPoint )
-#        hbox.add(recalcButton)
-#
-#        self.vbox.add(self.hbox, Gtk.PositionType.BOTTOM)
-#
-#        self.buttonsBox.show_all()
+            self.vbox.attach_next_to(self.map_expander, self.cap_expander, Gtk.PositionType.BOTTOM, 1, 1)
 
         self.statusbar = Gtk.Statusbar()
         self.statusbar_id = self.statusbar.get_context_id("statusbar")
@@ -172,7 +155,7 @@ class MainGui( Gtk.Window ):
         - self: The main object pointer.
         - img: The IPLimage object.
         '''
-        if not cap.image():
+        if not numpy.any(cap.image()):
             return False
 
         #sets new pixbuf

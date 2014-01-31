@@ -47,6 +47,7 @@ class Mapper(Gtk.Widget):
         self.height  = height
         self.events  = { "motion" : [],
                          "click"  : []}
+        self.set_size_request(width, height)
 #         self._layout = self.create_pango_layout(text)
 #         self._layout.set_font_description(pango.FontDescription("Sans Serif 16"))
 
@@ -64,24 +65,27 @@ class Mapper(Gtk.Widget):
         # Mapper.do_realize: Class 'style' has no 'fg_gc' member
 
         # First set an internal flag telling that we're realized
-        #self.set_flags(self.flags() | Gtk.REALIZED)
         self.set_realized(True)
 
         # Create a new gdk.Window which we can draw on.
         # Also say that we want to receive exposure events
         # and button click and button press events
 
-        self.window = Gdk.Window(
-                self.get_parent_window(),
-                width=self.allocation.width,
-                height=self.allocation.height,
-                window_type=Gdk.WINDOW_CHILD,
-                event_mask=self.get_events() | Gdk.EventMask.EXPOSURE_MASK
-                        | Gdk.EventMask.BUTTON1_MOTION_MASK | Gdk.EventMask.BUTTON_PRESS_MASK
-                        | Gdk.EventMask.POINTER_MOTION_MASK
-                        | Gdk.EventMask.POINTER_MOTION_HINT_MASK,
-                wclass=Gdk.INPUT_OUTPUT
-        )
+        attr = Gdk.WindowAttr()
+        attr.window_type = Gdk.WindowType.CHILD
+        attr.wclass = Gdk.WindowWindowClass.INPUT_OUTPUT
+        attr.event_mask = self.get_events() | Gdk.EventMask.EXPOSURE_MASK | Gdk.EventMask.BUTTON1_MOTION_MASK | \
+                 Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.POINTER_MOTION_MASK | \
+                 Gdk.EventMask.POINTER_MOTION_HINT_MASK
+        attr.width = self.width #self.allocation.width
+        attr.height = self.height #self.allocation.height
+        attr.visual = self.get_visual()
+
+        mask = Gdk.WindowAttributesType.VISUAL | \
+            Gdk.WindowAttributesType.X | \
+            Gdk.WindowAttributesType.Y
+
+        self.window = Gdk.Window.new(self.get_parent_window(), attr, mask)
 
         # Associate the gdk.Window with ourselves, Gtk+ needs a reference
         # between the widget and the gdk window
@@ -89,20 +93,11 @@ class Mapper(Gtk.Widget):
 
         # Attach the style to the gdk.Window, a style contains colors and
         # GC contextes used for drawing
-        self.style.attach(self.window)
+        self.set_window(self.window)    #LMH 12/15/13
 
         # The default color of the background should be what
         # the style (theme engine) tells us.
-        self.style.set_background(self.window, Gtk.StateType.NORMAL)
-        self.window.move_resize(*self.allocation)
-
-        # self.style is a gtk.Style object, self.style.fg_gc is
-        # an array or graphic contexts used for drawing the forground
-        # colours
-        self.gc = self.style.fg_gc[Gtk.StateType.NORMAL]
-        # pylint: enable-msg=E1101
-
-        #self.connect("motion_notify_event", self.motion_notify_event)
+        self.window.move_resize(self.allocation.x,self.allocation.y, self.allocation.width, self.allocation.height)
 
     def do_unrealize(self):
         # The do_unrealized method is responsible for freeing the GDK resources
@@ -124,6 +119,8 @@ class Mapper(Gtk.Widget):
 
         # Save the allocated space
         self.allocation = allocation
+        #FIXME: Shouldn't need to set x manually
+        self.allocation.x = 50
 
         # If we're realized, move and resize the window to the
         # requested coordinates/positions
@@ -131,7 +128,7 @@ class Mapper(Gtk.Widget):
         # Mapper.do_size_allocate: Used * or ** magic
         # WE DO NEED THE *
         if self.get_realized():
-            self.window.move_resize(*allocation)
+            self.window.move_resize(self.allocation.x,self.allocation.y, self.allocation.width, self.allocation.height)
         # pylint: enable-msg=W0142
 
     def expose_event(self, widget, event):
@@ -143,34 +140,7 @@ class Mapper(Gtk.Widget):
         # a good idea to write this code as optimized as it can be, don't
         # Create any resources in here.
 
-#         x, y, self.width, self.height = self.allocation
-#         self.draw_rectangle(BORDER_WIDTH,
-#                             BORDER_WIDTH,
-#                             self.width - 2*BORDER_WIDTH,
-#                             self.height - 2*BORDER_WIDTH,
-#                             self.style.fg[self.state],
-#                             5.0)
-#
-#         w = self.width / 2
-#         h = self.height / 2
-#
-#         self.draw_rectangle(60, 50, 80, 60, self.style.fg[self.state], 5.0)
-#         self.draw_point( w + point.abs_diff.x, h - point.abs_diff.y, 2)
-
-#         x, y, w, h = self.allocation
-#         self.draw_rectangle(200,
-#                             160,
-#                             100,
-#                             ,
-#                             self.style.fg[self.state],
-#                             5.0)
         return True
-
-#         And draw the text in the middle of the allocated space
-#         fontw, fonth = self._layout.get_pixel_size()
-#         cr.move_to((w - fontw)/2, (h - fonth)/2)
-#         cr.update_layout(self._layout)
-#         cr.show_layout(self._layout)
 
     def draw_rectangle(self, x, y, width, height, color, line):
         """
@@ -178,7 +148,6 @@ class Mapper(Gtk.Widget):
         """
 
         cr = self.window.cairo_create()
-        cr.set_source_color(color)
         cr.rectangle(x, y, width, height)
         cr.set_line_width(line)
         cr.set_line_join(cairo.LINE_JOIN_ROUND)

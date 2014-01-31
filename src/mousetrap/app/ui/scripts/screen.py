@@ -53,7 +53,7 @@ class ScriptClass(Mapper):
         self.point       = None
         self.border_with = 0
 
-        self.connect("expose_event", self.expose_event)
+        self.connect("draw", self.expose_event)
 
     def update_items(self, point):
         self.point = point
@@ -61,13 +61,14 @@ class ScriptClass(Mapper):
         self.queue_draw()
 
     def expose_event(self, widget, event):
-        self.width, self.height = self.allocation[2], self.allocation[3]
+        self.width, self.height = self.allocation.width, self.allocation.height
+        self.width, self.height = 200,160
 
         self.draw_rectangle(self.border_with,
                             self.border_with,
                             self.width - 2*self.border_with,
                             self.height - 2*self.border_with,
-                            self.style.fg[self.state],
+                            self.get_style_context(),
                             5.0)
 
         self.center = { "x" : self.width / 2,
@@ -80,11 +81,12 @@ class ScriptClass(Mapper):
 
         self.draw_rectangle( self.vscreen["x"], self.vscreen["y"],
                              self.vscreen["width"], self.vscreen["height"],
-                             self.style.fg[self.state], 5.0)
+                             self.get_style_context(),  #self.style.fg[self.state]
+                             5.0)
 
         if hasattr(self.point, "abs_diff"):
-            self.vpoint = { "x" : self.center["x"] - self.point.abs_diff.x,
-                            "y" : self.center["y"] + self.point.abs_diff.y }
+            self.vpoint = { "x" : self.center["x"] - self.point.abs_diff[0],
+                            "y" : self.center["y"] + self.point.abs_diff[1] }
 
             self.draw_point( self.vpoint["x"], self.vpoint["y"], 2)
 

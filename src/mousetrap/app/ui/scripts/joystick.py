@@ -53,8 +53,7 @@ class ScriptClass(Mapper):
         self.point       = None
         self.border_width = 0
 
-        #FIXME: uncommenting this results in tracebacks and the window not showing.
-        #self.connect("expose_event", self.expose_event)
+        self.connect("draw", self.expose_event)
 
     def update_items(self, point):
         self.point = point
@@ -62,17 +61,19 @@ class ScriptClass(Mapper):
         self.queue_draw()
 
     def expose_event(self, widget, event):
-        self.width, self.height = self.allocation[2], self.allocation[3]
+        self.width, self.height = self.allocation.width, self.allocation.height
+        self.width, self.height = 200,160
 
-#        self.draw_rectangle(0,
-#                            0,
-#                            self.width,
-#                            self.height,
-#                            self.style.fg[self.state],
-#                            5.0)
+        #self.draw_rectangle(0,
+        #                    0,
+        #                    self.width,
+        #                    self.height,
+        #                    self.get_style_context(),
+        #                    5.0)
 
         self.center = { "x" : self.width / 2,
                         "y" : self.height / 2 }
+
 
         self.safe_area = { "x" : self.center["x"] - 10,
                          "y" : self.center["y"] - 10,
@@ -81,11 +82,12 @@ class ScriptClass(Mapper):
 
         self.draw_rectangle( self.safe_area["x"], self.safe_area["y"],
                              self.safe_area["width"], self.safe_area["height"],
-                             self.style.fg[self.state], 1.0)
+                             self.get_style_context(),  #self.style.fg[self.state],
+                             1.0)
 
         if hasattr(self.point, "abs_diff"):
-            self.vpoint = { "x" : self.center["x"] - self.point.abs_diff.x,
-                            "y" : self.center["y"] + self.point.abs_diff.y }
+            self.vpoint = { "x" : self.center["x"] - self.point.abs_diff[0],
+                            "y" : self.center["y"] + self.point.abs_diff[1]}
 
             self.draw_point( self.vpoint["x"], self.vpoint["y"], 2)
 

@@ -284,20 +284,39 @@ class Capture(object):
 
     def color(self, new_color, channel=None, copy=False):
         """
-        Changes the image's color.
+        Changes the image's color from one color mode to another.
 
-        Arguments:
-        - self: The main object pointer.
-        - color: The new color.
+        The new color mode to be used must be passed in, or the color mode
+        will not be changed and the previous color will be returned.
 
-        returns self.color if color == None
+        Optionally, the channel to be used can be passed in as an argument.  If
+        a channel is not passed in, the channel for the new color mode will be
+        detected and used instead.
+
+        Optionally, the converted image can also be used as the internal image.
+        By default, the internal image is not altered and the converted image
+        is returned.
         """
 
         channel = channel if channel != None else co.get_ch(new_color)
 
         if new_color:
+            # Create the base key for converting between two color modes
+            color_convert = "%s2%s" % (self.__color, new_color)
+
+            # By default, assume that the key format is `color_[convert_code]`
+            color_key = "color_%s" % color_convert
+
+            # Check that the key for converting between the two color modes
+            # is present in the conversion dictionary
+            if not color_key in self.__color_int:
+                # If the color conversion key is not present, default to the
+                # legacy OpenCV key naming convention
+                color_key = "cv_%s" % color_convert
+
             tmp = self.__images_cn[channel]
-            tmp = cv2.cvtColor(self.__image, self.__color_int['cv_%s2%s' % (self.__color, new_color) ])
+            tmp = cv2.cvtColor(self.__image, self.__color_int[color_key])
+
             self.__color = new_color
             self.__ch = channel
 

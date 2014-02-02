@@ -24,10 +24,15 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import time
-import debug
-import commons as co
+from mousetrap.ocvfw import debug
+from mousetrap.ocvfw import commons as co
 import cv2 #remove
-import cv2.cv as cv
+
+try:
+    import cv2.cv as cv
+except ImportError:
+    import cv2 as cv
+
 import numpy
 import array
 
@@ -158,7 +163,7 @@ class OcvfwBase:
                 self.grey,
                 self.img_lkpoints["current"],
                 (20, 20), (0,0),
-                (cv.CV_TERMCRIT_ITER | cv.CV_TERMCRIT_EPS, 20, 0.03))
+                (cv2.TERM_CRITERIA_MAX_ITER | cv2.TERM_CRITERIA_EPS, 20, 0.03))
 
             point.set_opencv( cvPoint )
             self.img_lkpoints["points"].append(point)
@@ -207,7 +212,7 @@ class OcvfwBase:
             None, #error vector
             (20, 20), #winSize
             2, #maxLevel
-            (cv2.TERM_CRITERIA_MAX_ITER|cv2.TERM_CRITERIA_EPS, 20, 0.03), #criteria
+            (cv2.TERM_CRITERIA_MAX_ITER | cv2.TERM_CRITERIA_EPS, 20, 0.03), #criteria
             cv2.OPTFLOW_USE_INITIAL_FLOW #flags
             )
 
@@ -222,12 +227,19 @@ class OcvfwBase:
         new_points = []
 
         for point in self.img_lkpoints["current"]:
+            # Make sure the next point is in the list of points
+            # This can happen because of a race condition when finding points
+            if counter >= len(self.img_lkpoints["points"]):
+                continue
 
-            # this point is a correct point
+            # Extract the x/y values for the point
+            point_x, point_y = point
+
+            # Update the corresponding point with the updated values
             current = self.img_lkpoints["points"][counter]
-            current.set_opencv((int(point.item(0)),int(point.item(1))))
+            current.set_opencv((point_x, point_y))
 
-            new_points.append( point )
+            new_points.append(point)
 
             setattr(current.parent, current.label, current)
 
@@ -236,9 +248,6 @@ class OcvfwBase:
 
             # increment the counter
             counter += 1
-
-
-        #debug.debug( "ocvfw", "cmShowLKPoints: Showing %d LK Points" % counter )
 
         # set back the self.imgPoints we keep
         self.img_lkpoints["current"] = new_points
@@ -294,15 +303,18 @@ class OcvfwPython(OcvfwBase):
     This Backend uses normal opencv python bindings.
     """
 
-    co.cv = __import__("cv",
-                        globals(),
-                        locals(),
-                        [''])
+    try:
+        co.cv = __import__("cv",
+                           globals(),
+                           locals(),
+                           [''])
+    except ImportError:
+        co.cv = __import__("cv2",
+                           globals(),
+                           locals(),
+                           [''])
 
-    co.hg = __import__("cv",
-                        globals(),
-                        locals(),
-                        ['']) #should be removed
+    co.hg = co.cv
 
     def __init__( self ):
         """

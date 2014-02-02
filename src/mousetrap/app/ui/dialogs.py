@@ -25,7 +25,7 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 from gi.repository import Gtk
-from i18n import _
+from mousetrap.app.ui.i18n import _
 
 def addLabelMessage( dialog, message ):
     """

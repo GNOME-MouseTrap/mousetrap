@@ -1,3 +1,7 @@
+# This will for all imports to be absolute, which will allow compatibility with
+# Python 2.5+ and Python 3
+from __future__ import absolute_import
+
 # -*- coding: utf-8 -*-
 
 # MouseTrap
@@ -37,9 +41,9 @@ import sys
 sys.argv[0] = "mousetrap"
 
 from gi.repository import GObject
-import debug
+from mousetrap.app import debug
 import getopt
-import environment as env
+from mousetrap.app import environment as env
 
 from mousetrap.ocvfw import pocv
 

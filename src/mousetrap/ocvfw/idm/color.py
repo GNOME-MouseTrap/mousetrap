@@ -114,7 +114,7 @@ class Module(object):
         global a_settings
 
         self.debugLevel = self.ctr.cfg.getint("main", "debugLevel")
-        print self.debugLevel
+        print(self.debugLevel)
 
         # If the dict is empty then
         # use the default settings defined in a_settings

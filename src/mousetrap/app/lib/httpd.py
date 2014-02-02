@@ -29,8 +29,17 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 from . import mouse
-import thread
-import BaseHTTPServer
+
+try:
+    import thread
+except ImportError:
+    # TODO: Look into using the `threading` module instead.
+    import _thread as thread
+
+try:
+    import BaseHTTPServer
+except ImportError:
+    from http import server as BaseHTTPServer
 
 from .. import debug
 from .. import environment as env

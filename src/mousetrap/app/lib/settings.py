@@ -28,7 +28,12 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import os
-import ConfigParser as configparser #FIXME should be configparser
+
+try:
+    import configparser
+except ImportError:
+    import ConfigParser as configparser
+
 import mousetrap.app.environment as env
 
 class Settings( configparser.ConfigParser ):

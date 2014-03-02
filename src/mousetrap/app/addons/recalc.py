@@ -20,7 +20,6 @@
 
 import os
 from gi.repository import Gtk
-from gi.repository import GObject
 import mousetrap.app.debug as debug
 import mousetrap.app.environment as env
 

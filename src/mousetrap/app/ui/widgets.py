@@ -41,7 +41,7 @@ BORDER_WIDTH = 0
 class Mapper(Gtk.Widget):
 
     def __init__(self, width, height):
-        GObject.GObject.__init__(self)
+        super(Mapper, self).__init__()
 
         self.width   = width
         self.height  = height

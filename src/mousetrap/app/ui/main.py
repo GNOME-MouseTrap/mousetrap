@@ -25,7 +25,6 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 from gi.repository import Gdk
-from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import GdkPixbuf
 from mousetrap.app.ui import dialogs
@@ -49,7 +48,8 @@ class MainGui( Gtk.Window ):
         - controller: The mouseTrap's controller.
         '''
 
-        GObject.GObject.__init__( self )
+        super(MainGui, self).__init__()
+
         self.ctr    = controller
         self.cfg    = controller.cfg
         self.script = self.ctr.script()

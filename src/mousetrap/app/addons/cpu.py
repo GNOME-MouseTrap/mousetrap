@@ -33,19 +33,22 @@ a_settings = {}
 class Addon(AddonsBase):
 
     def __init__(self, controller):
-        AddonsBase.__init__(self, controller)
+        super(Addon, self).__init__(controller)
 
         GObject.timeout_add(1000, self.check_cpu)
         debug.debug("addon.cpu", "CPU addon started")
 
     def check_cpu(self):
         """
-        Checks the CPU usage.
-
-        Arguments:
-        - self: The main object pointer.
+        Checks the CPU usage for the MouseTrap process and sets it as a message
+        in the status bar.
         """
-        cpu = (Popen("ps -e -o pcpu,pid | grep %s" % str(env.pid), shell=True, stdout=PIPE).stdout).read().strip().split(" ")[0]
+        command = "ps -e -o pcpu,pid | grep %s" % env.pid
+
+        process = Popen(command, shell=True, stdout=PIPE)
+
+        cpu = process.stdout.read().strip().split(" ")[0]
 
         self.statusbar_message("CPU: %s" % cpu)
+
         return True

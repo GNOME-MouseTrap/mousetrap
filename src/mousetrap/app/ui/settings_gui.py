@@ -28,7 +28,6 @@ __date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
-from gi.repository import GObject
 from gi.repository import Gtk
 from mousetrap.app.ui import dialogs
 from mousetrap.app.ui.i18n import _
@@ -55,7 +54,7 @@ class PreffGui( Gtk.Window ):
         - mouseTrap: The mouseTrap object pointer.
         """
 
-        GObject.GObject.__init__( self )
+        super(PreffGui, self).__init__()
 
         self.ctr = controller
         self.cfg = self.ctr.cfg

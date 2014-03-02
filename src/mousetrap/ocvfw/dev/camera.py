@@ -35,7 +35,6 @@ from warnings import *
 from .. import debug
 from .. import commons as co
 from mousetrap.ocvfw import _ocv as ocv
-from gi.repository import GObject
 import numpy
 import cv2
 

@@ -517,7 +517,7 @@ class PreffGui( Gtk.Window ):
 
         cur = self.cfg.getList("main", "addon")
 
-        if model[path][1] in cur:
+        if model[path][1].lower() in cur:
             cur.remove(model[path][1].lower())
         else:
             cur.append(model[path][1].lower())

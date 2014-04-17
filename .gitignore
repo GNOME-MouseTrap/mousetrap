@@ -65,3 +65,5 @@ src/mousetrap/app/mousetrap
 po/Makefile.in.in
 aclocal.m4
 *.py.bak
+
+po/POTFILES

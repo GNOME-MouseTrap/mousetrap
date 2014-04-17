@@ -9,8 +9,7 @@ mousetrap_pathdir=$(pyexecdir)
 mousetrap_python_PYTHON = \
 	environment.py \
 	debug.py \
-	__init__.py \
-	main.py
+	__init__.py
 
 
 SUBDIRS = lib ui addons

@@ -1,7 +1,8 @@
 mousetrap_pathdir=$(pyexecdir)
 
 mousetrap_python_PYTHON = \
-	__init__.py 
+	__init__.py \
+	main.py
 
 SUBDIRS = app ocvfw
 

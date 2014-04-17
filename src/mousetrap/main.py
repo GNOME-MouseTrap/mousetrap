@@ -47,11 +47,12 @@ from mousetrap.app import environment as env
 
 from mousetrap.ocvfw import pocv
 
-from .ui.i18n import _
-from .ui.main import MainGui
-from .ui.scripts import get_script_class
+from mousetrap.app.ui.i18n import _
+from mousetrap.app.ui.main import MainGui
+from mousetrap.app.ui.scripts import get_script_class
 
-from .lib import httpd, dbusd, settings
+from mousetrap.app.lib import httpd, dbusd, settings
+
 
 class Controller():
     """

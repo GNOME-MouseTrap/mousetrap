@@ -34,5 +34,5 @@ import sys
 sys.path.append('@pyexecdir@')
 
 # Load and start the mousetrap controller.
-import mousetrap.main as mousetrap
-mousetrap.Controller().start()
+from mousetrap.controller import Controller
+Controller().start()

@@ -61,7 +61,7 @@ stamp-h1
 xmldocs.make
 docs/doxygen/Doxyfile
 po/stamp-it
-src/mousetrap/app/mousetrap
+src/mousetrap/mousetrap
 po/Makefile.in.in
 aclocal.m4
 *.py.bak

@@ -1,7 +1,3 @@
-# This will for all imports to be absolute, which will allow compatibility with
-# Python 2.5+ and Python 3
-from __future__ import absolute_import
-
 # -*- coding: utf-8 -*-
 
 # MouseTrap
@@ -30,6 +26,11 @@ __version__   = "$Revision$"
 __date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
+
+
+# This will for all imports to be absolute, which will allow compatibility with
+# Python 2.5+ and Python 3
+from __future__ import absolute_import
 
 ####################### TAKEN FROM ORCA'S CODE ###################
 # We're going to force the name of the app to "mousetrap" so pygtk

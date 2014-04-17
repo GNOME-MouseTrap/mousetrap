@@ -28,7 +28,7 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import sys
-import mousetrap.app.main as mousetrap
+import mousetrap.main as mousetrap
 
 if __name__ == '__main__':
     sys.path.append("./")

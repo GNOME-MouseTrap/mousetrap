@@ -43,7 +43,7 @@ sys.argv[0] = "mousetrap"
 from gi.repository import GObject
 from mousetrap.app import debug
 import getopt
-from mousetrap.app import environment as env
+import mousetrap.environment as env
 
 from mousetrap.ocvfw import pocv
 

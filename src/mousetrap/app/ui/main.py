@@ -30,7 +30,7 @@ from gi.repository import GdkPixbuf
 from mousetrap.app.ui import dialogs
 from mousetrap.app.ui import settings_gui
 import mousetrap.app.debug as debug
-import mousetrap.app.environment as env
+import mousetrap.environment as env
 from mousetrap.app.addons import cpu
 import numpy
 

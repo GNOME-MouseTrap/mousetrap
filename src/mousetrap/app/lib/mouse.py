@@ -31,7 +31,7 @@ import pyatspi
 from gi.repository import Gdk
 from gi.repository import Gtk
 import mousetrap.app.debug as debug
-import mousetrap.app.environment as env
+import mousetrap.environment as env
 import Xlib.ext.xtest as xtest
 
 from Xlib import X, display

@@ -32,7 +32,7 @@ from gi.repository import Gtk
 from mousetrap.app.ui import dialogs
 from mousetrap.app.ui.i18n import _
 from mousetrap.ocvfw import pocv
-import mousetrap.app.environment as env
+import mousetrap.environment as env
 
 from mousetrap.app.ui.scripts import get_scripts_list
 from mousetrap.app.addons.handler import AddonsHandler

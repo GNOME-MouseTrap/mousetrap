@@ -42,7 +42,7 @@ except ImportError:
     from http import server as BaseHTTPServer
 
 from .. import debug
-from .. import environment as env
+import mousetrap.environment as env
 
 class _HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     """

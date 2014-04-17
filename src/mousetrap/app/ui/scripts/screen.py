@@ -27,7 +27,7 @@ __date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
-import mousetrap.app.environment as env
+import mousetrap.environment as env
 import mousetrap.app.lib.mouse as mouse
 
 # pylint: disable-msg=F0401

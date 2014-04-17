@@ -34,7 +34,7 @@ try:
 except ImportError:
     import ConfigParser as configparser
 
-import mousetrap.app.environment as env
+import mousetrap.environment as env
 
 class Settings( configparser.ConfigParser ):
 

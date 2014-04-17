@@ -21,7 +21,7 @@
 import os
 from gi.repository import Gtk
 import mousetrap.app.debug as debug
-import mousetrap.app.environment as env
+import mousetrap.environment as env
 
 from subprocess import Popen, PIPE
 from mousetrap.app.ui.i18n import _

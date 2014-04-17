@@ -84,7 +84,7 @@ images/Makefile
 src/Makefile
 src/mousetrap/Makefile
 src/mousetrap/app/Makefile
-src/mousetrap/app/environment.py
+src/mousetrap/environment.py
 src/mousetrap/app/lib/Makefile
 src/mousetrap/app/ui/Makefile
 src/mousetrap/app/ui/i18n.py

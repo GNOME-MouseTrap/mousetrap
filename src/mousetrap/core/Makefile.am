@@ -1,7 +1,5 @@
 ocvfw_pathdir=$(pyexecdir)
 
-## List all python files in this directory.
-## Don't forget to escape the new line.
 ocvfw_python_PYTHON = \
 	__init__.py \
 	camera.py \
@@ -14,10 +12,6 @@ ocvfw_python_PYTHON = \
 	settings.py \
 	tracker.py
 
-## List all subdirectories.
-#SUBDIRS = dev haars idm
-
-## This should match the current directory.
 ocvfw_pythondir=$(pyexecdir)/mousetrap/core
 
 install-exec-hook:

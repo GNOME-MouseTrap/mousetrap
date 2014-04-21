@@ -10,7 +10,7 @@ mousetrap_python_PYTHON = \
 	environment.py \
 	controller.py
 
-SUBDIRS = app ocvfw
+SUBDIRS = addons app core ocvfw ui
 
 mousetrap_pythondir=$(pyexecdir)/mousetrap/
 
@@ -19,17 +19,14 @@ install-exec-hook:
 
 ##### START DIRECTORY VARIABLE SUBSTITUTIONS ##################################
 # Substitution of autotool's directory vars (outside of Makefiles) must be done
-# by make.
-
-# Needed for mousetrap.in
-
+# by make. edit defines a sed substitution for all the special variables. The
+# mousetrap rule calls $(edit)
 edit = sed \
 		-e 's|@PYTHON[@]|$(PYTHON)|g' \
 		-e 's|@pythondir[@]|$(pythondir)|g' \
 		-e 's|@pyexecdir[@]|$(pyexecdir)|g' \
 		-e 's|@pkgdatadir[@]|$(pkgdatadir)|g' \
 		-e 's|@prefix[@]|$(prefix)|g'
-
 
 mousetrap: Makefile
 	rm -f $@ $@.tmp

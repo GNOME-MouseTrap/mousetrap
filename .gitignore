@@ -67,3 +67,5 @@ aclocal.m4
 *.py.bak
 
 po/POTFILES
+
+/INSTALL

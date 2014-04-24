@@ -83,7 +83,9 @@ docs/doxygen/Doxyfile
 images/Makefile
 src/Makefile
 src/mousetrap/Makefile
+src/mousetrap/addons/Makefile
 src/mousetrap/app/Makefile
+src/mousetrap/core/Makefile
 src/mousetrap/environment.py
 src/mousetrap/app/lib/Makefile
 src/mousetrap/app/ui/Makefile
@@ -94,6 +96,7 @@ src/mousetrap/ocvfw/Makefile
 src/mousetrap/ocvfw/dev/Makefile
 src/mousetrap/ocvfw/idm/Makefile
 src/mousetrap/ocvfw/haars/Makefile
+src/mousetrap/ui/Makefile
 ],[chmod +x run_pylint.sh])
 
 ###############################################################################

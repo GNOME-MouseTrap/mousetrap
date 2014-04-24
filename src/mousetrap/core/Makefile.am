@@ -8,11 +8,8 @@ ocvfw_python_PYTHON = \
 	image_library.py \
 	motion_tracker.py \
 	pointer.py \
-	pointer_manager \
+	pointer_manager.py \
 	settings.py \
 	tracker.py
 
 ocvfw_pythondir=$(pyexecdir)/mousetrap/core
-
-install-exec-hook:
-	chmod a+rx $(DESTDIR)$(ocvfw_pythondir) -R

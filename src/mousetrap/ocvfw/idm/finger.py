@@ -21,11 +21,11 @@
 
 """Forehead IDM"""
 
-__id__        = "$Id$"
-__version__   = "$Revision$"
-__date__      = "$Date$"
+__id_ = "$Id$"
+__version__ = "$Revision$"
+__date__ = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
-__license__   = "GPLv2"
+__license__ = "GPLv2"
 
 import os
 import mousetrap.ocvfw.debug as debug
@@ -35,38 +35,40 @@ from threading import Timer
 
 a_name = "Finger"
 a_description = "Finger point tracker based on LK Algorithm"
-a_settings = { "speed" : {"value":2 },
-               "conf_path" : "%s/.finger" % os.path.expanduser("~")}
+a_settings = {"speed": {"value": 2},
+              "conf_path": "%s/.finger" % os.path.expanduser("~")}
+
 
 class Module(object):
     """
     This is the IDM's Main class, called by mousetrap.py in the load process.
     """
 
-    def __init__(self, controller, stgs = {}):
+    def __init__(self, controller, stgs={}):
         """
         IDM's init function.
 
         Arguments:
         - self: The main object pointer.
-        - controller: mousetrap main class pointer. This is passed by MouseTrap's controller (mousetrap.py) when loaded.
-        - stgs: Possible settings loaded from the user's settings file. If there aren't settings the IDM will use the a_settings dict.
+        - controller: mousetrap main class pointer. This is passed by
+                MouseTrap's controller (mousetrap.py) when loaded.
+        - stgs: Possible settings loaded from the user's settings file.
+                If there aren't settings the IDM will use the a_settings dict.
         """
 
         debug.debug("mousetrap.ocvfw.idm", "Starting %s idm" % a_name)
 
-        self.ctr          = controller
-        self.cap          = None
-        self.stgs         = stgs
+        self.ctr = controller
+        self.cap = None
+        self.stgs = stgs
 
         ##############################
         #  MOTION RELATED VARIABLES  #
         ##############################
 
-        #self.step         = self.settings.getint( "mouse", "stepSpeed" )
-        self.tmpl          = None
+        self.tmpl = None
 
-        self.timer         = None
+        self.timer = None
 
         self.prepare_config()
         debug.info("mousetrap.ocvfw.idm", "Finger Algorithm loaded")
@@ -91,7 +93,8 @@ class Module(object):
 
         Arguments:
         - self: The main object pointer
-        - cam: The camera device index. For Example: 0 = /dev/video0, 1 = /dev/video1
+        - cam: The camera device index. For Example: 0 = /dev/video0, 1 =
+                /dev/video1
         """
 
         debug.debug("mousetrap.ocvfw.idm", "Setting Capture")
@@ -99,7 +102,6 @@ class Module(object):
         self.cap = Capture(async=True, idx=cam, backend="OcvfwPython")
         self.cap.change(color="rgb")
         self.cap.set_camera("lk_swap", True)
-
 
     def calc_motion(self):
         if not hasattr(self.cap, "finger"):
@@ -128,7 +130,8 @@ class Module(object):
         - self: The main object pointer
         """
 
-        self.cap.add(Graphic("rect", "tpl_rect", ( 325, 325 ), (425, 425), parent=self.cap))
+        self.cap.add(Graphic("rect", "tpl_rect", (325, 325), (425, 425),
+                             parent=self.cap))
         self.timer = Timer(10.0, self.follow_finger)
         self.timer.start()
 
@@ -142,7 +145,9 @@ class Module(object):
 
         debug.debug("finger", "Trying to save capture template")
         self.timer.cancel()
-        self.cap.save(os.path.abspath("%s/tmpl.jpg" % self.stgs["conf_path"]), self.cap.rect(100, 100, 150, 150))
+        self.cap.save(os.path.abspath("%s/tmpl.jpg" %
+                                      self.stgs["conf_path"]),
+                      self.cap.rect(100, 100, 150, 150))
 
     def load_template(self):
         """
@@ -153,11 +158,11 @@ class Module(object):
         """
 
         try:
-            self.tmpl = co.hg.cvLoadImage("%s/tmpl.jpg" % self.stgs["conf_path"], 3)
+            self.tmpl = co.hg.cvLoadImage("%s/tmpl.jpg" %
+                                          self.stgs["conf_path"], 3)
             debug.debug("finger", "Loading template")
         except:
             pass
-
 
     def get_pointer(self):
         """
@@ -171,5 +176,5 @@ class Module(object):
             return self.cap.finger
 
     def follow_finger(self):
-        self.cap.add( Point("point", "finger", ( 375, 375 ), parent=self.cap, follow=True) )
-
+        self.cap.add(Point("point", "finger", (375, 375),
+                           parent=self.cap, follow=True))

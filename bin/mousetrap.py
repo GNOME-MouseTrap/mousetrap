@@ -28,8 +28,10 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import sys
-import mousetrap.main as mousetrap
+from pathlib import Path
+sys.path.append(Path('.').absolute().parent/'src/mousetrap/')
+
+from mousetrap.controller import Controller
 
 if __name__ == '__main__':
-    sys.path.append("./")
-    mousetrap.Controller().start()
+    Controller().start()

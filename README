@@ -1,16 +1,19 @@
-## LICENSE
+# MouseTrap
+
+## License
 
 See COPYING
 
-## INSTALL
+## Quick start
 
 From the mousetrap project directory:
 
-	$ ./autogen.sh
-	$ make
-	$ sudo make install
+    $ bin/install.sh   # builds and installs
+    $ mousetrap
 
-## RUN
+## Other commands (primarily for developers)
 
-	$ mousetrap
-
+* bin/build.sh   # builds (no install)
+* bin/pylint.sh
+* bin/test.py
+* bin/mousetrap.py   # runs mousetrap from project directory (i.e., no build or install)

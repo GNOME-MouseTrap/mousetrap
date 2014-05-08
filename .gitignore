@@ -69,3 +69,4 @@ aclocal.m4
 po/POTFILES
 
 /INSTALL
+/.last_built

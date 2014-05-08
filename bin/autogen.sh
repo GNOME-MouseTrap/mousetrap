@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 # Run this to generate all the initial makefiles, etc.
 
-srcdir=`dirname $0`
+srcdir=`dirname $0 | xargs dirname`
 test -z "$srcdir" && srcdir=.
 
 PKG_NAME="mouseTrap"

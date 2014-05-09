@@ -13,7 +13,7 @@ From the mousetrap project directory:
 
 ## Other commands (primarily for developers)
 
-* bin/build.sh   # builds (no install)
+* bin/build.sh
 * bin/pylint.sh
 * bin/test.py
-* bin/mousetrap.py   # runs mousetrap from project directory (i.e., no build or install)
+* bin/mousetrap.sh

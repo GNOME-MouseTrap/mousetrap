@@ -56,7 +56,7 @@ mousetrap.desktop
 omf.make
 po/*.gmo
 py-compile
-run_pylint.sh
+bin/pylint.sh
 stamp-h1
 xmldocs.make
 docs/doxygen/Doxyfile
@@ -69,4 +69,5 @@ aclocal.m4
 po/POTFILES
 
 /INSTALL
+/.last_install
 /.last_built

@@ -13,5 +13,8 @@ project_directory(){
     echo "$PWD"
     cd "$original_directory" >& /dev/null
 }
+last_modified_file() {
+	find "$1" \( -name "*.swp" -o -path "*.git/*" \) -prune -o -type f -exec stat --format '%Y :%y %n' {} \; | sort -nr | cut -d' ' -f5- | head -1
+}
 SCRIPT_DIRECTORY="$(absolute_directory "$(dirname "$0")")"
 PROJECT_DIRECTORY="$(project_directory)"

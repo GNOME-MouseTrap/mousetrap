@@ -70,7 +70,7 @@ DOCBOOK_CHECK()
 #mousetrap.spec
 
 AC_OUTPUT([
-run_pylint.sh
+bin/pylint.sh
 Makefile
 mousetrap.desktop
 po/Makefile.in
@@ -97,7 +97,7 @@ src/mousetrap/ocvfw/dev/Makefile
 src/mousetrap/ocvfw/idm/Makefile
 src/mousetrap/ocvfw/haars/Makefile
 src/mousetrap/ui/Makefile
-],[chmod +x run_pylint.sh])
+],[chmod +x bin/pylint.sh])
 
 ###############################################################################
 # Don't include src/mousetrap/app/mousetrap.in in AC_OUTPUT.  It will be

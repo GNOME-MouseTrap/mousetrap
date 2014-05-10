@@ -17,3 +17,23 @@ From the mousetrap project directory:
 * bin/pylint.sh
 * bin/test.py
 * bin/mousetrap.sh
+
+## Developers
+
+### Building the project
+
+    $ bin/build.sh
+
+### Running in place (without installing)
+
+    $ bin/mousetrap.sh
+    
+### Running tests
+
+    $ bin/test.sh
+
+### Checking style
+
+You'll need pylint installed.
+
+    $ bin/pylint.sh

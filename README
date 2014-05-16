@@ -1,39 +1,16 @@
 # MouseTrap
 
-## License
+License: GPL v2.0 (see COPYING)
 
-See COPYING
+## Quick Start (Fedora 18 and 20)
 
-## Quick start
+    sudo yum -y update
+    sudo yum -y install gnome-common glib2-devel intltool python-devel opencv-python python-xlib shunit2 pylint
 
-From the mousetrap project directory:
+    git clone https://github.com/GNOME-MouseTrap/mousetrap.git
+    cd mousetrap
+    git checkout ocfw_refactor
 
-    $ bin/install.sh   # builds and installs
-    $ mousetrap
+    bin/install.sh
+    mousetrap
 
-## Other commands (primarily for developers)
-
-* bin/build.sh
-* bin/pylint.sh
-* bin/test.py
-* bin/mousetrap.sh
-
-## Developers
-
-### Building the project
-
-    $ bin/build.sh
-
-### Running in place (without installing)
-
-    $ bin/mousetrap.sh
-    
-### Running tests
-
-    $ bin/test.sh
-
-### Checking style
-
-You'll need pylint installed.
-
-    $ bin/pylint.sh

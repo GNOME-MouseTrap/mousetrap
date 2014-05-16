@@ -16,7 +16,12 @@ def initialize_import_path():
         get_source_directory(),
         get_project_directory()
     ]
-    sys.path += paths
+    append_to_path(paths)
+
+
+def append_to_path(paths):
+    for path in paths:
+        sys.path.append(path)
 
 
 def get_source_directory():

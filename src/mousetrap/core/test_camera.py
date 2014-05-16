@@ -1,33 +1,26 @@
 __author__ = 'foss2serve'
 
 import unittest
-import camera
+from .camera import Camera, CameraError
 
 
 class test_camera(unittest.TestCase):
 
-    def test_get_image_correctInput(self):
+    def setUp(self):
+        self.camera = Camera()
 
-        #Setup
-        cam = camera.Camera()
-
-        #Capture Image
-        img = cam.get_image()
-
+    def test_get_image_withStart_imageReturned(self):
+        self.camera.start_camera();
+        image = self.camera.get_image()
         self.assertTrue(
-            img is not None,
+            image is not None,
             msg="Error: Image not captured"
         )
 
-    def test_start_camera_correctInput(self):
+    def test_get_image_withoutStart_expectError(self):
+        with self.assertRaises(CameraError):
+            self.camera.get_image()
 
-        #Setup
-        cam = camera.Camera()
-
-        self.assertTrue(
-            cam.capture.isOpened(),
-            msg="Error: Camera feed not initialized"
-        )
 
 if __name__ == '__main__':
     unittest.main()

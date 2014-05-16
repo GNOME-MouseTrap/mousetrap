@@ -33,4 +33,4 @@ test_last_modified_file() {
 	rm "$file"
 }
 
-. shunit2
+. /usr/share/shunit2/shunit2

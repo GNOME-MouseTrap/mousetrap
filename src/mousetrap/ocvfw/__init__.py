@@ -18,8 +18,8 @@
 # You should have received a copy of the GNU General Public License
 # along with Ocvfw.  If not, see <http://www.gnu.org/licenses/>.
 
-__id__        = "$Id$"
-__version__   = "$Revision$"
-__date__      = "$Date$"
+__id__ = "$Id$"
+__version__ = "$Revision$"
+__date__ = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
-__license__   = "GPLv2"
+__license__ = "GPLv2"

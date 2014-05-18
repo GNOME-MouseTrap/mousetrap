@@ -15,6 +15,7 @@ compile
 *.Videos
 *.tarballs
 *.planner
+*.pylint
 
 # http://www.gnu.org/software/automake
 

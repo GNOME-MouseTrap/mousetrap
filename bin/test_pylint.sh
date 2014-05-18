@@ -18,4 +18,4 @@ testPylint() {
     assertEquals 'Exit w/o error expected.' 0 $?
 }
 
-. shunit2
+. /usr/share/shunit2/shunit2

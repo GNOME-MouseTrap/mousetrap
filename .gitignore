@@ -57,7 +57,6 @@ mousetrap.desktop
 omf.make
 po/*.gmo
 py-compile
-bin/pylint.sh
 stamp-h1
 xmldocs.make
 docs/doxygen/Doxyfile

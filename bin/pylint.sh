@@ -5,8 +5,6 @@
 # Script to run pylint on the MouseTrap sources you've modified or added.
 # See http://live.gnome.org/MouseTrap/Pylint for more info.
 #
-exec_prefix=@prefix@
-INSTALL_DIR=@pyexecdir@
 if [ "x$*" == "x" ]
 then
     if [ -d .git ]
@@ -27,7 +25,8 @@ do
     OUTPUT_FILE=`dirname $foo`/`basename $foo .py`.pylint
     OUTPUT_FILE=`echo $OUTPUT_FILE | sed 's~^./~~' | sed 's^/^.^g'`
     echo Checking $foo, sending output to $OUTPUT_FILE
-    PYTHONPATH=$INSTALL_DIR:$PYTHONPATH pylint --init-hook="import pyatspi" $INSTALL_DIR/mousetrap/$foo > $OUTPUT_FILE 2>&1
+    SRC_DIR="$(git rev-parse --show-toplevel)/src"
+    PYTHONPATH=$SRC_DIR:$PYTHONPATH pylint --init-hook="import pyatspi" "$SRC_DIR/mousetrap/$foo" > $OUTPUT_FILE 2>&1
     grep "code has been rated" $OUTPUT_FILE | cut -f1 -d\( \
     | sed "s/.pylint:Your code has been rated at / /" \
     | sed "s^/10^^" | sort -n -k 2,2

@@ -18,44 +18,41 @@
 # You should have received a copy of the GNU General Public License
 # along with mouseTrap.  If not, see <http://www.gnu.org/licenses/>.
 
-__id__        = "$Id$"
-__version__   = "$Revision$"
-__date__      = "$Date$"
+__id__ = "$Id$"
+__version__ = "$Revision$"
+__date__ = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
-__license__   = "GPLv2"
+__license__ = "GPLv2"
 
 import cv2
 
 
 class Camera(object):
 
-    def __init__(self, dev=0):
-        self.dev_id = None
-        self.capture = None
-        self.img = None
-
-        self.set_dev_id(dev)
-        self.start_camera()
+    def __init__(self, device_id=0):
+        self._device_id = device_id
+        self._capture = None
 
     def start_camera(self):
-        """
-        Start a new Video capture feed with the Web Camera
-        """
-        self.capture = cv2.VideoCapture(self.dev_id)
-
-    def set_dev_id(self, dev=0):
-        """
-        Sets the camera id for the device to be used
-        Arguments:
-         - dev: The Camera's Id (Default is 0)
-        """
-        self.dev_id = dev
+        self._capture = cv2.VideoCapture(self._device_id)
 
     def get_image(self):
-        """
-        Reads a new image from the camera
-        Returns the new image
-        """
-        ret, self.img = self.capture.read()
+        if not self.is_started():
+            raise CameraError("Camera has not been started.")
+        return self._read_image()
 
-        return self.img
+    def is_started(self):
+        return self._capture is not None and self._capture.isOpened()
+
+    def _read_image(self):
+        read_was_successful, image = self._capture.read()
+        if not read_was_successful:
+            raise CameraError("Read was not successful.")
+        return image
+
+
+class CameraError(Exception):
+
+    def __init__(self, message):
+        super(CameraError, self).__init__()
+        self.message = message

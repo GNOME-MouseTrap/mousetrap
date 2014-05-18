@@ -10,7 +10,7 @@ class test_camera(unittest.TestCase):
         self.camera = Camera()
 
     def test_get_image_withStart_imageReturned(self):
-        self.camera.start_camera();
+        self.camera.start_camera()
         image = self.camera.get_image()
         self.assertTrue(
             image is not None,

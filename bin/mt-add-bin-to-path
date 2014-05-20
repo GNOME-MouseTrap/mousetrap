@@ -1,0 +1,3 @@
+# Source this file.
+PROJECT_DIRECTORY="$(git rev-parse --show-toplevel)"
+PATH="$PATH:$PROJECT_DIRECTORY/bin"

@@ -1,0 +1,9 @@
+SCRIPT_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$SCRIPT_DIRECTORY"
+echo "Adding bin/ to PATH"
+source mt-add-bin-to-path
+echo "Adding src/ to PYTHONPATH"
+source mt-add-src-to-pythonpath
+echo "Defineing MOUSETRAP_HOME"
+source mt-define-mousetrap-home
+cd - &> /dev/null

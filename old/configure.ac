@@ -70,6 +70,7 @@ DOCBOOK_CHECK()
 #mousetrap.spec
 
 AC_OUTPUT([
+bin/pylint.sh
 Makefile
 mousetrap.desktop
 po/Makefile.in
@@ -82,7 +83,21 @@ docs/doxygen/Doxyfile
 images/Makefile
 src/Makefile
 src/mousetrap/Makefile
-],[])
+src/mousetrap/addons/Makefile
+src/mousetrap/app/Makefile
+src/mousetrap/core/Makefile
+src/mousetrap/environment.py
+src/mousetrap/app/lib/Makefile
+src/mousetrap/app/ui/Makefile
+src/mousetrap/app/ui/i18n.py
+src/mousetrap/app/ui/scripts/Makefile
+src/mousetrap/app/addons/Makefile
+src/mousetrap/ocvfw/Makefile
+src/mousetrap/ocvfw/dev/Makefile
+src/mousetrap/ocvfw/idm/Makefile
+src/mousetrap/ocvfw/haars/Makefile
+src/mousetrap/ui/Makefile
+],[chmod +x bin/pylint.sh])
 
 ###############################################################################
 # Don't include src/mousetrap/app/mousetrap.in in AC_OUTPUT.  It will be

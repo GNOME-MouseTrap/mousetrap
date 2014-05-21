@@ -2,15 +2,25 @@
 
 License: GPL v2.0 (see COPYING)
 
-## Quick Start (Fedora 18 and 20)
+## Required
 
-    sudo yum -y update
-    sudo yum -y install gnome-common glib2-devel intltool python-devel opencv-python python-xlib shunit2 pylint
+TODO: List required software
 
-    git clone https://github.com/GNOME-MouseTrap/mousetrap.git
+## Download
+
+    git clone https://git.gnome.org/browse/mousetrap
     cd mousetrap
-    git checkout ocfw_refactor
 
-    bin/install.sh
+## Build
+
+    ./autoconf.sh
+    make
+
+## Install
+
+    sudo make install
+
+## Run
+
     mousetrap
 

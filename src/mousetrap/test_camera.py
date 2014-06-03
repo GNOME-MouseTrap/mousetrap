@@ -1,5 +1,3 @@
-# pylint: skip-file
-
 import unittest
 from mousetrap.camera import Camera, CameraError
 

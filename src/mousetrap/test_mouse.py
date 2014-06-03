@@ -1,5 +1,3 @@
-# pylint: skip-file
-
 import unittest
 from mousetrap.mouse import Mouse
 
@@ -10,8 +8,8 @@ class test_mouse(unittest.TestCase):
         self.mouse = Mouse()
 
     def test_get_position(self):
-        # pylint: disable=unused-variable
         x, y = self.mouse.get_position()
+
         try:
             x += 1
             y += 1

@@ -38,6 +38,17 @@ def _cvimage_to_pixbuf(cvimage):
     has_alpha_channel = False
     width = cvimage.shape[1]
     height = cvimage.shape[0]
+
+    # dist in bytes between row starts
+    row_stride = cvimage.strides[0]
+
+    # Function used to free the data when the pixbuf's reference count drops to
+    # zero, or None if the data should not be freed.
+    destroy_fn = None
+
+    # Closure data to pass to the destroy notification function.
+    destroy_fn_data = None
+
     return GdkPixbuf.Pixbuf.new_from_data(
             data,
             colorspace, # FIXME: Need to handle grayscale.
@@ -45,9 +56,9 @@ def _cvimage_to_pixbuf(cvimage):
             _GDK_PIXBUF_BIT_PER_SAMPLE,
             width,
             height,
-            cvimage.strides[0], # FIXME: what is this parameter?
-            None, # FIXME: what is this parameter?
-            None  # FIXME: what is this parameter?
+            row_stride,
+            destroy_fn,
+            destroy_fn_data
             )
 
 

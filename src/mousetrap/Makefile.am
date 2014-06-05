@@ -5,8 +5,10 @@ mousetrap_pathdir=$(pyexecdir)
 
 mousetrap_python_PYTHON = \
 	__init__.py \
-	camera.py \
-	mouse.py
+	vision.py \
+	pointer.py \
+	main.py \
+	gui.py
 
 #SUBDIRS =
 

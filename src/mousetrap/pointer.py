@@ -1,7 +1,7 @@
 from gi.repository import Gdk
 
 
-class Mouse(object):
+class Pointer(object):
 
     def __init__(self):
         gdk_display = Gdk.Display.get_default()

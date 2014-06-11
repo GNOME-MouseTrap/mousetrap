@@ -2,12 +2,6 @@ import cv2
 import os
 import sys
 
-# Add the `src` directory to the system path
-
-PROJECT_PATH = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), "src"))
-
-sys.path.append(PROJECT_PATH)
-
 from mousetrap.vision import Camera, HaarLoader, ImageConverter
 
 # Initialize the camera and get the frame

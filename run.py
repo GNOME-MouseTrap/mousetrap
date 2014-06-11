@@ -8,23 +8,23 @@ PROJECT_PATH = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__f
 
 sys.path.append(PROJECT_PATH)
 
-from mousetrap.camera import Camera
+from mousetrap.vision import Camera, HaarLoader, ImageConverter
 
 # Initialize the camera and get the frame
 
-camera = Camera()
-camera.start_camera()
-image = camera.get_image()
+camera = Camera(-1, 400, 300)
+
+image = camera.read_image()
 
 # Convert the image to grayscale
 
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+gray = ImageConverter.rgb_to_grayscale(image)
 
 # Import the haar cascades
 
 cascades = {
-    "face": cv2.CascadeClassifier("src/mousetrap/haars/haarcascade_frontalface_default.xml"),
-    "nose": cv2.CascadeClassifier("src/mousetrap/haars/haarcascade_mcs_nose.xml"),
+    "face": HaarLoader.from_name("face"),
+    "nose": HaarLoader.from_name("nose")
 }
 
 # Detect faces using the cascade
@@ -70,3 +70,5 @@ nose["center"] = {
     "x": (nose["x"] + nose["width"]) / 2,
     "y": (nose["y"] + nose["height"]) / 2,
 }
+
+print nose

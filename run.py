@@ -1,7 +1,6 @@
 import cv2
 import os
 import sys
-
 from mousetrap.vision import Camera, HaarLoader, ImageConverter
 
 
@@ -10,7 +9,15 @@ class TrackerSample(object):
     def run(self):
         # Initialize the camera and get the frame
 
-        camera = Camera(-1, 400, 300)
+        SEARCH_FOR_DEVICE = -1
+        DEVICE_INDEX = SEARCH_FOR_DEVICE
+        CAMERA_WIDTH = 400
+        CAMERA_HEIGHT = 300
+
+        camera = Camera(
+                device_index=SEARCH_FOR_DEVICE,
+                width=CAMERA_WIDTH,
+                height=CAMERA_HEIGHT)
 
         image = camera.read_image()
 
@@ -26,10 +33,14 @@ class TrackerSample(object):
                 }
 
         # Detect faces using the cascade
-        # Use a 1.5 scale to ensure the head is always found
-        # Requiring 5 neighbors helps discard invalid faces
 
-        faces = cascades["face"].detectMultiScale(gray, 1.5, 5)
+        # Use a 1.5 scale to ensure the head is always found
+        SCALE = 1.5
+
+        # Requiring 5 neighbors helps discard invalid faces
+        REQUIRED_NEIGHBORS = 5
+
+        faces = cascades["face"].detectMultiScale(gray, SCALE, REQUIRED_NEIGHBORS)
 
         # Fail early if there were no faces
 

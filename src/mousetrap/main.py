@@ -4,9 +4,8 @@ import mousetrap.vision as vision
 import mousetrap.gui as gui
 
 
-# OpenCV will automatically search for a working camera device if we use the
-# index -1.
-DEVICE_INDEX = -1
+SEARCH_FOR_CAMERA = -1
+DEVICE_INDEX = SEARCH_FOR_CAMERA
 IMAGE_MAX_WIDTH = 400
 IMAGE_MAX_HEIGHT = 300
 FPS = 5

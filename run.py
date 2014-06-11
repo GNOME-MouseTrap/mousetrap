@@ -1,116 +1,95 @@
-import cv2
-import os
-import sys
 from mousetrap.vision import Camera, HaarLoader, ImageConverter
 
 
-class TrackerSample(object):
-
+class NoseLocatorTest(object):
     def __init__(self):
-        self.camera = None
-        self.image_grayscale = None
-        self.face_detector = FaceDetector()
-        self.nose_detector = NoseDetector()
-        self.initialize_camera()
+        self._camera = None
+        self._nose_locator = NoseLocator()
+        self._initialize_camera()
 
-    def initialize_camera(self):
-        SEARCH_FOR_DEVICE = -1
-        DEVICE_INDEX = SEARCH_FOR_DEVICE
-        CAMERA_WIDTH = 400
-        CAMERA_HEIGHT = 300
-        self.camera = Camera(
-                device_index=SEARCH_FOR_DEVICE,
-                width=CAMERA_WIDTH,
-                height=CAMERA_HEIGHT)
+    def _initialize_camera(self):
+        search_for_device = -1
+        self._camera = Camera(
+                device_index=search_for_device,
+                width=400, height=300)
 
     def run(self):
-        self.read_grayscale_image()
-        face = self.face_detector.detect(self.image_grayscale)
-        nose = self.nose_detector.detect(face['image'])
+        image = self._read_grayscale_image()
+        nose = self._nose_locator.locate(image)
         print nose
 
-    def read_grayscale_image(self):
-        image = self.camera.read_image()
-        self.image_grayscale = ImageConverter.rgb_to_grayscale(image)
+    def _read_grayscale_image(self):
+        image = self._camera.read_image()
+        return ImageConverter.rgb_to_grayscale(image)
 
 
-class FaceDetector(object):
+class NoseLocator(object):
     def __init__(self):
-        self.face = None
-        self.faces = None
-        self.image_grayscale = None
-        self.cascade = HaarLoader.from_name("face")
+        self._face_detector = FeatureDetector(
+                'face', scale_factor=1.5, min_neighbors=5)
+        self._nose_detector = FeatureDetector(
+                'nose', scale_factor=1.3, min_neighbors=5)
 
-    def detect(self, image_grayscale):
-        self.image_grayscale = image_grayscale
-        self.detect_faces()
-        self.exit_if_no_faces_detected()
-        self.unpack_first_face()
-        self.extract_face_image()
-        return self.face
-
-    def detect_faces(self):
-        # Use a 1.5 scale to ensure the head is always found
-        SCALE = 1.5
-        # Requiring 5 neighbors helps discard invalid faces
-        REQUIRED_NEIGHBORS = 5
-        self.faces = self.cascade.detectMultiScale(
-                self.image_grayscale, SCALE, REQUIRED_NEIGHBORS)
-
-    def exit_if_no_faces_detected(self):
-        if len(self.faces) == 0:
-            raise Exception('No faces detected')
-
-    def unpack_first_face(self):
-        self.face = dict(zip(['x', 'y', 'width', 'height'], self.faces[0]))
-
-    def extract_face_image(self):
-        f = self.face
-        from_y = f['y']
-        to_y = f['y'] + f['height']
-        from_x = f['x']
-        to_x = f['x'] + f['width']
-        f["image"] = self.image_grayscale[from_y:to_y, from_x:to_x]
-
-
-
-class NoseDetector(object):
-    def __init__(self):
-        self.nose = None
-        self.noses = None
-        self.image_grayscale = None
-        self.cascade = HaarLoader.from_name("nose")
-
-    def detect(self, image_grayscale):
-        self.image_grayscale = image_grayscale
-        self.detect_noses()
-        self.exit_if_no_noses_detected()
-        self.unpack_first_nose()
-        self.calculate_center_of_nose()
-        return self.nose
-
-    def detect_noses(self):
-        # Use a 1.5 scale to ensure the head is always found
-        SCALE = 1.5
-        # Requiring 5 neighbors helps discard invalid faces
-        REQUIRED_NEIGHBORS = 5
-        self.noses = self.cascade.detectMultiScale(
-                self.image_grayscale, SCALE, REQUIRED_NEIGHBORS)
-
-    def exit_if_no_noses_detected(self):
-        if len(self.noses) == 0:
-            raise Exception('No noses detected.')
-
-    def unpack_first_nose(self):
-        self.nose = dict(zip(['x', 'y', 'width', 'height'], self.noses[0]))
-
-    def calculate_center_of_nose(self):
-        # FIXME: This is done relative to the face; it should probably be done
-        # relative to the entire picture
-        self.nose["center"] = {
-                "x": (self.nose["x"] + self.nose["width"]) / 2,
-                "y": (self.nose["y"] + self.nose["height"]) / 2,
+    def locate(self, image_grayscale):
+        face = self._face_detector.detect(image_grayscale)
+        nose = self._nose_detector.detect(face['image'])
+        return {
+                'x': face['x'] + nose['center']['x'],
+                'y': face['y'] + nose['center']['y'],
                 }
 
+class FeatureDetector(object):
+    def __init__(self, name, scale_factor=1.1, min_neighbors=3):
+        '''
+        name - name of feature to detect
 
-TrackerSample().run()
+        scale_factor - how much the image size is reduced at each image scale
+                while searching. Default 1.1.
+
+        min_neighbors - how many neighbors each candidate rectangle should have
+                to retain it. Default 3.
+        '''
+        self._name = name
+        self._single = None
+        self._plural = None
+        self._image_grayscale = None
+        self._cascade = HaarLoader.from_name(name)
+        self._scale_factor = scale_factor
+        self._min_neighbors = min_neighbors
+
+    def detect(self, image_grayscale):
+        self._image_grayscale = image_grayscale
+        self._detect_plural()
+        self._exit_if_none_detected()
+        self._unpack_first()
+        self._extract_image()
+        self._calculate_center()
+        return self._single
+
+    def _detect_plural(self):
+        self._plural = self._cascade.detectMultiScale(
+                self._image_grayscale, self._scale_factor, self._min_neighbors)
+
+    def _exit_if_none_detected(self):
+        if len(self._plural) == 0:
+            raise Exception('No ' + self._name + 's detected.')
+
+    def _unpack_first(self):
+        self._single = dict(zip(['x', 'y', 'width', 'height'], self._plural[0]))
+
+    def _calculate_center(self):
+        self._single["center"] = {
+                "x": (self._single["x"] + self._single["width"]) / 2,
+                "y": (self._single["y"] + self._single["height"]) / 2,
+                }
+
+    def _extract_image(self):
+        single = self._single
+        from_y = single['y']
+        to_y = single['y'] + single['height']
+        from_x = single['x']
+        to_x = single['x'] + single['width']
+        single["image"] = self._image_grayscale[from_y:to_y, from_x:to_x]
+
+
+NoseLocatorTest().run()

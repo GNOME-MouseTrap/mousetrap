@@ -8,14 +8,10 @@ class TrackerSample(object):
 
     def __init__(self):
         self.camera = None
-        self.cascades = None
         self.image_grayscale = None
-        self.faces = None
-        self.face = None
-        self.noses = None
-        self.nose = None
+        self.face_detector = FaceDetector()
+        self.nose_detector = NoseDetector()
         self.initialize_camera()
-        self.initialize_cascades()
 
     def initialize_camera(self):
         SEARCH_FOR_DEVICE = -1
@@ -27,34 +23,38 @@ class TrackerSample(object):
                 width=CAMERA_WIDTH,
                 height=CAMERA_HEIGHT)
 
-    def initialize_cascades(self):
-        self.cascades = {
-                "face": HaarLoader.from_name("face"),
-                "nose": HaarLoader.from_name("nose")
-                }
-
     def run(self):
         self.read_grayscale_image()
-        self.detect_faces()
-        self.exit_if_no_faces_detected()
-        self.unpack_first_face()
-        self.extract_face_image()
-        self.detect_noses()
-        self.exit_if_no_noses_detected()
-        self.unpack_first_nose()
-        self.calculate_center_of_nose()
-        print self.nose
+        face = self.face_detector.detect(self.image_grayscale)
+        nose = self.nose_detector.detect(face['image'])
+        print nose
 
     def read_grayscale_image(self):
         image = self.camera.read_image()
         self.image_grayscale = ImageConverter.rgb_to_grayscale(image)
+
+
+class FaceDetector(object):
+    def __init__(self):
+        self.face = None
+        self.faces = None
+        self.image_grayscale = None
+        self.cascade = HaarLoader.from_name("face")
+
+    def detect(self, image_grayscale):
+        self.image_grayscale = image_grayscale
+        self.detect_faces()
+        self.exit_if_no_faces_detected()
+        self.unpack_first_face()
+        self.extract_face_image()
+        return self.face
 
     def detect_faces(self):
         # Use a 1.5 scale to ensure the head is always found
         SCALE = 1.5
         # Requiring 5 neighbors helps discard invalid faces
         REQUIRED_NEIGHBORS = 5
-        self.faces = self.cascades["face"].detectMultiScale(
+        self.faces = self.cascade.detectMultiScale(
                 self.image_grayscale, SCALE, REQUIRED_NEIGHBORS)
 
     def exit_if_no_faces_detected(self):
@@ -72,13 +72,30 @@ class TrackerSample(object):
         to_x = f['x'] + f['width']
         f["image"] = self.image_grayscale[from_y:to_y, from_x:to_x]
 
+
+
+class NoseDetector(object):
+    def __init__(self):
+        self.nose = None
+        self.noses = None
+        self.image_grayscale = None
+        self.cascade = HaarLoader.from_name("nose")
+
+    def detect(self, image_grayscale):
+        self.image_grayscale = image_grayscale
+        self.detect_noses()
+        self.exit_if_no_noses_detected()
+        self.unpack_first_nose()
+        self.calculate_center_of_nose()
+        return self.nose
+
     def detect_noses(self):
         # Use a 1.5 scale to ensure the head is always found
         SCALE = 1.5
         # Requiring 5 neighbors helps discard invalid faces
         REQUIRED_NEIGHBORS = 5
-        self.noses = self.cascades["nose"].detectMultiScale(
-                self.face["image"], SCALE, REQUIRED_NEIGHBORS)
+        self.noses = self.cascade.detectMultiScale(
+                self.image_grayscale, SCALE, REQUIRED_NEIGHBORS)
 
     def exit_if_no_noses_detected(self):
         if len(self.noses) == 0:

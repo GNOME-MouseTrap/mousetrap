@@ -2,8 +2,7 @@ from gi.repository import GObject
 from gi.repository import Gtk
 
 from mousetrap.vision import Camera, NoseLocator
-from mousetrap.gui import Pointer
-import mousetrap.gui as gui
+from mousetrap.gui import Pointer, Gui
 
 
 FPS = 5
@@ -19,10 +18,11 @@ class Main(object):
         self.locator = NoseLocator()
         self.pointer = Pointer()
         self.screen = Gtk.Window().get_screen()
+        self.gui = Gui()
 
     def run(self):
         self.timeout_id = GObject.timeout_add(INTERVAL, self.on_timeout, None)
-        gui.start()
+        self.gui.start()
 
     def on_timeout(self, user_data):
         self.image = self.camera.read_image()
@@ -47,7 +47,7 @@ class Main(object):
             self.pointer.set_position((x_screen, y_screen))
         except Exception as exception:
             print exception.args[0]
-        gui.show_image('diff', self.image)
+        self.gui.show_image('diff', self.image)
         return True
 
 

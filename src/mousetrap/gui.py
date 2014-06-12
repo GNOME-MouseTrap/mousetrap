@@ -63,19 +63,21 @@ def _cvimage_to_pixbuf(cvimage):
             )
 
 
-_WINDOWS = {}
-def show_image(window_name, image):
-    '''Displays image in window named by window_name.
-       May reuse named windows.
-       '''
-    if window_name not in _WINDOWS:
-        _WINDOWS[window_name] = ImageWindow(window_name)
-    _WINDOWS[window_name].draw(image)
+class Gui(object):
+    def __init__(self):
+        self._windows = {}
 
+    def show_image(self, window_name, image):
+        '''Displays image in window named by window_name.
+           May reuse named windows.
+           '''
+        if window_name not in self._windows:
+            self._windows[window_name] = ImageWindow(window_name)
+        self._windows[window_name].draw(image)
 
-def start():
-    '''Start handling events.'''
-    Gtk.main()
+    def start(self):
+        '''Start handling events.'''
+        Gtk.main()
 
 
 class Pointer(object):

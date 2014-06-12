@@ -79,6 +79,11 @@ class Gui(object):
         '''Start handling events.'''
         Gtk.main()
 
+    def get_screen_width(self):
+        return Gtk.Window().get_screen().get_width()
+
+    def get_screen_height(self):
+        return Gtk.Window().get_screen().get_height()
 
 class Pointer(object):
     def __init__(self):

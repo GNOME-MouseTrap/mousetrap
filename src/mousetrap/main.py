@@ -1,6 +1,4 @@
 from gi.repository import GObject
-from gi.repository import Gtk
-
 from mousetrap.vision import Camera, NoseLocator
 from mousetrap.gui import Pointer, Gui
 
@@ -17,7 +15,6 @@ class Main(object):
         self.camera.set_dimensions(300, 200)
         self.locator = NoseLocator()
         self.pointer = Pointer()
-        self.screen = Gtk.Window().get_screen()
         self.gui = Gui()
 
     def run(self):
@@ -35,10 +32,9 @@ class Main(object):
             image_height = self.image.get_height()
             x_percent = 1.0 * location['x'] / image_width
             y_percent = 1.0 * location['y'] / image_height
-            screen = Gtk.Window().get_screen()
-            x_screen = x_percent * screen.get_width()
-            y_screen = y_percent * screen.get_width()
-            half_width = screen.get_width() / 2
+            x_screen = x_percent * self.gui.get_screen_width()
+            y_screen = y_percent * self.gui.get_screen_height()
+            half_width = self.gui.get_screen_width() / 2
             x_screen = (-1 * (x_screen - half_width)) + half_width
             print 'Pointer location in screen:' + \
                 str({'x':x_screen, 'y':y_screen})

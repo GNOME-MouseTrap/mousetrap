@@ -18,6 +18,7 @@ class Main(object):
         self.timeout_id = None
         self.camera = vision.Camera(DEVICE_INDEX,
                 IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT)
+        self.locator = vision.NoseLocator()
 
     def run(self):
         self.timeout_id = GObject.timeout_add(INTERVAL, self.on_timeout, None)
@@ -25,6 +26,11 @@ class Main(object):
 
     def on_timeout(self, user_data):
         self.image = self.camera.read_image()
+        try:
+            location = self.locator.locate(self.image)
+            print location
+        except Exception as exception:
+            print exception.args
         gui.show_image('diff', self.image)
         return True
 

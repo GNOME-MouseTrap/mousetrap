@@ -1,7 +1,9 @@
 from gi.repository import GObject
+from gi.repository import Gtk
 
 import mousetrap.vision as vision
 import mousetrap.gui as gui
+import mousetrap.pointer as pointer
 
 
 SEARCH_FOR_CAMERA = -1
@@ -19,6 +21,8 @@ class Main(object):
         self.camera = vision.Camera(DEVICE_INDEX,
                 IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT)
         self.locator = vision.NoseLocator()
+        self.pointer = pointer.Pointer()
+        self.screen = Gtk.Window().get_screen()
 
     def run(self):
         self.timeout_id = GObject.timeout_add(INTERVAL, self.on_timeout, None)
@@ -28,9 +32,23 @@ class Main(object):
         self.image = self.camera.read_image()
         try:
             location = self.locator.locate(self.image)
-            print location
+            print 'Nose location in image: ' + str(location)
+
+            # Map coordinates from image to screen.
+            x_percent = 1.0 * location['x'] / IMAGE_MAX_WIDTH
+            y_percent = 1.0 * location['y'] / IMAGE_MAX_HEIGHT
+            screen = Gtk.Window().get_screen()
+            x_screen = x_percent * screen.get_width()
+            y_screen = y_percent * screen.get_width()
+            half_width = screen.get_width() / 2
+            x_screen = (-1 * (x_screen - half_width)) + half_width
+            print 'Pointer location in screen:' + \
+                str( {'x':x_screen, 'y':y_screen} )
+
+            # move the pointer
+            self.pointer.set_position( (x_screen, y_screen) )
         except Exception as exception:
-            print exception.args
+            print exception.args[0]
         gui.show_image('diff', self.image)
         return True
 

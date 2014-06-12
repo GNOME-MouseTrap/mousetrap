@@ -1,11 +1,11 @@
 import unittest
-import mousetrap.pointer as pointer
+from mousetrap.gui import Pointer
 
 
 class test_pointer(unittest.TestCase):
 
     def setUp(self):
-        self.pointer = pointer.Pointer()
+        self.pointer = Pointer()
 
     def test_get_position(self):
         pointer_x, pointer_y = self.pointer.get_position()

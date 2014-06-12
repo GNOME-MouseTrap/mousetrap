@@ -1,9 +1,9 @@
 from gi.repository import GObject
 from gi.repository import Gtk
 
-import mousetrap.vision as vision
+from mousetrap.vision import Camera, NoseLocator
+from mousetrap.gui import Pointer
 import mousetrap.gui as gui
-import mousetrap.pointer as pointer
 
 
 FPS = 5
@@ -14,10 +14,10 @@ class Main(object):
     def __init__(self):
         self.image = None
         self.timeout_id = None
-        self.camera = vision.Camera()
+        self.camera = Camera()
         self.camera.set_dimensions(300, 200)
-        self.locator = vision.NoseLocator()
-        self.pointer = pointer.Pointer()
+        self.locator = NoseLocator()
+        self.pointer = Pointer()
         self.screen = Gtk.Window().get_screen()
 
     def run(self):

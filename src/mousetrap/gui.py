@@ -1,9 +1,9 @@
+'''
+All things GUI.
+'''
+
 from gi.repository import Gtk
 from gi.repository import Gdk
-from gi.repository import GdkPixbuf
-
-
-_GDK_PIXBUF_BIT_PER_SAMPLE = 8
 
 
 class ImageWindow(object):
@@ -22,45 +22,9 @@ class ImageWindow(object):
     def draw(self, image):
         '''Draw image to this window.
         '''
-        image = _get_pixbuf_from_image(image)
+        image = image.to_pixbuf()
         self._canvas.set_from_pixbuf(image)
         self._canvas.queue_draw()
-
-
-def _get_pixbuf_from_image(image):
-    if isinstance(image, GdkPixbuf.Pixbuf):
-        return image
-    return _cvimage_to_pixbuf(image.to_cv())
-
-
-def _cvimage_to_pixbuf(cvimage):
-    data = cvimage.tostring()
-    colorspace = GdkPixbuf.Colorspace.RGB
-    has_alpha_channel = False
-    width = cvimage.shape[1]
-    height = cvimage.shape[0]
-
-    # dist in bytes between row starts
-    row_stride = cvimage.strides[0]
-
-    # Function used to free the data when the pixbuf's reference count drops to
-    # zero, or None if the data should not be freed.
-    destroy_fn = None
-
-    # Closure data to pass to the destroy notification function.
-    destroy_fn_data = None
-
-    return GdkPixbuf.Pixbuf.new_from_data(
-            data,
-            colorspace, # FIXME: Need to handle grayscale.
-            has_alpha_channel,
-            _GDK_PIXBUF_BIT_PER_SAMPLE,
-            width,
-            height,
-            row_stride,
-            destroy_fn,
-            destroy_fn_data
-            )
 
 
 class Gui(object):
@@ -84,6 +48,7 @@ class Gui(object):
 
     def get_screen_height(self):
         return Gtk.Window().get_screen().get_height()
+
 
 class Pointer(object):
     def __init__(self):

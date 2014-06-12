@@ -1,12 +1,10 @@
 '''
-All things computer vision. Isolates OpenCV from the rest of the system.
-If you see another file using OpenCV directly, it should probably be using
-this module instead.
+All things computer vision.
 '''
 
 import cv2
 import cv
-
+from mousetrap.image import Image
 
 
 class Camera(object):
@@ -40,35 +38,6 @@ class Camera(object):
             raise IOError(S_CAPTURE_READ_ERROR)
 
         return Image(image)
-
-
-class Image(object):
-    def __init__(self, image_cv, is_grayscale=False):
-        self._image_cv = image_cv
-        self._is_grayscale = is_grayscale
-        self._image_cv_grayscale = None
-        if self._is_grayscale:
-            self._image_cv_grayscale = self._image_cv
-
-    def to_cv(self):
-        return self._image_cv
-
-    def to_cv_grayscale(self):
-        if self._image_cv_grayscale is None:
-            self._image_cv_grayscale = \
-                    self._cv_rgb_to_cv_grayscale(self._image_cv)
-        return self._image_cv_grayscale
-
-    def get_width(self):
-        return self._image_cv.shape[0]
-
-    def get_height(self):
-        return self._image_cv.shape[1]
-
-
-    @staticmethod
-    def _cv_rgb_to_cv_grayscale(image):
-        return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 
 class HaarLoader(object):

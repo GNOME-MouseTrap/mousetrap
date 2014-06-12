@@ -16,7 +16,7 @@ class Pointer(interface.Pointer):
             point_image = self._nose_locator.locate(image)
             point_screen = self._convert_image_to_screen_point(*point_image)
             self._location = point_screen
-        except FeatureNotFoundException as error:
+        except FeatureNotFoundException:
             self._location = None
 
     def _convert_image_to_screen_point(self, image_x, image_y):

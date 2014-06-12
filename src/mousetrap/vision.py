@@ -10,20 +10,20 @@ from mousetrap.image import Image
 class Camera(object):
     S_CAPTURE_OPEN_ERROR = 'Device #%d does not support video capture interface'
     S_CAPTURE_READ_ERROR = 'Error while capturing. Camera disconnected?'
-    SEARCH_FOR_DEVICE=-1
+    SEARCH_FOR_DEVICE = -1
 
     def __init__(self, device_index=SEARCH_FOR_DEVICE, width=400, height=300):
         self._device = self._new_capture_device(device_index)
         self.set_dimensions(width, height)
 
-    @staticmethod
-    def _new_capture_device(device_index):
+    @classmethod
+    def _new_capture_device(cls, device_index):
         capture = cv2.VideoCapture(device_index)
 
         if not capture.isOpened():
             capture.release()
 
-            raise IOError(S_CAPTURE_OPEN_ERROR % device_index)
+            raise IOError(cls.S_CAPTURE_OPEN_ERROR % device_index)
 
         return capture
 
@@ -35,7 +35,7 @@ class Camera(object):
         ret, image = self._device.read()
 
         if not ret:
-            raise IOError(S_CAPTURE_READ_ERROR)
+            raise IOError(self.S_CAPTURE_READ_ERROR)
 
         return Image(image)
 
@@ -81,6 +81,7 @@ class HaarLoader(object):
 
 class HaarNameError(Exception):
     def __init__(self, message):
+        super(HaarNameError, self).__init__()
         self.message = message
     def __str__(self):
         return repr(self.message)
@@ -147,6 +148,7 @@ class FeatureDetector(object):
 
 class FeatureNotFoundException(Exception):
     def __init__(self, message):
+        super(FeatureNotFoundException, self).__init__()
         self.message = message
     def __str__(self):
         return repr(self.message)

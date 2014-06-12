@@ -1,3 +1,7 @@
+'''
+Where it all begins.
+'''
+
 from gi.repository import GObject
 from mousetrap.vision import Camera, NoseLocator
 from mousetrap.gui import Pointer, Gui

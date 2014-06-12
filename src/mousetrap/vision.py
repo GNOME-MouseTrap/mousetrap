@@ -72,7 +72,7 @@ class HaarLoader(object):
         import os
 
         if cache_name in HaarLoader._haar_cache:
-            return HaarLoader._haar_cache[name]
+            return HaarLoader._haar_cache[cache_name]
 
         current_dir = os.path.dirname(os.path.realpath(__file__))
 

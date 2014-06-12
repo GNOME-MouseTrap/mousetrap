@@ -51,8 +51,7 @@ class HaarLoader(object):
     @staticmethod
     def from_name(name):
         if not name in HaarLoader._haar_files:
-            # TODO: Throw an exception
-            pass
+            raise HaarNameError(name)
 
         haar_file = HaarLoader._haar_files[name]
 
@@ -78,6 +77,13 @@ class HaarLoader(object):
                 HaarLoader._haar_cache[cache_name] = haar
 
         return haar
+
+
+class HaarNameError(Exception):
+    def __init__(self, message):
+        self.message = message
+    def __str__(self):
+        return repr(self.message)
 
 
 class FeatureDetector(object):

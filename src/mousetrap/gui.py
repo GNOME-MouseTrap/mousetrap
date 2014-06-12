@@ -29,7 +29,7 @@ class ImageWindow(object):
 def _get_pixbuf_from_image(image):
     if isinstance(image, GdkPixbuf.Pixbuf):
         return image
-    return _cvimage_to_pixbuf(image)
+    return _cvimage_to_pixbuf(image.to_cv())
 
 
 def _cvimage_to_pixbuf(cvimage):

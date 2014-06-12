@@ -38,12 +38,28 @@ class Camera(object):
         if not ret:
             raise IOError(S_CAPTURE_READ_ERROR)
 
-        return image
+        return Image(image)
 
-class ImageConverter(object):
+
+class Image(object):
+    def __init__(self, image_cv, is_grayscale=False):
+        self._image_cv = image_cv
+        self._is_grayscale = is_grayscale
+        self._image_cv_grayscale = None
+        if self._is_grayscale:
+            self._image_cv_grayscale = self._image_cv
+
+    def to_cv(self):
+        return self._image_cv
+
+    def to_cv_grayscale(self):
+        if self._image_cv_grayscale is None:
+            self._image_cv_grayscale = \
+                    self._cv_rgb_to_cv_grayscale(self._image_cv)
+        return self._image_cv_grayscale
 
     @staticmethod
-    def rgb_to_grayscale(image):
+    def _cv_rgb_to_cv_grayscale(image):
         return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 
@@ -94,8 +110,8 @@ class NoseLocator(object):
         self._nose_detector = FeatureDetector(
                 'nose', scale_factor=1.3, min_neighbors=5)
 
-    def locate(self, image_grayscale):
-        face = self._face_detector.detect(image_grayscale)
+    def locate(self, image):
+        face = self._face_detector.detect(image)
         nose = self._nose_detector.detect(face['image'])
         return {
                 'x': face['x'] + nose['center']['x'],
@@ -117,13 +133,13 @@ class FeatureDetector(object):
         self._name = name
         self._single = None
         self._plural = None
-        self._image_grayscale = None
+        self._image = None
         self._cascade = HaarLoader.from_name(name)
         self._scale_factor = scale_factor
         self._min_neighbors = min_neighbors
 
-    def detect(self, image_grayscale):
-        self._image_grayscale = image_grayscale
+    def detect(self, image):
+        self._image = image
         self._detect_plural()
         self._exit_if_none_detected()
         self._unpack_first()
@@ -133,7 +149,9 @@ class FeatureDetector(object):
 
     def _detect_plural(self):
         self._plural = self._cascade.detectMultiScale(
-                self._image_grayscale, self._scale_factor, self._min_neighbors)
+                self._image.to_cv_grayscale(),
+                self._scale_factor,
+                self._min_neighbors)
 
     def _exit_if_none_detected(self):
         if len(self._plural) == 0:
@@ -154,4 +172,7 @@ class FeatureDetector(object):
         to_y = single['y'] + single['height']
         from_x = single['x']
         to_x = single['x'] + single['width']
-        single["image"] = self._image_grayscale[from_y:to_y, from_x:to_x]
+        image_cv_grayscale = self._image.to_cv_grayscale()
+        single["image"] = Image(
+                image_cv_grayscale[from_y:to_y, from_x:to_x],
+                is_grayscale=True)

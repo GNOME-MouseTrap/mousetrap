@@ -1,4 +1,4 @@
-from mousetrap.vision import Camera, ImageConverter, NoseLocator
+from mousetrap.vision import Camera, NoseLocator
 
 
 class NoseLocatorSample(object):
@@ -14,13 +14,9 @@ class NoseLocatorSample(object):
                 width=400, height=300)
 
     def run(self):
-        image = self._read_grayscale_image()
+        image = self._camera.read_image()
         nose = self._nose_locator.locate(image)
         print nose
-
-    def _read_grayscale_image(self):
-        image = self._camera.read_image()
-        return ImageConverter.rgb_to_grayscale(image)
 
 
 if __name__ == '__main__':

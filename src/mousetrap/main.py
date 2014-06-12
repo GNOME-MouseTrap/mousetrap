@@ -6,10 +6,6 @@ import mousetrap.gui as gui
 import mousetrap.pointer as pointer
 
 
-SEARCH_FOR_CAMERA = -1
-DEVICE_INDEX = SEARCH_FOR_CAMERA
-IMAGE_MAX_WIDTH = 400
-IMAGE_MAX_HEIGHT = 300
 FPS = 5
 INTERVAL = int(round(1000.0 / FPS))
 
@@ -18,8 +14,8 @@ class Main(object):
     def __init__(self):
         self.image = None
         self.timeout_id = None
-        self.camera = vision.Camera(DEVICE_INDEX,
-                IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT)
+        self.camera = vision.Camera()
+        self.camera.set_dimensions(300, 200)
         self.locator = vision.NoseLocator()
         self.pointer = pointer.Pointer()
         self.screen = Gtk.Window().get_screen()
@@ -35,8 +31,10 @@ class Main(object):
             print 'Nose location in image: ' + str(location)
 
             # Map coordinates from image to screen.
-            x_percent = 1.0 * location['x'] / IMAGE_MAX_WIDTH
-            y_percent = 1.0 * location['y'] / IMAGE_MAX_HEIGHT
+            image_width = self.image.get_width()
+            image_height = self.image.get_height()
+            x_percent = 1.0 * location['x'] / image_width
+            y_percent = 1.0 * location['y'] / image_height
             screen = Gtk.Window().get_screen()
             x_screen = x_percent * screen.get_width()
             y_screen = y_percent * screen.get_width()

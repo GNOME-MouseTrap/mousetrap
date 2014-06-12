@@ -8,14 +8,15 @@ import cv2
 import cv
 
 
-S_CAPTURE_OPEN_ERROR = 'Device #%d does not support video capture interface'
-S_CAPTURE_READ_ERROR = 'Error while capturing. Camera disconnected?'
-
 
 class Camera(object):
-    def __init__(self, device_index, width, height):
-        self.device = self._new_capture_device(device_index)
-        self._set_dimensions(width, height)
+    S_CAPTURE_OPEN_ERROR = 'Device #%d does not support video capture interface'
+    S_CAPTURE_READ_ERROR = 'Error while capturing. Camera disconnected?'
+    SEARCH_FOR_DEVICE=-1
+
+    def __init__(self, device_index=SEARCH_FOR_DEVICE, width=400, height=300):
+        self._device = self._new_capture_device(device_index)
+        self.set_dimensions(width, height)
 
     @staticmethod
     def _new_capture_device(device_index):
@@ -28,12 +29,12 @@ class Camera(object):
 
         return capture
 
-    def _set_dimensions(self, width, height):
-        self.device.set(cv.CV_CAP_PROP_FRAME_WIDTH, width)
-        self.device.set(cv.CV_CAP_PROP_FRAME_HEIGHT, height)
+    def set_dimensions(self, width, height):
+        self._device.set(cv.CV_CAP_PROP_FRAME_WIDTH, width)
+        self._device.set(cv.CV_CAP_PROP_FRAME_HEIGHT, height)
 
     def read_image(self):
-        ret, image = self.device.read()
+        ret, image = self._device.read()
 
         if not ret:
             raise IOError(S_CAPTURE_READ_ERROR)
@@ -57,6 +58,13 @@ class Image(object):
             self._image_cv_grayscale = \
                     self._cv_rgb_to_cv_grayscale(self._image_cv)
         return self._image_cv_grayscale
+
+    def get_width(self):
+        return self._image_cv.shape[0]
+
+    def get_height(self):
+        return self._image_cv.shape[1]
+
 
     @staticmethod
     def _cv_rgb_to_cv_grayscale(image):
@@ -108,7 +116,7 @@ class NoseLocator(object):
         self._face_detector = FeatureDetector(
                 'face', scale_factor=1.5, min_neighbors=5)
         self._nose_detector = FeatureDetector(
-                'nose', scale_factor=1.3, min_neighbors=5)
+                'nose', scale_factor=1.1, min_neighbors=5)
 
     def locate(self, image):
         face = self._face_detector.detect(image)

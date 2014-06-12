@@ -50,7 +50,7 @@ class Gui(object):
         return Gtk.Window().get_screen().get_height()
 
 
-class Pointer(object):
+class MousePointer(object):
     def __init__(self):
         gdk_display = Gdk.Display.get_default()
         device_manager = gdk_display.get_device_manager()
@@ -63,5 +63,8 @@ class Pointer(object):
         position = self._pointer.get_position()
         return (position[x_index], position[y_index])
 
-    def set_position(self, point):
-        self._pointer.warp(self._screen, point[0], point[1])
+    def set_position(self, position=None):
+        '''Move pointer to position (x, y). If position is None,
+        no change is made.'''
+        if position is not None:
+            self._pointer.warp(self._screen, position[0], position[1])

@@ -80,22 +80,6 @@ class HaarLoader(object):
         return haar
 
 
-class NoseLocator(object):
-    def __init__(self):
-        self._face_detector = FeatureDetector(
-                'face', scale_factor=1.5, min_neighbors=5)
-        self._nose_detector = FeatureDetector(
-                'nose', scale_factor=1.1, min_neighbors=5)
-
-    def locate(self, image):
-        face = self._face_detector.detect(image)
-        nose = self._nose_detector.detect(face['image'])
-        return {
-                'x': face['x'] + nose['center']['x'],
-                'y': face['y'] + nose['center']['y'],
-                }
-
-
 class FeatureDetector(object):
     def __init__(self, name, scale_factor=1.1, min_neighbors=3):
         '''

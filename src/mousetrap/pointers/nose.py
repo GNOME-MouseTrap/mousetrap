@@ -1,5 +1,5 @@
 import mousetrap.pointers.interface as interface
-from mousetrap.vision import FeatureDetector
+from mousetrap.vision import FeatureDetector, FeatureNotFoundException
 from mousetrap.gui import Gui
 
 
@@ -16,9 +16,7 @@ class Pointer(interface.Pointer):
             point_image = self._nose_locator.locate(image)
             point_screen = self._convert_image_to_screen_point(*point_image)
             self._location = point_screen
-        except Exception as exception:
-            # FIXME: when FeatureDetector is changed to raise custom exceptions
-            # this should be adjusted to match.
+        except FeatureNotFoundException as error:
             self._location = None
 
     def _convert_image_to_screen_point(self, image_x, image_y):

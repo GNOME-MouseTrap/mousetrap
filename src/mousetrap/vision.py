@@ -116,8 +116,7 @@ class FeatureDetector(object):
 
     def _exit_if_none_detected(self):
         if len(self._plural) == 0:
-            # FIXME: need custom exception
-            raise Exception('No ' + self._name + 's detected.')
+            raise FeatureNotFoundException('No ' + self._name + 's detected.')
 
     def _unpack_first(self):
         self._single = dict(zip(['x', 'y', 'width', 'height'], self._plural[0]))
@@ -138,3 +137,10 @@ class FeatureDetector(object):
         single["image"] = Image(
                 image_cv_grayscale[from_y:to_y, from_x:to_x],
                 is_grayscale=True)
+
+
+class FeatureNotFoundException(Exception):
+    def __init__(self, message):
+        self.message = message
+    def __str__(self):
+        return repr(self.message)

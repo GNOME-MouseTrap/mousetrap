@@ -50,7 +50,7 @@ class Gui(object):
         return Gtk.Window().get_screen().get_height()
 
 
-class MousePointer(object):
+class ScreenPointer(object):
     def __init__(self):
         gdk_display = Gdk.Display.get_default()
         device_manager = gdk_display.get_device_manager()

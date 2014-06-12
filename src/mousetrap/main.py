@@ -5,7 +5,7 @@ Where it all begins.
 from datetime import datetime
 from gi.repository import GObject
 from mousetrap.vision import Camera
-from mousetrap.gui import MousePointer, Gui
+from mousetrap.gui import ScreenPointer, Gui
 from mousetrap.pointers.nose import Pointer
 
 
@@ -19,7 +19,7 @@ class Main(object):
         self.camera = Camera()
         self.camera.set_dimensions(300, 200)
         self.gui = Gui()
-        self.pointer = MousePointer()
+        self.pointer = ScreenPointer()
         self.nose = Pointer()
 
     def run(self):

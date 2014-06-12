@@ -1,4 +1,5 @@
-from mousetrap.vision import Camera, NoseLocator
+from mousetrap.vision import Camera
+from mousetrap.pointers.nose import NoseLocator
 
 
 class NoseLocatorSample(object):

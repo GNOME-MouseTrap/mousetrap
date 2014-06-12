@@ -43,10 +43,10 @@ class Main(object):
             half_width = screen.get_width() / 2
             x_screen = (-1 * (x_screen - half_width)) + half_width
             print 'Pointer location in screen:' + \
-                str( {'x':x_screen, 'y':y_screen} )
+                str({'x':x_screen, 'y':y_screen})
 
             # move the pointer
-            self.pointer.set_position( (x_screen, y_screen) )
+            self.pointer.set_position((x_screen, y_screen))
         except Exception as exception:
             print exception.args[0]
         gui.show_image('diff', self.image)

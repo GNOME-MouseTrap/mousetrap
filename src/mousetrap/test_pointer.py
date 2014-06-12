@@ -8,18 +8,18 @@ class test_pointer(unittest.TestCase):
         self.pointer = pointer.Pointer()
 
     def test_get_position(self):
-        x, y = self.pointer.get_position()
+        pointer_x, pointer_y = self.pointer.get_position()
         try:
-            x += 1
-            y += 1
+            pointer_x += 1
+            pointer_y += 1
         except TypeError:
-            self.assertTrue(False, msg='x or y is not a number')
+            self.assertTrue(False, msg='pointer_x or pointer_y is not a number')
 
     def test_set_position(self):
         self.pointer.set_position((3, 4))
-        x, y = self.pointer.get_position()
-        self.assertEquals(3, x)
-        self.assertEquals(4, y)
+        pointer_x, pointer_y = self.pointer.get_position()
+        self.assertEquals(3, pointer_x)
+        self.assertEquals(4, pointer_y)
 
 
 if __name__ == '__main__':

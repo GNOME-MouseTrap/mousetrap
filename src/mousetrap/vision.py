@@ -84,7 +84,7 @@ class HaarLoader(object):
         return haar
 
     @staticmethod
-    def from_file(file, cache_name=None):
+    def from_file(file_, cache_name=None):
         import os
 
         if cache_name in HaarLoader._haar_cache:
@@ -92,7 +92,7 @@ class HaarLoader(object):
 
         current_dir = os.path.dirname(os.path.realpath(__file__))
 
-        haar_file = os.path.join(current_dir, file)
+        haar_file = os.path.join(current_dir, file_)
 
         haar = cv2.CascadeClassifier(haar_file)
 
@@ -155,6 +155,7 @@ class FeatureDetector(object):
 
     def _exit_if_none_detected(self):
         if len(self._plural) == 0:
+            # FIXME: need custom exception
             raise Exception('No ' + self._name + 's detected.')
 
     def _unpack_first(self):

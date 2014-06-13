@@ -80,11 +80,7 @@ class HaarLoader(object):
 
 
 class HaarNameError(Exception):
-    def __init__(self, message):
-        super(HaarNameError, self).__init__()
-        self.message = message
-    def __str__(self):
-        return repr(self.message)
+    pass
 
 
 class FeatureDetector(object):
@@ -147,8 +143,4 @@ class FeatureDetector(object):
 
 
 class FeatureNotFoundException(Exception):
-    def __init__(self, message):
-        super(FeatureNotFoundException, self).__init__()
-        self.message = message
-    def __str__(self):
-        return repr(self.message)
+    pass

@@ -1,4 +1,3 @@
-
 mousetrapdir=$(bindir)
 
 mousetrap_pathdir=$(pyexecdir)
@@ -16,4 +15,3 @@ mousetrap_pythondir=$(pyexecdir)/mousetrap/
 
 install-exec-hook:
 	chmod a+r $(DESTDIR)$(mousetrap_pythondir) -R
-

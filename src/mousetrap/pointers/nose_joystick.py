@@ -12,12 +12,12 @@ class Pointer(interface.Pointer):
         self._nose_locator = NoseLocator()
         self._image = None
 
-        pointer = ScreenPointer()
+        self._pointer = ScreenPointer()
 
-        self._last_pointer_location = pointer.get_position()
         self._initial_image_location = (0, 0)
+        self._last_delta = (0, 0)
 
-        self._location = self._last_pointer_location
+        self._location = self._pointer.get_position()
 
     def update_image(self, image):
         self._image = image
@@ -25,9 +25,25 @@ class Pointer(interface.Pointer):
         try:
             point_image = self._nose_locator.locate(image)
             point_screen = self._convert_image_to_screen_point(*point_image)
+
             self._location = point_screen
         except FeatureNotFoundException:
-            self._location = None
+            location = self._pointer.get_position()
+
+            self._location = self._apply_delta_to_point(location,
+                                                        self._last_delta)
+
+    def _apply_delta_to_point(self, point, delta):
+        delta_x, delta_y = delta
+        point_x, point_y = point
+
+        if delta_x == 0 and delta_y == 0:
+            return None
+
+        point_x += delta_x
+        point_y += delta_y
+
+        return (point_x, point_y)
 
     def _convert_image_to_screen_point(self, image_x, image_y):
         initial_x, initial_y = self._initial_image_location
@@ -46,18 +62,13 @@ class Pointer(interface.Pointer):
         if abs(delta_y) < self.THRESHOLD:
             delta_y = 0
 
-        if delta_x == 0 and delta_y == 0:
-            return None
+        delta = (delta_x, delta_y)
 
-        pointer_x, pointer_y = self._last_pointer_location
+        self._last_delta = delta
 
-        pointer_x += delta_x
-        pointer_y += delta_y
+        location = self._pointer.get_position()
 
-        return (pointer_x, pointer_y)
+        return self._apply_delta_to_point(location, delta)
 
     def get_new_position(self):
-        if self._location:
-            self._last_pointer_location = self._location
-
         return self._location

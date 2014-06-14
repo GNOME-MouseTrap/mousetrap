@@ -61,6 +61,7 @@ class ScreenPointer(object):
         x_index = 1
         y_index = 2
         position = self._pointer.get_position()
+
         return (position[x_index], position[y_index])
 
     def set_position(self, position=None):

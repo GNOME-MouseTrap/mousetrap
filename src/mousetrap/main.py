@@ -6,7 +6,7 @@ from datetime import datetime
 from gi.repository import GObject
 from mousetrap.vision import Camera
 from mousetrap.gui import ScreenPointer, Gui
-from mousetrap.pointers.nose import Pointer
+from mousetrap.pointers.nose_joystick import Pointer
 
 
 FPS = 10
@@ -17,7 +17,7 @@ class Main(object):
     def __init__(self):
         self.timeout_id = None
         self.camera = Camera()
-        self.camera.set_dimensions(300, 200)
+        self.camera.set_dimensions(320, 240)
         self.gui = Gui()
         self.pointer = ScreenPointer()
         self.nose = Pointer()

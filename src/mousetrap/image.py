@@ -67,4 +67,3 @@ def _cvimage_to_pixbuf(cvimage):
             destroy_fn,
             destroy_fn_data
             )
-

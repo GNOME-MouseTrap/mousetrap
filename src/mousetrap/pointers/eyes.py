@@ -1,9 +1,14 @@
 import mousetrap.pointers.interface as interface
 from mousetrap.vision import FeatureDetector, FeatureNotFoundException
+import logging
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 class Pointer(interface.Pointer):
     def __init__(self):
+
         self._left_locator = LeftEyeLocator()
 
         self._history = []
@@ -67,7 +72,7 @@ class LeftEyeLocator(object):
         face = self._face_detector.detect(image)
         eye = self._eye_detector.detect(face["image"])
 
-        print eye
+        LOGGER.debug(eye)
 
         return (0, 0)
 

@@ -2,7 +2,10 @@
 Where it all begins.
 '''
 
-from datetime import datetime
+# NOTE: import this first to set up logging properly.
+import mousetrap.initialize_logging
+
+import logging
 from gi.repository import GObject, Gdk, Gtk
 from mousetrap.vision import Camera
 from mousetrap.gui import ScreenPointer, Gui
@@ -10,11 +13,14 @@ from mousetrap.pointers.nose_joystick import Pointer
 from mousetrap.pointers.eyes import Pointer as Eyes
 
 
-FPS = 10
-INTERVAL = int(round(1000.0 / FPS))
+LOGGER = logging.getLogger('mousetrap.main')
 
 
 class Main(object):
+
+    FPS = 10
+    INTERVAL = int(round(1000.0 / FPS))
+
     def __init__(self):
         self.timeout_id = None
         self.camera = Camera()
@@ -25,7 +31,7 @@ class Main(object):
         self.eyes = Eyes()
 
     def run(self):
-        self.timeout_id = GObject.timeout_add(INTERVAL, self.on_timeout, None)
+        self.timeout_id = GObject.timeout_add(self.INTERVAL, self.on_timeout, None)
         self.gui.start()
 
     def on_timeout(self, user_data):
@@ -41,7 +47,7 @@ class Main(object):
         if position is not None:
             return True
 
-        print str(datetime.now()) + ': No change.'
+        LOGGER.debug('No change.')
 
         self.eyes.update_image(image)
         keys = self.eyes.get_keys()
@@ -49,12 +55,12 @@ class Main(object):
         if keys is None:
             return True
 
-        print keys.get_actions()
+        LOGGER.debug(keys.get_actions())
 
         display = Display()
 
         for action in keys.get_actions():
-            print action.event, action.button
+            LOGGER.debug('%s %s', action.event, action.button)
 
             xtest.fake_input(display, action.event, action.button)
             display.sync()

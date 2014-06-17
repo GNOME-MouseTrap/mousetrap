@@ -1,4 +1,4 @@
-SUBDIRS = po src docs images
+SUBDIRS = po docs images
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-pydoc
 

@@ -44,6 +44,7 @@ class HaarLoader(object):
     _haar_files = {
         "face": "haars/haarcascade_frontalface_default.xml",
         "nose": "haars/haarcascade_mcs_nose.xml",
+        "open_eye": "haars/haarcascade_eye.xml",
     }
 
     _haar_cache = {}

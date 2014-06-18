@@ -1,6 +1,6 @@
 import mousetrap.pointers.interface as interface
 from mousetrap.vision import FeatureDetector, FeatureNotFoundException
-from mousetrap.gui import Gui, ScreenPointer
+from mousetrap.gui import Gui, ScreenPointer, ScreenPointerEvent
 
 from mousetrap.pointers.nose import NoseLocator
 
@@ -19,17 +19,18 @@ class Pointer(interface.Pointer):
 
         self._location = self._pointer.get_position()
 
+        self._tracking = False
+
     def update_image(self, image):
         self._image = image
-
         try:
             point_image = self._nose_locator.locate(image)
+            self._tracking = True
             point_screen = self._convert_image_to_screen_point(*point_image)
-
             self._location = point_screen
         except FeatureNotFoundException:
+            self._tracking = False
             location = self._pointer.get_position()
-
             self._location = self._apply_delta_to_point(location,
                                                         self._last_delta)
 
@@ -70,5 +71,14 @@ class Pointer(interface.Pointer):
 
         return self._apply_delta_to_point(location, delta)
 
-    def get_new_position(self):
-        return self._location
+#    def get_new_position(self):
+#        return self._location
+
+    def is_tracking(self):
+        return self._tracking
+
+    def get_pointer_events(self):
+        if self._location is None:
+            return []
+        else:
+            return [ScreenPointerEvent(ScreenPointer.EVENT_MOVE, self._location)]

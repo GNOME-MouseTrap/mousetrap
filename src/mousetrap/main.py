@@ -35,35 +35,20 @@ class Main(object):
         self.gui.start()
 
     def on_timeout(self, user_data):
-        from Xlib.display import Display
-        from Xlib.ext import xtest
 
         image = self.camera.read_image()
         self.gui.show_image('Raw', image)
         self.nose.update_image(image)
-        position = self.nose.get_new_position()
-        self.pointer.set_position(position)
+        for event in self.nose.get_pointer_events():
+            self.pointer.trigger_event(event)
 
-        if position is not None:
+        if self.pointer.is_moving():
             return True
-
-        LOGGER.debug('No change.')
 
         self.eyes.update_image(image)
-        keys = self.eyes.get_keys()
-
-        if keys is None:
-            return True
-
-        LOGGER.debug(keys.get_actions())
-
-        display = Display()
-
-        for action in keys.get_actions():
-            LOGGER.debug('%s %s', action.event, action.button)
-
-            xtest.fake_input(display, action.event, action.button)
-            display.sync()
+        events = self.eyes.get_pointer_events()
+        for event in events:
+            self.pointer.trigger_event(event)
 
         return True
 

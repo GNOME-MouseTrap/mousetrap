@@ -1,5 +1,6 @@
 import mousetrap.pointers.interface as interface
 from mousetrap.vision import FeatureDetector, FeatureNotFoundException
+from mousetrap.gui import ScreenPointer
 import logging
 
 
@@ -40,18 +41,16 @@ class Pointer(interface.Pointer):
     def get_new_position(self):
         return None
 
-    def get_keys(self):
+    def get_pointer_events(self):
         if self._detect_closed():
-            if not self._is_closed:
-                self._is_closed = True
-
-                return LeftClick()
-
             self._is_closed = True
+            if not self._is_closed:
+                return [ScreenPointerEvent(
+                            ScreenPointer.EVENT_CLICK,
+                            ScreenPointer.BUTTON_LEFT)]
         else:
             self._is_closed = False
-
-        return None
+        return []
 
 
 class LeftEyeLocator(object):
@@ -76,21 +75,3 @@ class LeftEyeLocator(object):
 
         return (0, 0)
 
-
-class LeftClick(object):
-
-    def get_actions(self):
-        from Xlib import X
-
-        press = Button(event=X.ButtonPress)
-
-        release = Button(event=X.ButtonRelease)
-
-        return [press, release]
-
-
-class Button(object):
-
-    def __init__(self, event, button=1):
-        self.event = event
-        self.button = button

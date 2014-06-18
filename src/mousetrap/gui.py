@@ -5,6 +5,12 @@ All things GUI.
 from gi.repository import Gtk
 from gi.repository import Gdk
 
+from Xlib.display import Display
+from Xlib.ext import xtest
+from Xlib import X
+
+import logging
+LOGGER = logging.getLogger(__name__)
 
 class ImageWindow(object):
     def __init__(self, message):
@@ -51,21 +57,99 @@ class Gui(object):
 
 
 class ScreenPointer(object):
+    EVENT_MOVE = 'move'
+    EVENT_CLICK = 'click'
+    EVENT_DOUBLE_CLICK = 'double click'
+    EVENT_TRIPLE_CLICK = 'triple click'
+    EVENT_PRESS = 'press'
+    EVENT_RELEASE = 'release'
+
+    BUTTON_LEFT = 'left button'
+    BUTTON_RIGHT = 'right button'
+    BUTTON_MIDDLE = 'middle button'
+
     def __init__(self):
         gdk_display = Gdk.Display.get_default()
         device_manager = gdk_display.get_device_manager()
         self._pointer = device_manager.get_client_pointer()
         self._screen = gdk_display.get_default_screen()
+        self._moved = False
+        self._event_handlers = {}
+        self._initialize_event_handlers()
+
+    def _initialize_event_handlers(self):
+        self._event_handlers[self.EVENT_MOVE] = self.set_position
+        self._event_handlers[self.EVENT_CLICK] = self.click
+        self._event_handlers[self.EVENT_DOUBLE_CLICK] = self.double_click
+        self._event_handlers[self.EVENT_TRIPLE_CLICK] = self.triple_click
+        self._event_handlers[self.EVENT_PRESS] = self.press
+        self._event_handlers[self.EVENT_RELEASE] = self.release
+
+    def trigger_event(self, event):
+        self._event_handlers[event.name](event.button_or_position)
+
+    def set_position(self, position=None):
+        '''Move pointer to position (x, y). If position is None,
+        no change is made.'''
+        LOGGER.debug('moving to %s', position)
+        self._moved = False
+        if position is not None:
+            self._pointer.warp(self._screen, position[0], position[1])
+            self._moved = True
+
+    def is_moving(self):
+        '''Returns True if last call to set_position passed a non-None value
+        for position.'''
+        return self._moved
 
     def get_position(self):
         x_index = 1
         y_index = 2
         position = self._pointer.get_position()
-
         return (position[x_index], position[y_index])
 
-    def set_position(self, position=None):
-        '''Move pointer to position (x, y). If position is None,
-        no change is made.'''
-        if position is not None:
-            self._pointer.warp(self._screen, position[0], position[1])
+    def click(self, button=BUTTON_LEFT):
+        if button != BUTTON_LEFT:
+            raise NotImplementedError('Only left click is implemented.')
+        display = Display()
+        for action in LeftClick().get_actions():
+            LOGGER.debug('%s %s', action.event, action.button)
+            xtest.fake_input(display, action.event, action.button)
+            display.sync()
+
+    def double_click(self, button=BUTTON_LEFT):
+        raise NotImplementedError()
+
+    def triple_click(self, button=BUTTON_LEFT):
+        raise NotImplementedError()
+
+    def triple_click(self, button=BUTTON_LEFT):
+        raise NotImplementedError()
+
+    def press(self, button=BUTTON_LEFT):
+        raise NotImplementedError()
+
+    def release(self, button=BUTTON_LEFT):
+        raise NotImplementedError()
+
+    def is_pressed(self, button=BUTTON_LEFT):
+        raise NotImplementedError()
+
+
+class ScreenPointerEvent(object):
+    def __init__(self, name, button_or_position):
+        self.name = name
+        self.button_or_position = button_or_position
+
+
+class LeftClick(object):
+    def get_actions(self):
+        press = Button(event=X.ButtonPress)
+        release = Button(event=X.ButtonRelease)
+        return [press, release]
+
+
+class Button(object):
+    def __init__(self, event, button=1):
+        self.event = event
+        self.button = button

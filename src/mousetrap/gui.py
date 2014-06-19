@@ -5,7 +5,7 @@ All things GUI.
 from gi.repository import Gtk
 from gi.repository import Gdk
 
-from Xlib.display import Display
+from Xlib.display import Display as XlibDisplay
 from Xlib.ext import xtest
 from Xlib import X
 
@@ -56,7 +56,7 @@ class Gui(object):
         return Gtk.Window().get_screen().get_height()
 
 
-class ScreenPointer(object):
+class Pointer(object):
     EVENT_MOVE = 'move'
     EVENT_CLICK = 'click'
     EVENT_DOUBLE_CLICK = 'double click'
@@ -64,9 +64,9 @@ class ScreenPointer(object):
     EVENT_PRESS = 'press'
     EVENT_RELEASE = 'release'
 
-    BUTTON_LEFT = 'left button'
-    BUTTON_RIGHT = 'right button'
-    BUTTON_MIDDLE = 'middle button'
+    BUTTON_LEFT = X.Button1
+    BUTTON_RIGHT = X.Button3
+    BUTTON_MIDDLE = X.Button2
 
     def __init__(self):
         gdk_display = Gdk.Display.get_default()
@@ -74,19 +74,6 @@ class ScreenPointer(object):
         self._pointer = device_manager.get_client_pointer()
         self._screen = gdk_display.get_default_screen()
         self._moved = False
-        self._event_handlers = {}
-        self._initialize_event_handlers()
-
-    def _initialize_event_handlers(self):
-        self._event_handlers[self.EVENT_MOVE] = self.set_position
-        self._event_handlers[self.EVENT_CLICK] = self.click
-        self._event_handlers[self.EVENT_DOUBLE_CLICK] = self.double_click
-        self._event_handlers[self.EVENT_TRIPLE_CLICK] = self.triple_click
-        self._event_handlers[self.EVENT_PRESS] = self.press
-        self._event_handlers[self.EVENT_RELEASE] = self.release
-
-    def trigger_event(self, event):
-        self._event_handlers[event.name](event.button_or_position)
 
     def set_position(self, position=None):
         '''Move pointer to position (x, y). If position is None,
@@ -109,47 +96,8 @@ class ScreenPointer(object):
         return (position[x_index], position[y_index])
 
     def click(self, button=BUTTON_LEFT):
-        if button != BUTTON_LEFT:
-            raise NotImplementedError('Only left click is implemented.')
-        display = Display()
-        for action in LeftClick().get_actions():
-            LOGGER.debug('%s %s', action.event, action.button)
-            xtest.fake_input(display, action.event, action.button)
+        display = XlibDisplay()
+        for event, button in [(X.ButtonPress, button), (X.ButtonRelease, button)]:
+            LOGGER.debug('%s %s', event, button)
+            xtest.fake_input(display, event, button)
             display.sync()
-
-    def double_click(self, button=BUTTON_LEFT):
-        raise NotImplementedError()
-
-    def triple_click(self, button=BUTTON_LEFT):
-        raise NotImplementedError()
-
-    def triple_click(self, button=BUTTON_LEFT):
-        raise NotImplementedError()
-
-    def press(self, button=BUTTON_LEFT):
-        raise NotImplementedError()
-
-    def release(self, button=BUTTON_LEFT):
-        raise NotImplementedError()
-
-    def is_pressed(self, button=BUTTON_LEFT):
-        raise NotImplementedError()
-
-
-class ScreenPointerEvent(object):
-    def __init__(self, name, button_or_position):
-        self.name = name
-        self.button_or_position = button_or_position
-
-
-class LeftClick(object):
-    def get_actions(self):
-        press = Button(event=X.ButtonPress)
-        release = Button(event=X.ButtonRelease)
-        return [press, release]
-
-
-class Button(object):
-    def __init__(self, event, button=1):
-        self.event = event
-        self.button = button

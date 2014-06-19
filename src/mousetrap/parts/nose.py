@@ -1,9 +1,9 @@
-import mousetrap.pointers.interface as interface
+import mousetrap.parts.interface as interface
 from mousetrap.vision import FeatureDetector, FeatureNotFoundException
 from mousetrap.gui import Gui
 
 
-class Pointer(interface.Pointer):
+class Part(interface.Part):
     def __init__(self):
         self._nose_locator = NoseLocator()
         self._gui = Gui()

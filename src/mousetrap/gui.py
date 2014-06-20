@@ -5,6 +5,12 @@ All things GUI.
 from gi.repository import Gtk
 from gi.repository import Gdk
 
+from Xlib.display import Display as XlibDisplay
+from Xlib.ext import xtest
+from Xlib import X
+
+import mousetrap.log as log
+LOGGER = log.getLogger(__name__)
 
 class ImageWindow(object):
     def __init__(self, message):
@@ -50,22 +56,48 @@ class Gui(object):
         return Gtk.Window().get_screen().get_height()
 
 
-class ScreenPointer(object):
+class Pointer(object):
+    EVENT_MOVE = 'move'
+    EVENT_CLICK = 'click'
+    EVENT_DOUBLE_CLICK = 'double click'
+    EVENT_TRIPLE_CLICK = 'triple click'
+    EVENT_PRESS = 'press'
+    EVENT_RELEASE = 'release'
+
+    BUTTON_LEFT = X.Button1
+    BUTTON_RIGHT = X.Button3
+    BUTTON_MIDDLE = X.Button2
+
     def __init__(self):
         gdk_display = Gdk.Display.get_default()
         device_manager = gdk_display.get_device_manager()
         self._pointer = device_manager.get_client_pointer()
         self._screen = gdk_display.get_default_screen()
+        self._moved = False
+
+    def set_position(self, position=None):
+        '''Move pointer to position (x, y). If position is None,
+        no change is made.'''
+        LOGGER.debug('moving to %s', position)
+        self._moved = False
+        if position is not None:
+            self._pointer.warp(self._screen, position[0], position[1])
+            self._moved = True
+
+    def is_moving(self):
+        '''Returns True if last call to set_position passed a non-None value
+        for position.'''
+        return self._moved
 
     def get_position(self):
         x_index = 1
         y_index = 2
         position = self._pointer.get_position()
-
         return (position[x_index], position[y_index])
 
-    def set_position(self, position=None):
-        '''Move pointer to position (x, y). If position is None,
-        no change is made.'''
-        if position is not None:
-            self._pointer.warp(self._screen, position[0], position[1])
+    def click(self, button=BUTTON_LEFT):
+        display = XlibDisplay()
+        for event, button in [(X.ButtonPress, button), (X.ButtonRelease, button)]:
+            LOGGER.debug('%s %s', event, button)
+            xtest.fake_input(display, event, button)
+            display.sync()

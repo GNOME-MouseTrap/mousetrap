@@ -2,71 +2,100 @@
 Where it all begins.
 '''
 
-# NOTE: import this first to set up logging properly.
-import mousetrap.initialize_logging
-
-import logging
+import mousetrap.log as log
 from gi.repository import GObject, Gdk, Gtk
+from mousetrap.gui import Gui, Pointer
 from mousetrap.vision import Camera
-from mousetrap.gui import ScreenPointer, Gui
-from mousetrap.pointers.nose_joystick import Pointer
-from mousetrap.pointers.eyes import Pointer as Eyes
 
 
-LOGGER = logging.getLogger('mousetrap.main')
+LOGGER = log.getLogger('mousetrap.main')
 
 
-class Main(object):
+#TODO: Should be a configuration file.
+DEFAULT_PARTS = [
+        ('camera', 'mousetrap.parts.camera.CameraPart'),
+        ('display', 'mousetrap.parts.display.DisplayPart'),
+        ('nose_joystick', 'mousetrap.parts.nose_joystick.NoseJoystickPart'),
+        ('eye_click', 'mousetrap.parts.eyes.EyesPart'),
+        ]
+DEFAULT_LOOPS_PER_SECOND = 10
 
-    FPS = 10
-    INTERVAL = int(round(1000.0 / FPS))
 
+class App(object):
     def __init__(self):
-        self.timeout_id = None
-        self.camera = Camera()
-        self.camera.set_dimensions(320, 240)
+        self.image = None
+        self.loop = Loop(self)
         self.gui = Gui()
-        self.pointer = ScreenPointer()
-        self.nose = Pointer()
-        self.eyes = Eyes()
+        self.camera = Camera()
+        self.pointer = Pointer()
+        self.parts = []
+        self._assemble_parts()
 
-    def run(self):
-        self.timeout_id = GObject.timeout_add(self.INTERVAL, self.on_timeout, None)
+    def _assemble_parts(self):
+        self._load_parts(DEFAULT_PARTS)
+        self._register_parts_with_loop()
+
+    def _load_parts(self, part_descriptors):
+        for name, class_ in part_descriptors:
+            self.parts.append(self._load_part(class_))
+
+    @staticmethod
+    def _load_part(class_):
+        LOGGER.debug('loading %s', class_)
+        class_path = class_.split('.')
+        module = __import__('.'.join(class_path[:-1]), {}, {}, class_path[-1])
+        return getattr(module, class_path[-1])()
+
+    def _register_parts_with_loop(self):
+        for part in self.parts:
+            self.loop.subscribe(part)
+
+    def run(self, app=None):
+        self.loop.start()
         self.gui.start()
 
-    def on_timeout(self, user_data):
-        from Xlib.display import Display
-        from Xlib.ext import xtest
 
-        image = self.camera.read_image()
-        self.gui.show_image('Raw', image)
-        self.nose.update_image(image)
-        position = self.nose.get_new_position()
-        self.pointer.set_position(position)
+class Observable(object):
+    def __init__(self):
+        self.__observers = []
+        self.__arguments = {}
 
-        if position is not None:
-            return True
+    def subscribe(self, observer):
+        self.__observers.append(observer)
 
-        LOGGER.debug('No change.')
+    def _add_argument(self, key, value):
+        self.__arguments[key] = value
 
-        self.eyes.update_image(image)
-        keys = self.eyes.get_keys()
+    def _fire(self, callback_name):
+        for observer in self.__observers:
+            callback = getattr(observer, callback_name)
+            callback(**self.__arguments)
 
-        if keys is None:
-            return True
 
-        LOGGER.debug(keys.get_actions())
+class Loop(Observable):
+    MILLISECONDS_PER_SECOND = 1000.0
+    CALLBACK_RUN = 'run'
 
-        display = Display()
+    def __init__(self, app):
+        super(Loop, self).__init__()
+        self.set_loops_per_second(DEFAULT_LOOPS_PER_SECOND)
+        self._timeout_id = None
+        self._add_argument('app', app)
 
-        for action in keys.get_actions():
-            LOGGER.debug('%s %s', action.event, action.button)
+    def set_loops_per_second(self, loops_per_second):
+        self._loops_per_second = loops_per_second
+        self._interval = int(round(
+            self.MILLISECONDS_PER_SECOND / self._loops_per_second))
 
-            xtest.fake_input(display, action.event, action.button)
-            display.sync()
+    def start(self):
+        self.timeout_id = GObject.timeout_add(self._interval, self.run)
 
-        return True
+    def run(self):
+        CONTINUE = True
+        PAUSE = False
+        self._fire(self.CALLBACK_RUN)
+        return CONTINUE
 
 
 if __name__ == '__main__':
-    Main().run()
+    App().run()

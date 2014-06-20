@@ -1,27 +1,27 @@
-import mousetrap.pointers.interface as interface
+import mousetrap.parts.interface as interface
 from mousetrap.vision import FeatureDetector, FeatureNotFoundException
-import logging
+import mousetrap.log as log
 
 
-LOGGER = logging.getLogger(__name__)
+LOGGER = log.getLogger(__name__)
 
 
-class Pointer(interface.Pointer):
+class EyesPart(interface.Part):
     def __init__(self):
-
         self._left_locator = LeftEyeLocator()
-
         self._history = []
-
         self._is_closed = False
 
-    def update_image(self, image):
+    def run(self, app):
         try:
-            point_image = self._left_locator.locate(image)
-
+            point_image = self._left_locator.locate(app.image)
             self._hit(point_image)
         except FeatureNotFoundException:
             self._miss()
+
+        if self._detect_closed():
+            self._history = []
+            app.pointer.click()
 
     def _hit(self, point):
         self._history.append(point)
@@ -36,22 +36,6 @@ class Pointer(interface.Pointer):
         misses = self._history.count(None)
 
         return misses > 12
-
-    def get_new_position(self):
-        return None
-
-    def get_keys(self):
-        if self._detect_closed():
-            if not self._is_closed:
-                self._is_closed = True
-
-                return LeftClick()
-
-            self._is_closed = True
-        else:
-            self._is_closed = False
-
-        return None
 
 
 class LeftEyeLocator(object):
@@ -76,21 +60,3 @@ class LeftEyeLocator(object):
 
         return (0, 0)
 
-
-class LeftClick(object):
-
-    def get_actions(self):
-        from Xlib import X
-
-        press = Button(event=X.ButtonPress)
-
-        release = Button(event=X.ButtonRelease)
-
-        return [press, release]
-
-
-class Button(object):
-
-    def __init__(self, event, button=1):
-        self.event = event
-        self.button = button

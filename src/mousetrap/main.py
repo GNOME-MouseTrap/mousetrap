@@ -8,7 +8,7 @@ from mousetrap.gui import Gui, Pointer
 from mousetrap.vision import Camera
 
 
-LOGGER = log.getLogger('mousetrap.main')
+LOGGER = log.get_logger('mousetrap.main')
 
 
 #TODO: Should be a configuration file.

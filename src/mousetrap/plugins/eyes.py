@@ -3,7 +3,7 @@ from mousetrap.vision import FeatureDetector, FeatureNotFoundException
 import mousetrap.log as log
 
 
-LOGGER = log.getLogger(__name__)
+LOGGER = log.get_logger(__name__)
 
 
 class EyesPlugin(interface.Plugin):
@@ -59,4 +59,3 @@ class LeftEyeLocator(object):
         LOGGER.debug(eye)
 
         return (0, 0)
-

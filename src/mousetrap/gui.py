@@ -10,7 +10,7 @@ from Xlib.ext import xtest
 from Xlib import X
 
 import mousetrap.log as log
-LOGGER = log.getLogger(__name__)
+LOGGER = log.get_logger(__name__)
 
 class ImageWindow(object):
     def __init__(self, message):

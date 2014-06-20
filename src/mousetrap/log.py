@@ -1,7 +1,7 @@
 import logging
 
 
-def getLogger(name):
+def get_logger(name):
     return logging.getLogger(name)
 
 

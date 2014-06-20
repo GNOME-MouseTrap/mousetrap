@@ -13,10 +13,10 @@ LOGGER = log.getLogger('mousetrap.main')
 
 #TODO: Should be a configuration file.
 DEFAULT_PARTS = [
-        ('camera', 'mousetrap.parts.camera'),
-        ('display', 'mousetrap.parts.display'),
-        ('nose_joystick', 'mousetrap.parts.nose_joystick'),
-        ('eye_click', 'mousetrap.parts.eyes'),
+        ('camera', 'mousetrap.parts.camera.CameraPart'),
+        ('display', 'mousetrap.parts.display.DisplayPart'),
+        ('nose_joystick', 'mousetrap.parts.nose_joystick.NoseJoystickPart'),
+        ('eye_click', 'mousetrap.parts.eyes.EyesPart'),
         ]
 DEFAULT_LOOPS_PER_SECOND = 10
 
@@ -36,15 +36,15 @@ class App(object):
         self._register_parts_with_loop()
 
     def _load_parts(self, part_descriptors):
-        for name, module in part_descriptors:
-            self.parts.append(self._load_part(module))
+        for name, class_ in part_descriptors:
+            self.parts.append(self._load_part(class_))
 
     @staticmethod
-    def _load_part(module):
-        LOGGER.debug('loading %s', module)
-        module = __import__(module, globals(), locals(), ['Part'])
-        part = module.Part()
-        return part
+    def _load_part(class_):
+        LOGGER.debug('loading %s', class_)
+        class_path = class_.split('.')
+        module = __import__('.'.join(class_path[:-1]), {}, {}, class_path[-1])
+        return getattr(module, class_path[-1])()
 
     def _register_parts_with_loop(self):
         for part in self.parts:

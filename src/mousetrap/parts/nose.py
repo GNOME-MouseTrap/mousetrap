@@ -3,7 +3,7 @@ from mousetrap.vision import FeatureDetector, FeatureNotFoundException
 from mousetrap.gui import Gui
 
 
-class Part(interface.Part):
+class NosePart(interface.Part):
     def __init__(self):
         self._nose_locator = NoseLocator()
         self._gui = Gui()

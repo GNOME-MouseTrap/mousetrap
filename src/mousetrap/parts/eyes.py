@@ -6,7 +6,7 @@ import mousetrap.log as log
 LOGGER = log.getLogger(__name__)
 
 
-class Part(interface.Part):
+class EyesPart(interface.Part):
     def __init__(self):
         self._left_locator = LeftEyeLocator()
         self._history = []

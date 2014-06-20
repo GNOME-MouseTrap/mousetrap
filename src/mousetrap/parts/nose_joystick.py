@@ -3,7 +3,7 @@ from mousetrap.vision import FeatureDetector, FeatureNotFoundException
 from mousetrap.parts.nose import NoseLocator
 
 
-class Part(interface.Part):
+class NoseJoystickPart(interface.Part):
     THRESHOLD = 5
 
     def __init__(self):

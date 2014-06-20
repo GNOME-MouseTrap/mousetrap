@@ -1,9 +1,9 @@
 import mousetrap.parts.interface as interface
 from mousetrap.vision import FeatureDetector, FeatureNotFoundException
-import logging
+import mousetrap.log as log
 
 
-LOGGER = logging.getLogger(__name__)
+LOGGER = log.getLogger(__name__)
 
 
 class Part(interface.Part):

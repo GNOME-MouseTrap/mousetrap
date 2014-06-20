@@ -2,15 +2,13 @@
 Where it all begins.
 '''
 
-# NOTE: import this first to set up logging properly.
-import mousetrap.initialize_logging
-import logging
+import mousetrap.log as log
 from gi.repository import GObject, Gdk, Gtk
 from mousetrap.gui import Gui, Pointer
 from mousetrap.vision import Camera
 
 
-LOGGER = logging.getLogger('mousetrap.main')
+LOGGER = log.getLogger('mousetrap.main')
 
 
 #TODO: Should be a configuration file.

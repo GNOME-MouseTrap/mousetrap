@@ -21,14 +21,6 @@ DEFAULT_PARTS = [
 DEFAULT_LOOPS_PER_SECOND = 10
 
 
-class Main(object):
-    def __init__(self):
-        self._app = App()
-
-    def run(self):
-        self._app.run()
-
-
 class App(object):
     def __init__(self):
         self.image = None
@@ -106,4 +98,4 @@ class Loop(Observable):
 
 
 if __name__ == '__main__':
-    Main().run()
+    App().run()

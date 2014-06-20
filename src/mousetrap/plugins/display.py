@@ -1,7 +1,7 @@
-import mousetrap.parts.interface as interface
+import mousetrap.plugins.interface as interface
 import logging
 
 
-class DisplayPart(interface.Part):
+class DisplayPlugin(interface.Plugin):
     def run(self, app):
         app.gui.show_image('MouseTrap', app.image)

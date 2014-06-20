@@ -1,4 +1,4 @@
-import mousetrap.parts.interface as interface
+import mousetrap.plugins.interface as interface
 from mousetrap.vision import FeatureDetector, FeatureNotFoundException
 import mousetrap.log as log
 
@@ -6,7 +6,7 @@ import mousetrap.log as log
 LOGGER = log.getLogger(__name__)
 
 
-class EyesPart(interface.Part):
+class EyesPlugin(interface.Plugin):
     def __init__(self):
         self._left_locator = LeftEyeLocator()
         self._history = []

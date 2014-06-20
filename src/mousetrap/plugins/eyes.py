@@ -10,6 +10,7 @@ class EyesPlugin(interface.Plugin):
     def __init__(self):
         self._left_locator = LeftEyeLocator()
         self._history = []
+        self._pointer_history = []
         self._is_closed = False
 
     def run(self, app):
@@ -19,7 +20,7 @@ class EyesPlugin(interface.Plugin):
         except FeatureNotFoundException:
             self._miss()
 
-        if self._detect_closed():
+        if self._not_moving(app) and self._detect_closed():
             self._history = []
             app.pointer.click()
 
@@ -28,6 +29,20 @@ class EyesPlugin(interface.Plugin):
 
     def _miss(self):
         self._history.append(None)
+
+    def _not_moving(self, app):
+        self._pointer_history.append(app.pointer.get_position())
+
+        last_point = app.pointer.get_position()
+
+        while len(self._pointer_history) > 5:
+            del self._pointer_history[0]
+
+        for point in self._pointer_history:
+            if point != last_point:
+                return False
+
+        return True
 
     def _detect_closed(self):
         while len(self._history) > 15:

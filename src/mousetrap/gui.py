@@ -78,11 +78,14 @@ class Pointer(object):
     def set_position(self, position=None):
         '''Move pointer to position (x, y). If position is None,
         no change is made.'''
-        LOGGER.debug('moving to %s', position)
         self._moved = False
         if position is not None:
+            LOGGER.debug('Moving pointer to %s', position)
+
             self._pointer.warp(self._screen, position[0], position[1])
             self._moved = True
+        else:
+            LOGGER.debug('Not moving the pointer')
 
     def is_moving(self):
         '''Returns True if last call to set_position passed a non-None value

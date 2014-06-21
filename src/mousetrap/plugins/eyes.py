@@ -20,7 +20,7 @@ class EyesPlugin(interface.Plugin):
         except FeatureNotFoundException:
             self._miss()
 
-        if self._not_moving(app) and self._detect_closed():
+        if self._stationary(app) and self._detect_closed():
             self._history = []
             app.pointer.click()
 
@@ -30,7 +30,7 @@ class EyesPlugin(interface.Plugin):
     def _miss(self):
         self._history.append(None)
 
-    def _not_moving(self, app):
+    def _stationary(self, app):
         self._pointer_history.append(app.pointer.get_position())
 
         last_point = app.pointer.get_position()

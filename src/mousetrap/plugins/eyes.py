@@ -14,21 +14,11 @@ class EyesPlugin(interface.Plugin):
         self._is_closed = False
 
     def run(self, app):
-        try:
-            point_image = self._left_locator.locate(app.image)
-            self._hit(point_image)
-        except FeatureNotFoundException:
-            self._miss()
+        self._eye_detection_history.append(self._left_locator.locate(app.image))
 
         if self._stationary(app) and self._detect_closed():
             self._eye_detection_history = []
             app.pointer.click()
-
-    def _hit(self, point):
-        self._eye_detection_history.append(point)
-
-    def _miss(self):
-        self._eye_detection_history.append(None)
 
     def _stationary(self, app):
         self._pointer_history.append(app.pointer.get_position())
@@ -48,7 +38,7 @@ class EyesPlugin(interface.Plugin):
         while len(self._eye_detection_history) > 15:
             del self._eye_detection_history[0]
 
-        misses = self._eye_detection_history.count(None)
+        misses = self._eye_detection_history.count(False)
 
         return misses > 12
 
@@ -68,9 +58,10 @@ class LeftEyeLocator(object):
         )
 
     def locate(self, image):
-        face = self._face_detector.detect(image)
-        eye = self._eye_detector.detect(face["image"])
-
-        LOGGER.debug(eye)
-
-        return (0, 0)
+        try:
+            face = self._face_detector.detect(image)
+            eye = self._eye_detector.detect(face["image"])
+            LOGGER.debug(eye)
+            return True
+        except FeatureNotFoundException:
+            return False

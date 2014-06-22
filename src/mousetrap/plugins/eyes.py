@@ -8,45 +8,50 @@ LOGGER = log.get_logger(__name__)
 
 class EyesPlugin(interface.Plugin):
     def __init__(self):
-        self._max_pointer_samples = 5
-        self._max_eye_samples = 15
-        self._min_fraction_to_be_closed = 0.8
-
-        self._min_misses_to_be_closed = int(
-                self._min_fraction_to_be_closed * self._max_eye_samples)
-
-        self._eye_detection_history = History(self._max_eye_samples)
-        self._pointer_history = History(self._max_pointer_samples)
-
-        self._left_locator = LeftEyeLocator()
+        self._motion_detector = MotionDetector()
+        self._closed_detector = ClosedDetector()
 
     def run(self, app):
-        self._update_eye_detection_history(app.image)
-        self._update_pointer_history(app.pointer)
+        self._motion_detector.update(app.pointer)
+        self._closed_detector.update(app.image)
 
-        if self._stationary(app) and self._detect_closed():
-            self._eye_detection_history.clear()
+        if self._motion_detector.is_stationary() and \
+                self._closed_detector.is_closed():
+            self._closed_detector.reset()
             app.pointer.click()
 
-    def _update_eye_detection_history(self, image):
-        self._eye_detection_history.append(self._left_locator.locate(image))
 
-    def _update_pointer_history(self, pointer):
-        self._pointer_history.append(pointer.get_position())
+class MotionDetector(object):
+    def __init__(self):
+        self._max_samples = 5
+        self._history = History(self._max_samples)
 
-    def _stationary(self, app):
-        last_point = self._pointer_history[-1]
+    def update(self, pointer):
+        self._history.append(pointer.get_position())
 
-        for point in self._pointer_history:
-            if point != last_point:
-                return False
+    def is_stationary(self):
+        last_point = self._history[-1]
+        return all([point == last_point for point in self._history])
 
-        return True
 
-    def _detect_closed(self):
-        misses = self._eye_detection_history.count(False)
+class ClosedDetector(object):
+    def __init__(self):
+        self._max_samples = 15
+        self._min_fraction_to_be_closed = 0.8
+        self._min_misses_to_be_closed = int(
+                self._min_fraction_to_be_closed * self._max_samples)
+        self._left_locator = LeftEyeLocator()
+        self._detection_history = History(self._max_samples)
 
+    def update(self, image):
+        self._detection_history.append(self._left_locator.locate(image))
+
+    def is_closed(self):
+        misses = self._detection_history.count(False)
         return misses > self._min_misses_to_be_closed
+
+    def reset(self):
+        self._detection_history.clear()
 
 
 class LeftEyeLocator(object):
@@ -85,5 +90,3 @@ class History(list):
 
     def clear(self):
         del self[:]
-
-

@@ -62,17 +62,39 @@ class LeftEyeLocator(object):
             scale_factor=1.5,
             min_neighbors=5,
         )
-        self._eye_detector = FeatureDetector(
+        self._open_eye_detector = FeatureDetector(
             "open_eye",
             scale_factor=1.1,
             min_neighbors=3,
         )
+        self._left_eye_detector = FeatureDetector(
+            "left_eye",
+            scale_factor=1.5,
+            min_neighbors=10,
+        )
 
     def locate(self, image):
+        face = None
+
         try:
             face = self._face_detector.detect(image)
-            eye = self._eye_detector.detect(face["image"])
-            LOGGER.debug(eye)
+
+            LOGGER.debug("Found the face")
+        except FeatureNotFoundException:
+            return True
+
+        try:
+            left_eye = self._left_eye_detector.detect(face["image"])
+
+            LOGGER.debug("Found the left eye at %s", left_eye)
+        except FeatureNotFoundException:
+            return True
+
+        try:
+            open_eye = self._open_eye_detector.detect(face["image"])
+
+            LOGGER.debug("Found an open eye at %s", open_eye)
+
             return True
         except FeatureNotFoundException:
             return False

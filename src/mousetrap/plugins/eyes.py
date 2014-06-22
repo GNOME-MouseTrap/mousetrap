@@ -9,7 +9,7 @@ LOGGER = log.get_logger(__name__)
 class EyesPlugin(interface.Plugin):
     def __init__(self):
         self._left_locator = LeftEyeLocator()
-        self._history = []
+        self._eye_detection_history = []
         self._pointer_history = []
         self._is_closed = False
 
@@ -21,14 +21,14 @@ class EyesPlugin(interface.Plugin):
             self._miss()
 
         if self._stationary(app) and self._detect_closed():
-            self._history = []
+            self._eye_detection_history = []
             app.pointer.click()
 
     def _hit(self, point):
-        self._history.append(point)
+        self._eye_detection_history.append(point)
 
     def _miss(self):
-        self._history.append(None)
+        self._eye_detection_history.append(None)
 
     def _stationary(self, app):
         self._pointer_history.append(app.pointer.get_position())
@@ -45,10 +45,10 @@ class EyesPlugin(interface.Plugin):
         return True
 
     def _detect_closed(self):
-        while len(self._history) > 15:
-            del self._history[0]
+        while len(self._eye_detection_history) > 15:
+            del self._eye_detection_history[0]
 
-        misses = self._history.count(None)
+        misses = self._eye_detection_history.count(None)
 
         return misses > 12
 

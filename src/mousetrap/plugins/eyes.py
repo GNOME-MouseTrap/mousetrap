@@ -15,15 +15,14 @@ class EyesPlugin(interface.Plugin):
 
     def run(self, app):
         self._eye_detection_history.append(self._left_locator.locate(app.image))
+        self._pointer_history.append(app.pointer.get_position())
 
         if self._stationary(app) and self._detect_closed():
             self._eye_detection_history.clear()
             app.pointer.click()
 
     def _stationary(self, app):
-        self._pointer_history.append(app.pointer.get_position())
-
-        last_point = app.pointer.get_position()
+        last_point = self._pointer_history[-1]
 
         for point in self._pointer_history:
             if point != last_point:

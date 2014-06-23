@@ -98,7 +98,6 @@ class Config(dict):
     def __init__(self):
         _rmerge(self, self.defaults)
 
-
     def __getitem__(self, key):
         '''
         Allow access to class configuration by passing instance of class as

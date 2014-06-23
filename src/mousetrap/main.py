@@ -11,6 +11,8 @@ import logging
 import logging.config
 logging.config.dictConfig(CONFIG['logging'])
 LOGGER = logging.getLogger('mousetrap.main')
+import yaml
+LOGGER.debug(yaml.dump(CONFIG))
 
 
 from gi.repository import GObject, Gdk, Gtk

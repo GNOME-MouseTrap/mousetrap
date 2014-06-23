@@ -86,8 +86,8 @@ class Pointer(object):
         return self._moved
 
     def get_position(self):
-        x_index = 1
-        y_index = 2
+        X_INDEX = 1
+        Y_INDEX = 2
         position = self._pointer.get_position()
         return (position[x_index], position[y_index])
 

@@ -39,9 +39,17 @@ class NoseLocator(object):
     def __init__(self, config):
         self._config = config
         self._face_detector = FeatureDetector(
-                config, 'face', scale_factor=1.5, min_neighbors=5)
+                config,
+                'face',
+                scale_factor=config[self]['face_detector']['scale_factor'],
+                min_neighbors=config[self]['face_detector']['min_neighbors']
+                )
         self._nose_detector = FeatureDetector(
-                config, 'nose', scale_factor=1.1, min_neighbors=5)
+                config,
+                'nose',
+                scale_factor=config[self]['nose_detector']['scale_factor'],
+                min_neighbors=config[self]['nose_detector']['min_neighbors']
+                )
 
     def locate(self, image):
         face = self._face_detector.detect(image)

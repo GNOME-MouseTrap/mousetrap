@@ -45,12 +45,7 @@ class HaarLoader(object):
 
     def __init__(self, config):
         self._config = config
-        self._haar_files = {
-            "face": "haars/haarcascade_frontalface_default.xml",
-            "nose": "haars/haarcascade_mcs_nose.xml",
-            "left_eye": "haars/haarcascade_mcs_lefteye.xml",
-            "open_eye": "haars/haarcascade_eye.xml",
-        }
+        self._haar_files = config['haar_files']
         self._haar_cache = {}
 
 

@@ -2,12 +2,20 @@ class Config(dict):
     def __init__(self):
         self['loops_per_second'] = 10
 
+        # The plugins to load in the order they will load and run.
         self['assembly'] =  [
             'mousetrap.plugins.camera.CameraPlugin',
             'mousetrap.plugins.display.DisplayPlugin',
             'mousetrap.plugins.nose_joystick.NoseJoystickPlugin',
             'mousetrap.plugins.eyes.EyesPlugin',
             ]
+
+        self['haar_files'] = {
+            "face": "haars/haarcascade_frontalface_default.xml",
+            "nose": "haars/haarcascade_mcs_nose.xml",
+            "left_eye": "haars/haarcascade_mcs_lefteye.xml",
+            "open_eye": "haars/haarcascade_eye.xml",
+            }
 
         # See `logging` and `logging.config`
         self['logging'] = {

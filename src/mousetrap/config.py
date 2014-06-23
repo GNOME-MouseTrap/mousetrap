@@ -2,6 +2,12 @@ class Config(dict):
     def __init__(self):
         self['loops_per_second'] = 10
 
+        self['camera'] = {
+            'device_index': -1,     # -1 to search for device
+            'width': 400,
+            'height': 300,
+            }
+
         # The plugins to load in the order they will load and run.
         self['assembly'] =  [
             'mousetrap.plugins.camera.CameraPlugin',

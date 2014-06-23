@@ -10,12 +10,14 @@ from mousetrap.image import Image
 class Camera(object):
     S_CAPTURE_OPEN_ERROR = 'Device #%d does not support video capture interface'
     S_CAPTURE_READ_ERROR = 'Error while capturing. Camera disconnected?'
-    SEARCH_FOR_DEVICE = -1
 
-    def __init__(self, config, device_index=SEARCH_FOR_DEVICE, width=400, height=300):
+    def __init__(self, config):
         self._config = config
-        self._device = self._new_capture_device(device_index)
-        self.set_dimensions(width, height)
+        self._device = self._new_capture_device(config['camera']['device_index'])
+        self.set_dimensions(
+                config['camera']['width'],
+                config['camera']['height']
+                )
 
     @classmethod
     def _new_capture_device(cls, device_index):

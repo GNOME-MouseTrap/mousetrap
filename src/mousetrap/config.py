@@ -49,8 +49,35 @@ class Config(dict):
         self['classes'] = {
             'mousetrap.plugins.display.DisplayPlugin': {
                 'window_title': 'MouseTrap',
-                }
+                },
+
+            'mousetrap.plugins.eyes.MotionDetector': {
+                'max_samples': 5,
+                },
+
+            'mousetrap.plugins.eyes.ClosedDetector': {
+                'max_samples': 15,
+                'min_fraction_to_be_closed': 0.8,
+                },
+
+            'mousetrap.plugins.eyes.LeftEyeLocator': {
+                'face_detector': {
+                    'scale_factor': 1.5,
+                    'min_neighbors': 5,
+                    },
+
+                'open_eye_detector': {
+                    'scale_factor': 1.1,
+                    'min_neighbors': 3,
+                    },
+
+                'left_eye_detector': {
+                    'scale_factor': 1.5,
+                    'min_neighbors': 10,
+                    },
+                },
             }
+
 
     def __getitem__(self, key):
         '''

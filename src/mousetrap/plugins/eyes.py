@@ -25,7 +25,7 @@ class EyesPlugin(interface.Plugin):
 class MotionDetector(object):
     def __init__(self, config):
         self._config = config
-        self._max_samples = 5
+        self._max_samples = config[self]['max_samples']
         self._history = History(config, self._max_samples)
 
     def update(self, pointer):
@@ -39,8 +39,8 @@ class MotionDetector(object):
 class ClosedDetector(object):
     def __init__(self, config):
         self._config = config
-        self._max_samples = 15
-        self._min_fraction_to_be_closed = 0.8
+        self._max_samples = config[self]['max_samples']
+        self._min_fraction_to_be_closed = config[self]['min_fraction_to_be_closed']
         self._min_misses_to_be_closed = int(
                 self._min_fraction_to_be_closed * self._max_samples)
         self._left_locator = LeftEyeLocator(config)
@@ -64,20 +64,20 @@ class LeftEyeLocator(object):
         self._face_detector = FeatureDetector(
                 config,
                 "face",
-                scale_factor=1.5,
-                min_neighbors=5,
+                scale_factor=config[self]['face_detector']['scale_factor'],
+                min_neighbors=config[self]['face_detector']['min_neighbors']
                 )
         self._open_eye_detector = FeatureDetector(
                 config,
                 "open_eye",
-                scale_factor=1.1,
-                min_neighbors=3,
+                scale_factor=config[self]['open_eye_detector']['scale_factor'],
+                min_neighbors=config[self]['open_eye_detector']['min_neighbors']
                 )
         self._left_eye_detector = FeatureDetector(
                 config,
                 "left_eye",
-                scale_factor=1.5,
-                min_neighbors=10,
+                scale_factor=config[self]['left_eye_detector']['scale_factor'],
+                min_neighbors=config[self]['left_eye_detector']['min_neighbors']
                 )
 
     def locate(self, image):

@@ -1,15 +1,16 @@
+import logging
+LOGGER = logging.getLogger(__name__)
+
+
 import mousetrap.plugins.interface as interface
 from mousetrap.vision import FeatureDetector, FeatureNotFoundException
-import mousetrap.log as log
-
-
-LOGGER = log.get_logger(__name__)
 
 
 class EyesPlugin(interface.Plugin):
-    def __init__(self):
-        self._motion_detector = MotionDetector()
-        self._closed_detector = ClosedDetector()
+    def __init__(self, config):
+        self._config = config
+        self._motion_detector = MotionDetector(config)
+        self._closed_detector = ClosedDetector(config)
 
     def run(self, app):
         self._motion_detector.update(app.pointer)
@@ -22,9 +23,10 @@ class EyesPlugin(interface.Plugin):
 
 
 class MotionDetector(object):
-    def __init__(self):
+    def __init__(self, config):
+        self._config = config
         self._max_samples = 5
-        self._history = History(self._max_samples)
+        self._history = History(config, self._max_samples)
 
     def update(self, pointer):
         self._history.append(pointer.get_position())
@@ -35,13 +37,14 @@ class MotionDetector(object):
 
 
 class ClosedDetector(object):
-    def __init__(self):
+    def __init__(self, config):
+        self._config = config
         self._max_samples = 15
         self._min_fraction_to_be_closed = 0.8
         self._min_misses_to_be_closed = int(
                 self._min_fraction_to_be_closed * self._max_samples)
-        self._left_locator = LeftEyeLocator()
-        self._detection_history = History(self._max_samples)
+        self._left_locator = LeftEyeLocator(config)
+        self._detection_history = History(config, self._max_samples)
 
     def update(self, image):
         self._detection_history.append(self._left_locator.locate(image))
@@ -56,22 +59,26 @@ class ClosedDetector(object):
 
 class LeftEyeLocator(object):
 
-    def __init__(self):
+    def __init__(self, config):
+        self._config = config
         self._face_detector = FeatureDetector(
-            "face",
-            scale_factor=1.5,
-            min_neighbors=5,
-        )
+                config,
+                "face",
+                scale_factor=1.5,
+                min_neighbors=5,
+                )
         self._open_eye_detector = FeatureDetector(
-            "open_eye",
-            scale_factor=1.1,
-            min_neighbors=3,
-        )
+                config,
+                "open_eye",
+                scale_factor=1.1,
+                min_neighbors=3,
+                )
         self._left_eye_detector = FeatureDetector(
-            "left_eye",
-            scale_factor=1.5,
-            min_neighbors=10,
-        )
+                config,
+                "left_eye",
+                scale_factor=1.5,
+                min_neighbors=10,
+                )
 
     def locate(self, image):
         face = None
@@ -101,8 +108,9 @@ class LeftEyeLocator(object):
 
 
 class History(list):
-    def __init__(self, max_length):
+    def __init__(self, config, max_length):
         super(History, self).__init__()
+        self._config = config
         self._max_length = max_length
 
     def append(self, value):

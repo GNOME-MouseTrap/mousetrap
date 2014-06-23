@@ -6,8 +6,9 @@ from mousetrap.plugins.nose import NoseLocator
 class NoseJoystickPlugin(interface.Plugin):
     THRESHOLD = 5
 
-    def __init__(self):
-        self._nose_locator = NoseLocator()
+    def __init__(self, config):
+        self._config = config
+        self._nose_locator = NoseLocator(config)
         self._initial_image_location = (0, 0)
         self._last_delta = (0, 0)
 

@@ -4,7 +4,8 @@ from mousetrap.gui import Gui
 
 
 class NosePlugin(interface.Plugin):
-    def __init__(self):
+    def __init__(self, config):
+        self._config = config
         self._nose_locator = NoseLocator()
         self._gui = Gui()
         self._location = None
@@ -35,11 +36,12 @@ class NosePlugin(interface.Plugin):
 
 
 class NoseLocator(object):
-    def __init__(self):
+    def __init__(self, config):
+        self._config = config
         self._face_detector = FeatureDetector(
-                'face', scale_factor=1.5, min_neighbors=5)
+                config, 'face', scale_factor=1.5, min_neighbors=5)
         self._nose_detector = FeatureDetector(
-                'nose', scale_factor=1.1, min_neighbors=5)
+                config, 'nose', scale_factor=1.1, min_neighbors=5)
 
     def locate(self, image):
         face = self._face_detector.detect(image)

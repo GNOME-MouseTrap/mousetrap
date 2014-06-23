@@ -12,7 +12,8 @@ class Camera(object):
     S_CAPTURE_READ_ERROR = 'Error while capturing. Camera disconnected?'
     SEARCH_FOR_DEVICE = -1
 
-    def __init__(self, device_index=SEARCH_FOR_DEVICE, width=400, height=300):
+    def __init__(self, config, device_index=SEARCH_FOR_DEVICE, width=400, height=300):
+        self._config = config
         self._device = self._new_capture_device(device_index)
         self.set_dimensions(width, height)
 
@@ -37,7 +38,7 @@ class Camera(object):
         if not ret:
             raise IOError(self.S_CAPTURE_READ_ERROR)
 
-        return Image(image)
+        return Image(self._config, image)
 
 
 class HaarLoader(object):
@@ -86,7 +87,7 @@ class HaarNameError(Exception):
 
 
 class FeatureDetector(object):
-    def __init__(self, name, scale_factor=1.1, min_neighbors=3):
+    def __init__(self, config, name, scale_factor=1.1, min_neighbors=3):
         '''
         name - name of feature to detect
 
@@ -96,6 +97,7 @@ class FeatureDetector(object):
         min_neighbors - how many neighbors each candidate rectangle should have
                 to retain it. Default 3.
         '''
+        self._config = config
         self._name = name
         self._single = None
         self._plural = None
@@ -140,6 +142,7 @@ class FeatureDetector(object):
         to_x = single['x'] + single['width']
         image_cv_grayscale = self._image.to_cv_grayscale()
         single["image"] = Image(
+                self._config,
                 image_cv_grayscale[from_y:to_y, from_x:to_x],
                 is_grayscale=True)
 

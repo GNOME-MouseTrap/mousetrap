@@ -2,18 +2,23 @@
 All things GUI.
 '''
 
+
+import logging
+LOGGER = logging.getLogger(__name__)
+
+
 from gi.repository import Gtk
 from gi.repository import Gdk
+
 
 from Xlib.display import Display as XlibDisplay
 from Xlib.ext import xtest
 from Xlib import X
 
-import mousetrap.log as log
-LOGGER = log.get_logger(__name__)
 
 class ImageWindow(object):
-    def __init__(self, message):
+    def __init__(self, config, message):
+        self._config = config
         self._window = Gtk.Window(title=message)
         self._canvas = Gtk.Image()
         self._window.add(self._canvas)
@@ -34,7 +39,8 @@ class ImageWindow(object):
 
 
 class Gui(object):
-    def __init__(self):
+    def __init__(self, config):
+        self._config = config
         self._windows = {}
 
     def show_image(self, window_name, image):
@@ -42,7 +48,7 @@ class Gui(object):
            May reuse named windows.
            '''
         if window_name not in self._windows:
-            self._windows[window_name] = ImageWindow(window_name)
+            self._windows[window_name] = ImageWindow(self._config, window_name)
         self._windows[window_name].draw(image)
 
     def start(self):
@@ -59,7 +65,8 @@ class Gui(object):
 class Pointer(object):
     BUTTON_LEFT = X.Button1
 
-    def __init__(self):
+    def __init__(self, config):
+        self._config = config
         gdk_display = Gdk.Display.get_default()
         device_manager = gdk_display.get_device_manager()
         self._pointer = device_manager.get_client_pointer()

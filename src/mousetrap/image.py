@@ -10,7 +10,8 @@ _GDK_PIXBUF_BIT_PER_SAMPLE = 8
 
 
 class Image(object):
-    def __init__(self, image_cv, is_grayscale=False):
+    def __init__(self, config, image_cv, is_grayscale=False):
+        self._config = config
         self._image_cv = image_cv
         self._is_grayscale = is_grayscale
         self._image_cv_grayscale = None

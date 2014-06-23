@@ -57,16 +57,7 @@ class Gui(object):
 
 
 class Pointer(object):
-    EVENT_MOVE = 'move'
-    EVENT_CLICK = 'click'
-    EVENT_DOUBLE_CLICK = 'double click'
-    EVENT_TRIPLE_CLICK = 'triple click'
-    EVENT_PRESS = 'press'
-    EVENT_RELEASE = 'release'
-
     BUTTON_LEFT = X.Button1
-    BUTTON_RIGHT = X.Button3
-    BUTTON_MIDDLE = X.Button2
 
     def __init__(self):
         gdk_display = Gdk.Display.get_default()

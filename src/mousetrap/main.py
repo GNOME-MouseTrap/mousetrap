@@ -12,7 +12,7 @@ import logging.config
 logging.config.dictConfig(CONFIG['logging'])
 LOGGER = logging.getLogger('mousetrap.main')
 import yaml
-LOGGER.debug(yaml.dump(CONFIG))
+LOGGER.debug(yaml.dump(dict(CONFIG), default_flow_style=False))
 
 
 from gi.repository import GObject, Gdk, Gtk

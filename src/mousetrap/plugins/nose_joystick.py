@@ -4,10 +4,10 @@ from mousetrap.plugins.nose import NoseLocator
 
 
 class NoseJoystickPlugin(interface.Plugin):
-    THRESHOLD = 5
 
     def __init__(self, config):
         self._config = config
+        self._threshold = config[self]['threshold']
         self._nose_locator = NoseLocator(config)
         self._initial_image_location = (0, 0)
         self._last_delta = (0, 0)
@@ -47,10 +47,10 @@ class NoseJoystickPlugin(interface.Plugin):
         delta_x = initial_x - image_x
         delta_y = image_y - initial_y
 
-        if abs(delta_x) < self.THRESHOLD:
+        if abs(delta_x) < self._threshold:
             delta_x = 0
 
-        if abs(delta_y) < self.THRESHOLD:
+        if abs(delta_y) < self._threshold:
             delta_y = 0
 
         delta = (delta_x, delta_y)

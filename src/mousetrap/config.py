@@ -76,6 +76,9 @@ class Config(dict):
                     'min_neighbors': 10,
                     },
                 },
+            'mousetrap.plugins.nose_joystick.NoseJoystickPlugin': {
+                'threshold': 5,
+                },
             }
 
 

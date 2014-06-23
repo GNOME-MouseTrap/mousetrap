@@ -42,32 +42,33 @@ class Camera(object):
 
 
 class HaarLoader(object):
-    _haar_files = {
-        "face": "haars/haarcascade_frontalface_default.xml",
-        "nose": "haars/haarcascade_mcs_nose.xml",
-        "left_eye": "haars/haarcascade_mcs_lefteye.xml",
-        "open_eye": "haars/haarcascade_eye.xml",
-    }
 
-    _haar_cache = {}
+    def __init__(self, config):
+        self._config = config
+        self._haar_files = {
+            "face": "haars/haarcascade_frontalface_default.xml",
+            "nose": "haars/haarcascade_mcs_nose.xml",
+            "left_eye": "haars/haarcascade_mcs_lefteye.xml",
+            "open_eye": "haars/haarcascade_eye.xml",
+        }
+        self._haar_cache = {}
 
-    @staticmethod
-    def from_name(name):
-        if not name in HaarLoader._haar_files:
+
+    def from_name(self, name):
+        if not name in self._haar_files:
             raise HaarNameError(name)
 
-        haar_file = HaarLoader._haar_files[name]
+        haar_file = self._haar_files[name]
 
-        haar = HaarLoader.from_file(haar_file, name)
+        haar = self.from_file(haar_file, name)
 
         return haar
 
-    @staticmethod
-    def from_file(file_, cache_name=None):
+    def from_file(self, file_, cache_name=None):
         import os
 
-        if cache_name in HaarLoader._haar_cache:
-            return HaarLoader._haar_cache[cache_name]
+        if cache_name in self._haar_cache:
+            return self._haar_cache[cache_name]
 
         current_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -76,8 +77,8 @@ class HaarLoader(object):
         haar = cv2.CascadeClassifier(haar_file)
 
         if not cache_name is None:
-            if not cache_name in HaarLoader._haar_cache:
-                HaarLoader._haar_cache[cache_name] = haar
+            if not cache_name in self._haar_cache:
+                self._haar_cache[cache_name] = haar
 
         return haar
 
@@ -102,7 +103,7 @@ class FeatureDetector(object):
         self._single = None
         self._plural = None
         self._image = None
-        self._cascade = HaarLoader.from_name(name)
+        self._cascade = HaarLoader(config).from_name(name)
         self._scale_factor = scale_factor
         self._min_neighbors = min_neighbors
 

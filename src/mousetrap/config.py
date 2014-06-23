@@ -46,13 +46,24 @@ class Config(dict):
                 }
             }
 
-        self['plugins'] = {
+        self['classes'] = {
             'mousetrap.plugins.display.DisplayPlugin': {
                 'window_title': 'MouseTrap',
                 }
             }
 
+    def __getitem__(self, key):
+        '''
+        Allow access to class configuration by passing instance of class as
+        the key. For example,
 
-    def for_plugin(self, plugin_object):
-        class_ = plugin_object.__class__
-        return self['plugins'][class_.__module__ + '.' + class_.__name__]
+            x = config[self]['x']
+
+        is equivelant to
+
+            x = config['classes'][self.__class__.__module__+'.'+self.__class__.__name__]['x']
+        '''
+        if isinstance(key, basestring):
+            return super(Config, self).__getitem__(key)
+        class_ = key.__class__
+        return self['classes'][class_.__module__ + '.' + class_.__name__]

@@ -89,7 +89,7 @@ class Pointer(object):
         X_INDEX = 1
         Y_INDEX = 2
         position = self._pointer.get_position()
-        return (position[x_index], position[y_index])
+        return (position[X_INDEX], position[Y_INDEX])
 
     def click(self, button=BUTTON_LEFT):
         display = XlibDisplay()

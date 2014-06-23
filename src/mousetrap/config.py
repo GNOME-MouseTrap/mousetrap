@@ -1,30 +1,30 @@
 class Config(dict):
-    def __init__(self):
-        self['loops_per_second'] = 10
+    defaults = {
+        'loops_per_second': 10,
 
-        self['camera'] = {
+        'camera': {
             'device_index': -1,     # -1 to search for device
             'width': 400,
             'height': 300,
-            }
+            },
 
         # The plugins to load in the order they will load and run.
-        self['assembly'] =  [
+        'assembly':  [
             'mousetrap.plugins.camera.CameraPlugin',
             'mousetrap.plugins.display.DisplayPlugin',
             'mousetrap.plugins.nose_joystick.NoseJoystickPlugin',
             'mousetrap.plugins.eyes.EyesPlugin',
-            ]
+            ],
 
-        self['haar_files'] = {
+        'haar_files': {
             "face": "haars/haarcascade_frontalface_default.xml",
             "nose": "haars/haarcascade_mcs_nose.xml",
             "left_eye": "haars/haarcascade_mcs_lefteye.xml",
             "open_eye": "haars/haarcascade_eye.xml",
-            }
+            },
 
         # See `logging` and `logging.config`
-        self['logging'] = {
+        'logging': {
             'version': 1,
             'root': {
                 'level': 'DEBUG',
@@ -44,9 +44,9 @@ class Config(dict):
                     'stream' : 'ext://sys.stdout'
                     }
                 }
-            }
+            },
 
-        self['classes'] = {
+        'classes': {
             'mousetrap.plugins.display.DisplayPlugin': {
                 'window_title': 'MouseTrap',
                 },
@@ -92,7 +92,11 @@ class Config(dict):
                     'min_neighbors': 5
                     },
                 },
-            }
+            },
+        }
+
+    def __init__(self):
+        _rmerge(self, self.defaults)
 
 
     def __getitem__(self, key):
@@ -110,3 +114,18 @@ class Config(dict):
             return super(Config, self).__getitem__(key)
         class_ = key.__class__
         return self['classes'][class_.__module__ + '.' + class_.__name__]
+
+
+def _rmerge(target, source):
+    '''
+    Recursively update values in target from source.
+    Only dicts are updated, all other values are deepcopied.
+    '''
+    import copy
+    for key, value in source.items():
+        if isinstance(value, dict):
+            if key not in target:
+                target[key] = {}
+            _rmerge(target[key], value)
+        else:
+            target[key] = copy.deepcopy(value)

@@ -1,15 +1,23 @@
 from yaml import safe_load
-from os.path import dirname
+from os.path import dirname, expanduser, exists
+from os import getcwd
 from copy import deepcopy
 
 
 class Config(dict):
-    DEFAULT_CONFIG_PATH = dirname(__file__) + '/' + 'config_default.yaml'
+    SEARCH_PATH = [
+            dirname(__file__) + '/' + 'config_default.yaml',
+            expanduser('~') + '/.mousetrap.yaml',
+            getcwd() + '/mousetrap.yaml'
+            ]
 
     def __init__(self):
-        with open(self.DEFAULT_CONFIG_PATH) as config_file:
-            defaults = safe_load(config_file)
-            _rmerge(self, defaults)
+        for path in self.SEARCH_PATH:
+            if exists(path):
+                print("loading %s" % (path))
+                with open(path) as config_file:
+                    config = safe_load(config_file)
+                    _rmerge(self, config)
 
     def __getitem__(self, key):
         '''

@@ -38,4 +38,4 @@ class Config(dict):
 
     def for_plugin(self, plugin_object):
         class_ = plugin_object.__class__
-        return self[class_.__module__ + '.' class_.__name__]
+        return self[class_.__module__ + '.' + class_.__name__]

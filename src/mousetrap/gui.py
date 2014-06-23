@@ -22,12 +22,7 @@ class ImageWindow(object):
         self._window = Gtk.Window(title=message)
         self._canvas = Gtk.Image()
         self._window.add(self._canvas)
-
-        # FIXME: Closing any window kills the application. Need a mechanism
-        # that allows windows to be openned and closed, and only kill the
-        # application when the last window is closed.
         self._window.connect("delete-event", Gtk.main_quit)
-
         self._window.show_all()
 
     def draw(self, image):

@@ -47,9 +47,12 @@ class Config(dict):
             }
 
         self['plugins'] = {
+            'mousetrap.plugins.display.DisplayPlugin': {
+                'window_title': 'MouseTrap',
+                }
             }
 
 
     def for_plugin(self, plugin_object):
         class_ = plugin_object.__class__
-        return self[class_.__module__ + '.' + class_.__name__]
+        return self['plugins'][class_.__module__ + '.' + class_.__name__]

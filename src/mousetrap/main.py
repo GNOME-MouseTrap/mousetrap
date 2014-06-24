@@ -46,9 +46,10 @@ class App(object):
             module = __import__('.'.join(class_path[:-1]), {}, {}, class_path[-1])
             return getattr(module, class_path[-1])(self.config)
         except ImportError as error:
+            print("ERROR")
             LOGGER.error(
-                '''Could not import plugin `%s`. Check the config file and
-                PYTHONPATH to ensure that Python can find the plugin.'''
+                'Could not import plugin `%s`. Check config file and PYTHONPATH.',
+                class_
                 )
             raise
 

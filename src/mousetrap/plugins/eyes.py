@@ -86,21 +86,21 @@ class LeftEyeLocator(object):
         try:
             face = self._face_detector.detect(image)
 
-            LOGGER.debug("Found the face")
+            LOGGER.debug(_("Found the face"))
         except FeatureNotFoundException:
             return True
 
         try:
             left_eye = self._left_eye_detector.detect(face["image"])
 
-            LOGGER.debug("Found the left eye at %s", left_eye)
+            LOGGER.debug(_("Found the left eye at %s"), left_eye)
         except FeatureNotFoundException:
             return True
 
         try:
             open_eye = self._open_eye_detector.detect(face["image"])
 
-            LOGGER.debug("Found an open eye at %s", open_eye)
+            LOGGER.debug(_("Found an open eye at %s"), open_eye)
 
             return True
         except FeatureNotFoundException:

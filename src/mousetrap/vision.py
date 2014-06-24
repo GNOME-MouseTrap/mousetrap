@@ -8,8 +8,8 @@ from mousetrap.image import Image
 
 
 class Camera(object):
-    S_CAPTURE_OPEN_ERROR = 'Device #%d does not support video capture interface'
-    S_CAPTURE_READ_ERROR = 'Error while capturing. Camera disconnected?'
+    S_CAPTURE_OPEN_ERROR = _('Device #%d does not support video capture interface')
+    S_CAPTURE_READ_ERROR = _('Error while capturing. Camera disconnected?')
 
     def __init__(self, config):
         self._config = config
@@ -121,7 +121,7 @@ class FeatureDetector(object):
 
     def _exit_if_none_detected(self):
         if len(self._plural) == 0:
-            raise FeatureNotFoundException('No ' + self._name + 's detected.')
+            raise FeatureNotFoundException(_('Feature not detected: %s') % (self._name))
 
     def _unpack_first(self):
         self._single = dict(zip(['x', 'y', 'width', 'height'], self._plural[0]))

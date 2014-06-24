@@ -2,6 +2,9 @@
 Where it all begins.
 '''
 
+import gettext
+gettext.install('mousetrap')
+
 
 from mousetrap.config import Config
 CONFIG = Config()
@@ -48,7 +51,7 @@ class App(object):
         except ImportError as error:
             print("ERROR")
             LOGGER.error(
-                'Could not import plugin `%s`. Check config file and PYTHONPATH.',
+                _('Could not import plugin `%s`. Check config file and PYTHONPATH.'),
                 class_
                 )
             raise

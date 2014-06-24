@@ -5,17 +5,11 @@
          xmlns="http://usefulinc.com/ns/doap#">
 
   <name xml:lang="en">MouseTrap</name>
-  <shortdesc xml:lang="en">Via Webcam Computer Access</shortdesc>
-  <homepage rdf:resource="http://live.gnome.org/MouseTrap" />
+  <shortdesc xml:lang="en">An a11y software developed to allow people with movements impairments access the computer.</shortdesc>
+  <homepage rdf:resource="http://wiki.gnome.org/Projects/MouseTrap" />
   <mailing-list rdf:resource="http://mail.gnome.org/mailman/listinfo/mousetrap-list" />
+  <bug-database rdf:resource="https://bugzilla.gnome.org/browse.cgi?product=mousetrap" />
   <category rdf:resource="http://api.gnome.org/doap-extensions#desktop" />
-
-  <maintainer>
-    <foaf:Person>
-      <foaf:name>Flavio Percoco Premoli</foaf:name>
-      <gnome:userid>flaper</gnome:userid>
-    </foaf:Person>
-  </maintainer>
 
   <maintainer>
     <foaf:Person>
@@ -33,4 +27,24 @@
     </foaf:Person>
   </maintainer>
 
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Heidi Ellis</foaf:name>
+      <foaf:mbox rdf:resource="mailto:ellis@wne.edu" />
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Stoney Jackson</foaf:name>
+      <foaf:mbox rdf:resource="mailto:hjackson@wne.edu" />
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Kevin Brown</foaf:name>
+      <foaf:mbox rdf:resource="mailto:kevin@kevinbrown.in" />
+    </foaf:Person>
+  </maintainer>
 </Project>

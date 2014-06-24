@@ -142,7 +142,7 @@ class FeatureDetector(object):
         single["image"] = Image(
             self._config,
             image_cv_grayscale[from_y:to_y, from_x:to_x],
-            is_grayscale=True.
+            is_grayscale=True,
         )
 
 

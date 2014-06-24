@@ -1,7 +1,7 @@
 assembly:
 - mousetrap.plugins.camera.CameraPlugin
 - mousetrap.plugins.display.DisplayPlugin
-- mousetrap.plugins.nose_joystick.NoseJoystickPlugin
+- mousetrap.plugins.nose.NoseJoystickPlugin
 - mousetrap.plugins.eyes.EyesPlugin
 camera:
   device_index: -1
@@ -32,7 +32,7 @@ classes:
     nose_detector:
       min_neighbors: 5
       scale_factor: 1.1
-  mousetrap.plugins.nose_joystick.NoseJoystickPlugin:
+  mousetrap.plugins.nose.NoseJoystickPlugin:
     threshold: 5
 haar_files:
   face: haars/haarcascade_frontalface_default.xml

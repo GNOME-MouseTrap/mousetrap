@@ -1,3 +1,4 @@
+from mousetrap.i18n import _
 import logging
 LOGGER = logging.getLogger(__name__)
 

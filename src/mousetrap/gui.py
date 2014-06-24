@@ -16,6 +16,9 @@ from Xlib.ext import xtest
 from Xlib import X
 
 
+from mousetrap.i18n import _
+
+
 class ImageWindow(object):
     def __init__(self, config, message):
         self._config = config

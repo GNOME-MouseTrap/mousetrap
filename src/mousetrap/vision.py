@@ -4,6 +4,7 @@ All things computer vision.
 
 import cv2
 import cv
+from mousetrap.i18n import _
 from mousetrap.image import Image
 
 

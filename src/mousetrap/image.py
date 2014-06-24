@@ -4,6 +4,7 @@ All things image manipulation.
 
 import cv2
 from gi.repository import GdkPixbuf
+from mousetrap.i18n import _
 
 
 _GDK_PIXBUF_BIT_PER_SAMPLE = 8

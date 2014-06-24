@@ -1,3 +1,4 @@
+from mousetrap.i18n import _
 import mousetrap.plugins.interface as interface
 from mousetrap.vision import FeatureDetector, FeatureNotFoundException
 from mousetrap.gui import Gui

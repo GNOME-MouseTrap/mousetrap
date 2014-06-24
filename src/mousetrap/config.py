@@ -2,6 +2,7 @@ from yaml import safe_load
 from os.path import dirname, expanduser, exists
 from os import getcwd
 from copy import deepcopy
+from mousetrap.i18n import _
 
 
 class Config(dict):

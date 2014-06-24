@@ -1,3 +1,6 @@
+from mousetrap.i18n import _
+
+
 class Plugin(object):
     def __init__(self, config):
         '''Override to initialize and configure yourself.

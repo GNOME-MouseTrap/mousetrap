@@ -2,9 +2,6 @@
 Where it all begins.
 '''
 
-import gettext
-gettext.install('mousetrap')
-
 
 from mousetrap.config import Config
 CONFIG = Config()
@@ -18,6 +15,7 @@ import yaml
 LOGGER.debug(yaml.dump(dict(CONFIG), default_flow_style=False))
 
 
+from mousetrap.i18n import _
 from gi.repository import GObject, Gdk, Gtk
 from mousetrap.gui import Gui, Pointer
 from mousetrap.vision import Camera

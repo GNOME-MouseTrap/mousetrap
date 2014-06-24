@@ -1,20 +1,68 @@
-.metadata
-*.pyc
-prepare.sh
-.svn
-environment.py
-compile
-*.patch
-*~
-*.swp
-*.dropbox
-*.Documents
-*.Proporsal
-*.test
-*.Videos
-*.tarballs
-*.planner
-*.pylint
+##############################################################################
+# MouseTrap - MouseTrap specific files here.
+
+
+##############################################################################
+# Python
+# From https://github.com/github/gitignore/blob/master/Python.gitignore
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+# Usually these files are written by a python script from a template
+# before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+##############################################################################
+# Autotools
+# From https://github.com/github/gitignore/blob/master/Autotools.gitignore
 
 # http://www.gnu.org/software/automake
 
@@ -29,44 +77,4 @@ Makefile.in
 /depcomp
 /install-sh
 /missing
-
-Makefile
-Makefile.in
-autom4te.cache
-autom4te.cache
-autom4te.cache
-autom4te.cache
-autom4te.cache
-config.guess
-config.h
-config.h.in
-config.log
-config.status
-config.sub
-configure
-install-sh
-intltool-extract.in
-intltool-merge.in
-intltool-update.in
-libtool
-ltmain.sh
-missing
-mkinstalldirs
-mousetrap.desktop
-omf.make
-po/*.gmo
-py-compile
-stamp-h1
-xmldocs.make
-docs/doxygen/Doxyfile
-po/stamp-it
-src/mousetrap/mousetrap
-po/Makefile.in.in
-aclocal.m4
-*.py.bak
-
-po/POTFILES
-
-/INSTALL
-/.last_install
-/.last_built
+/stamp-h1

@@ -40,10 +40,17 @@ class App(object):
             self.plugins.append(self._load_plugin(class_))
 
     def _load_plugin(self, class_):
-        LOGGER.debug('loading %s', class_)
-        class_path = class_.split('.')
-        module = __import__('.'.join(class_path[:-1]), {}, {}, class_path[-1])
-        return getattr(module, class_path[-1])(self.config)
+        try:
+            LOGGER.debug('loading %s', class_)
+            class_path = class_.split('.')
+            module = __import__('.'.join(class_path[:-1]), {}, {}, class_path[-1])
+            return getattr(module, class_path[-1])(self.config)
+        except ImportError as error:
+            LOGGER.error(
+                '''Could not import plugin `%s`. Check the config file and
+                PYTHONPATH to ensure that Python can find the plugin.'''
+                )
+            raise
 
     def _register_plugins_with_loop(self):
         for plugin in self.plugins:

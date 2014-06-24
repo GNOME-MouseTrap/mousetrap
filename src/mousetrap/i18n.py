@@ -1,4 +1,9 @@
-import locale
 import gettext
+import locale
+import os
 
-_ = gettext.gettext
+LOCALE_DIR = os.path.join(os.path.dirname(__file__), "locale")
+
+translations = gettext.translation("mousetrap", localedir=LOCALE_DIR)
+
+_ = translations.ugettext

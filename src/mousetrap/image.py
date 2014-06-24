@@ -58,13 +58,13 @@ def _cvimage_to_pixbuf(cvimage):
     destroy_fn_data = None
 
     return GdkPixbuf.Pixbuf.new_from_data(
-            data,
-            colorspace, # FIXME: Need to handle grayscale.
-            has_alpha_channel,
-            _GDK_PIXBUF_BIT_PER_SAMPLE,
-            width,
-            height,
-            row_stride,
-            destroy_fn,
-            destroy_fn_data
-            )
+        data,
+        colorspace, # FIXME: Need to handle grayscale.
+        has_alpha_channel,
+        _GDK_PIXBUF_BIT_PER_SAMPLE,
+        width,
+        height,
+        row_stride,
+        destroy_fn,
+        destroy_fn_data,
+    )

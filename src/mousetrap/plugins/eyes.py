@@ -42,7 +42,7 @@ class ClosedDetector(object):
         self._max_samples = config[self]['max_samples']
         self._min_fraction_to_be_closed = config[self]['min_fraction_to_be_closed']
         self._min_misses_to_be_closed = int(
-                self._min_fraction_to_be_closed * self._max_samples)
+            self._min_fraction_to_be_closed * self._max_samples)
         self._left_locator = LeftEyeLocator(config)
         self._detection_history = History(config, self._max_samples)
 
@@ -62,23 +62,23 @@ class LeftEyeLocator(object):
     def __init__(self, config):
         self._config = config
         self._face_detector = FeatureDetector(
-                config,
-                "face",
-                scale_factor=config[self]['face_detector']['scale_factor'],
-                min_neighbors=config[self]['face_detector']['min_neighbors']
-                )
+            config,
+            "face",
+            scale_factor=config[self]['face_detector']['scale_factor'],
+            min_neighbors=config[self]['face_detector']['min_neighbors'],
+        )
         self._open_eye_detector = FeatureDetector(
-                config,
-                "open_eye",
-                scale_factor=config[self]['open_eye_detector']['scale_factor'],
-                min_neighbors=config[self]['open_eye_detector']['min_neighbors']
-                )
+            config,
+            "open_eye",
+            scale_factor=config[self]['open_eye_detector']['scale_factor'],
+            min_neighbors=config[self]['open_eye_detector']['min_neighbors'],
+        )
         self._left_eye_detector = FeatureDetector(
-                config,
-                "left_eye",
-                scale_factor=config[self]['left_eye_detector']['scale_factor'],
-                min_neighbors=config[self]['left_eye_detector']['min_neighbors']
-                )
+            config,
+            "left_eye",
+            scale_factor=config[self]['left_eye_detector']['scale_factor'],
+            min_neighbors=config[self]['left_eye_detector']['min_neighbors'],
+        )
 
     def locate(self, image):
         face = None

@@ -6,10 +6,10 @@ from copy import deepcopy
 
 class Config(dict):
     SEARCH_PATH = [
-            dirname(__file__) + '/' + 'config_default.yaml',
-            expanduser('~') + '/.mousetrap.yaml',
-            getcwd() + '/mousetrap.yaml'
-            ]
+        dirname(__file__) + '/' + 'config_default.yaml',
+        expanduser('~') + '/.mousetrap.yaml',
+        getcwd() + '/mousetrap.yaml',
+    ]
 
     def __init__(self):
         for path in self.SEARCH_PATH:

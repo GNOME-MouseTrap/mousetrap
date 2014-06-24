@@ -15,9 +15,9 @@ class Camera(object):
         self._config = config
         self._device = self._new_capture_device(config['camera']['device_index'])
         self.set_dimensions(
-                config['camera']['width'],
-                config['camera']['height']
-                )
+            config['camera']['width'],
+            config['camera']['height'],
+        )
 
     @classmethod
     def _new_capture_device(cls, device_index):
@@ -49,7 +49,6 @@ class HaarLoader(object):
         self._config = config
         self._haar_files = config['haar_files']
         self._haar_cache = {}
-
 
     def from_name(self, name):
         if not name in self._haar_files:
@@ -115,9 +114,10 @@ class FeatureDetector(object):
 
     def _detect_plural(self):
         self._plural = self._cascade.detectMultiScale(
-                self._image.to_cv_grayscale(),
-                self._scale_factor,
-                self._min_neighbors)
+            self._image.to_cv_grayscale(),
+            self._scale_factor,
+            self._min_neighbors,
+        )
 
     def _exit_if_none_detected(self):
         if len(self._plural) == 0:
@@ -128,9 +128,9 @@ class FeatureDetector(object):
 
     def _calculate_center(self):
         self._single["center"] = {
-                "x": (self._single["x"] + self._single["width"]) / 2,
-                "y": (self._single["y"] + self._single["height"]) / 2,
-                }
+            "x": (self._single["x"] + self._single["width"]) / 2,
+            "y": (self._single["y"] + self._single["height"]) / 2,
+        }
 
     def _extract_image(self):
         single = self._single
@@ -140,9 +140,10 @@ class FeatureDetector(object):
         to_x = single['x'] + single['width']
         image_cv_grayscale = self._image.to_cv_grayscale()
         single["image"] = Image(
-                self._config,
-                image_cv_grayscale[from_y:to_y, from_x:to_x],
-                is_grayscale=True)
+            self._config,
+            image_cv_grayscale[from_y:to_y, from_x:to_x],
+            is_grayscale=True.
+        )
 
 
 class FeatureNotFoundException(Exception):

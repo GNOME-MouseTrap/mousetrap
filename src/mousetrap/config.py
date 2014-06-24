@@ -6,7 +6,7 @@ from copy import deepcopy
 
 class Config(dict):
     SEARCH_PATH = [
-        dirname(__file__) + '/' + 'config_default.yaml',
+        dirname(__file__) + '/' + 'mousetrap.yaml',
         expanduser('~') + '/.mousetrap.yaml',
         getcwd() + '/mousetrap.yaml',
     ]

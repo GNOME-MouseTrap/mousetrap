@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+source "$(dirname "$0")/mt-define-mousetrap-home"
+(cd "$MOUSETRAP_HOME" ; xgettext \
+        --language=Python \
+        --keyword=_ \
+        --output=src/mousetrap/locale/en/LC_MESSAGES/mousetrap.po \
+        --from-code=UTF-8 \
+        --sort-by-file \
+        --copyright-holder=STRING \
+        --omit-header \
+        --package-name=PACKAGE \
+        --package-version=VERSION \
+        --msgid-bugs-address=EMAIL@ADDRESS \
+        `find src -name "*.py" | sort`)

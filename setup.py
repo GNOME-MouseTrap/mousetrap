@@ -57,21 +57,23 @@ The installation not work as expected without this dependency.
         try:
             import Xlib
         except ImportError:
-            sys.stderr.write(
-"""
-Python Xlib does not appear to be installed.  This cannot be installed
-automatically and must be installed to the system using your package manager.
+            # Python3-xlib can be installed automatically
+            if PYTHON_VERSION[0] < 3:
+                sys.stderr.write(
+    """
+    Python Xlib does not appear to be installed.  This cannot be installed
+    automatically and must be installed to the system using your package manager.
 
-On apt-based systems:
+    On apt-based systems:
 
-    sudo apt-get install python-xlib
+        sudo apt-get install python-xlib
 
-On yum-based systems:
+    On yum-based systems:
 
-    sudo yum install python-xlib
+        sudo yum install python-xlib
 
-The installation not work as expected without this dependency.
-""")
+    The installation not work as expected without this dependency.
+    """)
 
         try:
             import cv2

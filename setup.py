@@ -1,4 +1,6 @@
 from setuptools import setup, find_packages
+from setuptools.command.egg_info import egg_info
+from setuptools.command.install import install
 import os
 import sys
 
@@ -29,6 +31,78 @@ if PYTHON_VERSION[0] > 2:
 else:
     requirements = python2_requirements
 
+
+class EggInfoCommand(egg_info):
+
+    def run(self):
+        try:
+            import gi.repository
+        except ImportError:
+            sys.stderr.write(
+"""
+PyGObject does not appear to be installed.  This cannot be installed
+automatically and must be installed to the system using your package manager.
+
+On apt-based systems:
+
+    sudo apt-get install python-gobject
+
+On yum-based systems:
+
+    sudo yum install python-gobject
+
+The installation not work as expected without this dependency.
+""")
+
+        try:
+            import Xlib
+        except ImportError:
+            sys.stderr.write(
+"""
+Python Xlib does not appear to be installed.  This cannot be installed
+automatically and must be installed to the system using your package manager.
+
+On apt-based systems:
+
+    sudo apt-get install python-xlib
+
+On yum-based systems:
+
+    sudo yum install python-xlib
+
+The installation not work as expected without this dependency.
+""")
+
+        try:
+            import cv2
+        except ImportError:
+            sys.stderr.write(
+"""
+OpenCV does not appear to be installed.  This cannot be installed
+automatically and must be installed to the system using your package manager.
+
+On apt-based systems:
+
+    sudo apt-get install python-opencv
+
+On yum-based systems:
+
+    sudo yum install python-opencv
+
+The installation not work as expected without this dependency.
+""")
+
+        egg_info.run(self)
+
+
+class InstallCommand(install):
+
+    def run(self):
+        print "Compiling language files..."
+
+        install.run(self)
+
+
 setup(
     name="mousetrap",
     version=__version__,
@@ -37,6 +111,10 @@ setup(
     include_package_data=True,
     install_requires=requirements,
     packages=find_packages("src"),
+    cmdclass={
+        "egg_info": EggInfoCommand,
+        "install": InstallCommand,
+    },
     package_dir={
         "": "src",
     },

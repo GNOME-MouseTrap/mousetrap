@@ -98,7 +98,37 @@ The installation not work as expected without this dependency.
 class InstallCommand(install):
 
     def run(self):
-        print "Compiling language files..."
+        from subprocess import Popen
+
+        sys.stdout.write("Compiling locale files...\n")
+
+        program = "msgfmt"
+
+        LOCALE_PATH = "src/mousetrap/locale"
+
+        root, directories, files = os.walk(LOCALE_PATH).next()
+
+        language_codes = directories
+
+        for language_code in language_codes:
+            message_file = os.path.join(LOCALE_PATH, language_code, "LC_MESSAGES", "mousetrap.po")
+            compiled_file = os.path.join(LOCALE_PATH, language_code, "LC_MESSAGES", "mousetrap.mo")
+
+            arguments = [message_file, "--output-file", compiled_file]
+
+            sys.stdout.write("Compiling %s locale" % language_code)
+
+            command = [program] + arguments
+
+            process = Popen(command)
+
+            output, errors = process.communicate()
+            status_code = process.returncode
+
+            if status_code == 0:
+                sys.stdout.write(" [OK]\n")
+            else:
+                sys.stdout.write(" [FAIL]\n")
 
         install.run(self)
 

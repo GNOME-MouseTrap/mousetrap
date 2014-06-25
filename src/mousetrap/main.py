@@ -106,5 +106,9 @@ class Loop(Observable):
         return CONTINUE
 
 
-if __name__ == '__main__':
+def main():
     App(CONFIG).run()
+
+
+if __name__ == '__main__':
+    main()

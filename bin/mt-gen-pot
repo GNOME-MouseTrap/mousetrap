@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+source "$(dirname "$0")/mt-define-mousetrap-home"
+
+(
+    POT_FILE="$MOUSETRAP_HOME/mousetrap.pot"
+    echo "Generating $POT_FILE"
+    cd "$MOUSETRAP_HOME"
+    VERSION="$(cat VERSION)"
+    xgettext \
+        --language=Python \
+        --keyword=_ \
+        --output="$POT_FILE" \
+        --from-code=UTF-8 \
+        --sort-by-file \
+        --copyright-holder="Flavio Percoco <flaper@src.gnome.org>" \
+        --package-name=mousetrap \
+        --package-version="$VERSION" \
+        --msgid-bugs-address="https://bugzilla.gnome.org/browse.cgi?product=mousetrap" \
+        --width=90 \
+        `find src -name "*.py" | sort`
+)
+
+(
+    PO_FILE="$MOUSETRAP_HOME/src/mousetrap/locale/en/LC_MESSAGES/mousetrap.po"
+    echo "Generating $PO_FILE"
+    cd "$MOUSETRAP_HOME"
+    VERSION="$(cat VERSION)"
+    xgettext \
+        --language=Python \
+        --keyword=_ \
+        --output="$PO_FILE" \
+        --from-code=UTF-8 \
+        --sort-by-file \
+        --omit-header \
+        `find src -name "*.py" | sort`
+)

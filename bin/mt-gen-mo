@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+source "$(dirname "$0")/mt-define-mousetrap-home"
+
+(
+    cd "$MOUSETRAP_HOME"
+    find . -name "*.po" -exec msgfmt.py "{}" \;
+)

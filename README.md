@@ -37,6 +37,17 @@ close your left eye for about 1.5 seconds.
     $ vim ~/.mousetrap.yaml
 
 
+## Translating
+
+1. Generate mousetrap.POT
+    $ cd $MOUSETRAP
+    $ bin/mt-gen-pot
+2. Translate
+3. Place translated `mousetrap.po` in
+`$MOUSETRAP/src/mousetrap/locale/_language_/LC_MESSAGES/mousetrap.po` where
+_language_ is the proper language code
+(https://www.gnu.org/software/gettext/manual/html_node/Usual-Language-Codes.html).
+
 ## Writing a Plugin
 
 ### 1. Implement plugin class.

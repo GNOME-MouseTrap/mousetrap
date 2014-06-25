@@ -15,6 +15,7 @@ def initialize_import_path():
     paths = [
         get_source_directory()
     ]
+    print "appending " + str(paths)
     append_to_path(paths)
 
 
@@ -24,7 +25,7 @@ def append_to_path(paths):
 
 
 def get_source_directory():
-    return abspath(dirname(__file__))
+    return abspath(dirname(__file__) + '/../..')
 
 
 def load_tests():

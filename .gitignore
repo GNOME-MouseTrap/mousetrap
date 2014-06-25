@@ -1,5 +1,11 @@
 ##############################################################################
-# MouseTrap - MouseTrap specific files here.
+# Placeholders
+#
+# These files exist in the repository as placeholders. But we do not want
+# to commit any changes to these files. So we ignore.
+#
+/ChangeLog
+/AUTHORS
 
 
 ##############################################################################
@@ -49,7 +55,6 @@ coverage.xml
 
 # Translations
 *.mo
-*.pot
 
 # Django stuff:
 *.log
@@ -78,3 +83,20 @@ Makefile.in
 /install-sh
 /missing
 /stamp-h1
+
+
+/config.guess
+/config.h.in
+/config.h.in~
+/config.sub
+/intltool-extract.in
+/intltool-merge.in
+/intltool-update.in
+/ltmain.sh
+/omf.make
+/po/
+/xmldocs.make
+/Makefile
+/config.status
+
+no changes added to commit (use "git add" and/or "git commit -a")

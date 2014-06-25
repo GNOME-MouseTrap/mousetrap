@@ -1,3 +1,24 @@
 #!/usr/bin/env bash
 source "$(dirname "$0")/mt-define-mousetrap-home"
-(cd "$MOUSETRAP_HOME"; git clean -Xf)
+
+main() {
+    (
+        cd "$MOUSETRAP_HOME"
+        del_ignored
+        if [ "$1" = "-A" ] ; then
+            del_untracked
+        fi
+    )
+}
+
+del_untracked() {
+    git clean -df
+}
+
+del_ignored() {
+    git clean -Xdf
+}
+
+export -f del_ignored del_untracked main
+
+main $@

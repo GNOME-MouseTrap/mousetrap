@@ -13,7 +13,9 @@
 
 mousetrapdir=$(pkgpythondir)
 
-nobase_mousetrap_SOURCES= \
+mousetrap_pythondir=$(pyexecdir)/mousetrap/
+
+mousetrap_python_PYTHON= \
 	setup.py \
 	src/mousetrap/__init__.py \
 	src/mousetrap/plugins/__init__.py \
@@ -31,25 +33,25 @@ nobase_mousetrap_SOURCES= \
 	src/mousetrap/tests/test_vision.py \
 	src/mousetrap/tests/run_python_tests.py \
 	src/mousetrap/gui.py \
-	src/mousetrap/config.py \
-	src/mousetrap/locale/en/LC_MESSAGES/mousetrap.po
+	src/mousetrap/config.py
 
-nobase_mousetrap_DATA= \
+EXTRA_DIST= \
 	src/mousetrap/haars/haarcascade_mcs_righteye.xml \
 	src/mousetrap/haars/haarcascade_mcs_lefteye.xml \
 	src/mousetrap/haars/haarcascade_frontalface_default.xml \
 	src/mousetrap/haars/haarcascade_mcs_nose.xml \
 	src/mousetrap/haars/haarcascade_eye.xml \
-	src/mousetrap/mousetrap.yaml
+	src/mousetrap/mousetrap.yaml \
+	src/mousetrap/locale/en/LC_MESSAGES/mousetrap.po
 
 all-local:
-	$(PYTHON) setup.py build
+	$(PYTHON) $(srcdir)/setup.py build --build-base $(builddir)/build --verbose
 
 install-exec-local:
-	$(PYTHON) setup.py install --prefix=$(DESTDIR)$(prefix)
+	$(PYTHON) $(srcdir)/setup.py install --prefix=$(DESTDIR)$(prefix)
 
 uninstall-local:
-	rm -rf $(DESTDIR)$(libdir)/python*/site-packages/*mousetrap*
+	rm -rf $(DESTDIR)$(libdir)/python*/site-packages/mousetrap*
 
 clean-local:
-	$(PYTHON) setup.py clean --all
+	$(PYTHON) $(srcdir)/setup.py clean --all

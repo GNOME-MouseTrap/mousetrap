@@ -1,12 +1,13 @@
 from setuptools import setup, find_packages
+from distutils.command.build import build
 from setuptools.command.egg_info import egg_info
-from setuptools.command.install import install
 import glob
 import os
 import sys
 
 
-SRC_PATH = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), "src"))
+SRC_PATH = os.path.join(os.path.dirname(__file__), "src")
+ABS_SRC_PATH = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), "src"))
 
 sys.path.append(SRC_PATH)
 
@@ -110,7 +111,7 @@ The installation not work as expected without this dependency.
         egg_info.run(self)
 
 
-class InstallCommand(install):
+class BuildCommand(build):
 
     def run(self):
         from subprocess import Popen
@@ -119,7 +120,8 @@ class InstallCommand(install):
 
         program = "msgfmt"
 
-        LOCALE_PATH = "src/mousetrap/locale"
+        LOCALE_PATH = "%s/mousetrap/locale" % SRC_PATH
+        DEST_PATH = "%s/mousetrap/locale" % self.build_base
 
         root, directories, files = os.walk(LOCALE_PATH).next()
 
@@ -127,7 +129,11 @@ class InstallCommand(install):
 
         for language_code in language_codes:
             message_file = os.path.join(LOCALE_PATH, language_code, "LC_MESSAGES", "mousetrap.po")
-            compiled_file = os.path.join(LOCALE_PATH, language_code, "LC_MESSAGES", "mousetrap.mo")
+            compiled_file = os.path.join(DEST_PATH, language_code, "LC_MESSAGES", "mousetrap.mo")
+
+            if not os.path.exists(os.path.dirname(compiled_file)):
+                sys.stdout.write("Creating %s\n" % os.path.dirname(compiled_file))
+                os.makedirs(os.path.dirname(compiled_file))
 
             arguments = [message_file, "--output-file", compiled_file]
 
@@ -145,7 +151,7 @@ class InstallCommand(install):
             else:
                 sys.stdout.write(" [FAIL]\n")
 
-        install.run(self)
+        build.run(self)
 
 
 setup(
@@ -155,13 +161,13 @@ setup(
     license="GPL",
     include_package_data=True,
     install_requires=requirements,
-    packages=find_packages("src"),
+    packages=find_packages(SRC_PATH),
     cmdclass={
+        "build": BuildCommand,
         "egg_info": EggInfoCommand,
-        "install": InstallCommand,
     },
     package_dir={
-        "": "src",
+        "": SRC_PATH,
     },
     entry_points={
         "console_scripts": [
@@ -173,5 +179,10 @@ setup(
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.7",
-    ]
+    ],
+    options={
+        "egg_info": {
+            "egg_base": ".",
+        }
+    },
 )

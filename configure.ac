@@ -21,15 +21,6 @@ AM_CHECK_PYMOD(yaml,,,[AC_MSG_ERROR(Could not find python module yaml)])
 
 AC_CONFIG_FILES([
 Makefile
-src/Makefile
-src/mousetrap/Makefile
-src/mousetrap/plugins/Makefile
-src/mousetrap/tests/Makefile
-src/mousetrap/haars/Makefile
-src/mousetrap/locale/Makefile
-src/mousetrap/locale/en/Makefile
-src/mousetrap/locale/en/LC_MESSAGES/Makefile
-bin/Makefile
 ])
 AC_OUTPUT
 

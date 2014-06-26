@@ -3,4 +3,3 @@ recursive-include src/mousetrap/locale *
 recursive-include src/mousetrap/haars *
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
-recursive-exclude * *.mo

@@ -1,6 +1,7 @@
 from setuptools import setup, find_packages
 from setuptools.command.egg_info import egg_info
 from setuptools.command.install import install
+import glob
 import os
 import sys
 
@@ -12,6 +13,8 @@ sys.path.append(SRC_PATH)
 from mousetrap import __version__
 
 PYTHON_VERSION = sys.version_info
+
+LOCALE_PATH = "src/mousetrap/locale"
 
 all_requirements = [
     "pygobject",
@@ -93,6 +96,16 @@ On yum-based systems:
 
 The installation not work as expected without this dependency.
 """)
+
+        if not "install" in self.distribution.script_args:
+            sys.stdout.write("Removing generated locale files...\n")
+
+            compiled_files = glob.glob(LOCALE_PATH + "/**/LC_MESSAGES/*.mo")
+
+            for file_name in compiled_files:
+                sys.stdout.write("Removing compiled locale %s\n" % file_name)
+
+                os.remove(file_name)
 
         egg_info.run(self)
 

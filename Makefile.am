@@ -49,7 +49,6 @@ install-exec-local:
 	$(PYTHON) setup.py install --prefix=$(DESTDIR)$(prefix)
 
 uninstall-local:
-	#FIXME: THIS IS NOT VERY NICE
 	rm -rf $(DESTDIR)$(libdir)/python*/site-packages/*mousetrap*
 
 clean-local:

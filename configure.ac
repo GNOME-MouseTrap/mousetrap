@@ -13,7 +13,6 @@ AC_PROG_INSTALL
 
 AM_PATH_PYTHON([2.7])
 
-AM_CHECK_PYMOD(cv,,,[AC_MSG_ERROR(Could not find python module cv)])
 AM_CHECK_PYMOD(cv2,,,[AC_MSG_ERROR(Could not find python module cv2)])
 AM_CHECK_PYMOD(gi.repository,,,[AC_MSG_ERROR(Could not find python module gi.repository)])
 AM_CHECK_PYMOD(Xlib,,,[AC_MSG_ERROR(Could not find python module Xlib)])
@@ -23,15 +22,3 @@ AC_CONFIG_FILES([
 Makefile
 ])
 AC_OUTPUT
-
-###############################################################################
-# Don't include src/mousetrap/app/mousetrap.in in AC_OUTPUT.  It will be
-# processed by make (see src/mousetrap/app/Makefile.am), not by autoconf or
-# automake. For more information read
-# http://www.gnu.org/software/autoconf/manual/autoconf.html#Installation-Directory-Variables
-#
-# Other files may require this same "fix" (e.g., i18n.py, environment.py,
-# mousetrap.desktop).
-#
-#   - Stoney Jackson, dr.stoney@gmail.com, 10/10/2013
-###############################################################################

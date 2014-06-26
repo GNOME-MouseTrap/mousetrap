@@ -13,45 +13,25 @@
 
 mousetrapdir=$(pkgpythondir)
 
-mousetrap_pythondir=$(pyexecdir)/mousetrap/
-
-mousetrap_python_PYTHON= \
-	setup.py \
-	src/mousetrap/__init__.py \
-	src/mousetrap/plugins/__init__.py \
-	src/mousetrap/plugins/eyes.py \
-	src/mousetrap/plugins/interface.py \
-	src/mousetrap/plugins/display.py \
-	src/mousetrap/plugins/camera.py \
-	src/mousetrap/plugins/nose.py \
-	src/mousetrap/i18n.py \
-	src/mousetrap/image.py \
-	src/mousetrap/vision.py \
-	src/mousetrap/main.py \
-	src/mousetrap/tests/__init__.py \
-	src/mousetrap/tests/test_mouse_pointer.py \
-	src/mousetrap/tests/test_vision.py \
-	src/mousetrap/tests/run_python_tests.py \
-	src/mousetrap/gui.py \
-	src/mousetrap/config.py
-
 EXTRA_DIST= \
-	src/mousetrap/haars/haarcascade_mcs_righteye.xml \
-	src/mousetrap/haars/haarcascade_mcs_lefteye.xml \
-	src/mousetrap/haars/haarcascade_frontalface_default.xml \
-	src/mousetrap/haars/haarcascade_mcs_nose.xml \
-	src/mousetrap/haars/haarcascade_eye.xml \
-	src/mousetrap/mousetrap.yaml \
-	src/mousetrap/locale/en/LC_MESSAGES/mousetrap.po
+	setup.py \
+	src/mousetrap
 
 all-local:
 	$(PYTHON) $(srcdir)/setup.py build --build-base $(builddir)/build --verbose
 
+dist-hook:
+	find . -name '*.pyc' -delete
+
 install-exec-local:
-	$(PYTHON) $(srcdir)/setup.py install --prefix=$(DESTDIR)$(prefix)
+	$(PYTHON) $(srcdir)/setup.py install --prefix $(DESTDIR)$(prefix) --single-version-externally-managed --record $(DESTDIR)$(pkgpythondir)/install_files.txt --verbose
 
 uninstall-local:
-	rm -rf $(DESTDIR)$(libdir)/python*/site-packages/mousetrap*
+	cat $(DESTDIR)$(pkgpythondir)/install_files.txt | xargs rm -rf
+	rm -r $(DESTDIR)$(pkgpythondir)
 
 clean-local:
 	$(PYTHON) $(srcdir)/setup.py clean --all
+
+distclean-local:
+	rm -rf $(builddir)/mousetrap*

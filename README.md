@@ -15,14 +15,29 @@ License: GPL v2.0 (see COPYING)
     $ git clone https://git.gnome.org/browse/mousetrap
 
 
-## Run
+## Installing
+
+You may install MouseTrap using either `pip` or `autotools`.
+
+### Using `pip`
 
     $ cd mousetrap
-    $ source bin/mt-setup
-    $ mt-run
+    $ sudo pip install .
+
+### Using `autotools`
+
+    $ cd mousetrap
+    $ ./autogen.sh      # On Fedora, add --prefix=/usr
+    $ make
+    $ sudo make install
 
 
-## Use
+## Running
+
+    $ mousetrap
+
+
+## Using
 
 By default, MouseTrap tracks your face, allowing you to controll the
 mouse pointer using a joystick metaphore. When you look left,

@@ -6,7 +6,7 @@ import os
 import sys
 
 
-SRC_PATH = os.path.join(os.path.dirname(__file__), "src")
+SRC_PATH = os.path.relpath(os.path.join(os.path.dirname(__file__), "src"))
 ABS_SRC_PATH = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), "src"))
 
 sys.path.append(SRC_PATH)

@@ -1,40 +1,41 @@
 # MouseTrap
 
-License: GPL v2.0 (see COPYING)
+License: GPL v2.0 (see LICENCSE)
 
 
-## Required
+## Software Requirements
 
-* Python
-* PyYAML
-* OpenCV
+* Linux  (developed on Fedora 20 and Ubuntu)
+* Python 2.7
+* PyYAML 3.11
+* OpenCV 2
 
 
 ## Download
 
-    $ git clone https://git.gnome.org/browse/mousetrap
+(FIXME update URL on when preparing final release)
+
+    $ git clone https://github.com/GNOME-MouseTrap/mousetrap.git
 
 
 ## Installing
 
-You may install MouseTrap using either `pip` or `autotools`.
-
 ### Using `pip`
 
-    $ cd mousetrap
-    $ sudo pip install .
+    cd mousetrap
+    sudo pip install .
 
 ### Using `autotools`
 
-    $ cd mousetrap
-    $ ./autogen.sh      # On Fedora, add --prefix=/usr
-    $ make
-    $ sudo make install
+    cd mousetrap
+    ./autogen.sh      # On Fedora, add --prefix=/usr
+    make
+    sudo make install
 
 
 ## Running
 
-    $ mousetrap
+    mousetrap
 
 
 ## Using
@@ -46,28 +47,21 @@ look down, it moves down; look straight ahead, it stops moving. To click,
 close your left eye for about 1.5 seconds.
 
 
-## Configure
+## Configuring
 
-    $ cp $MOUSETRAP/src/mousetrap/config_default.yaml ~/.mousetrap.yaml
-    $ vim ~/.mousetrap.yaml
+Run MouseTrap at least once, and then edit ~/.mousetrap.yaml.
 
 
 ## Translating
 
-1. Generate mousetrap.POT
-    $ cd $MOUSETRAP
-    $ bin/mt-gen-pot
-2. Translate
-3. Place translated `mousetrap.po` in
-`$MOUSETRAP/src/mousetrap/locale/_language_/LC_MESSAGES/mousetrap.po` where
-_language_ is the proper language code
-(https://www.gnu.org/software/gettext/manual/html_node/Usual-Language-Codes.html).
+Use `src/mousetrap/locale/_language_/LC_MESSAGES/mousetrap.po` as your template (POT file).
+
 
 ## Writing a Plugin
 
-### 1. Implement plugin class.
+### Example plugin class
 
-```
+```python
 # Import the interface for plugins.
 import mousetrap.plugins.interface as interface
 
@@ -109,7 +103,7 @@ class MyPlugin(interface.Plugin):
 
 ### 2. Edit configuration file to tell MouseTrap about your plugin.
 
-```
+```yaml
 #!~/.mousetrap.yaml
 
 assembly:
@@ -122,4 +116,4 @@ classes:
     x: hi
 ```
 
-For more examples, see the plugins in `mousetrap.plugin`.
+For more examples, see the plugins in `src/mousetrap/plugins`.

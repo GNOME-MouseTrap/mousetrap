@@ -1,19 +1,30 @@
 from yaml import safe_load
-from os.path import dirname, expanduser, exists
+from os.path import dirname, expanduser, isfile
 from os import getcwd
+from shutil import copy
 from copy import deepcopy
 
 
 class Config(dict):
-    SEARCH_PATH = [
-        dirname(__file__) + '/' + 'mousetrap.yaml',
-        expanduser('~') + '/.mousetrap.yaml',
-        getcwd() + '/mousetrap.yaml',
-    ]
+    SEARCH_PATH = {
+        'default': dirname(__file__) + '/mousetrap.yaml',
+        'user': expanduser('~/.mousetrap.yaml'),
+        'local_hidden': getcwd() + '/.mousetrap.yaml',
+        'local': getcwd() + '/mousetrap.yaml',
+    }
 
     def __init__(self):
-        for path in self.SEARCH_PATH:
-            if exists(path):
+        self._install()
+        self._load()
+
+    def _install(self):
+        if not isfile(self.SEARCH_PATH['user']):
+            print("Copying %s to %s" % (self.SEARCH_PATH['default'], self.SEARCH_PATH['user']))
+            copy(self.SEARCH_PATH['default'], self.SEARCH_PATH['user'])
+
+    def _load(self):
+        for name, path in self.SEARCH_PATH.items():
+            if isfile(path):
                 print("loading %s" % (path))
                 with open(path) as config_file:
                     config = safe_load(config_file)

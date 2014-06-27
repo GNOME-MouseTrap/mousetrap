@@ -104,7 +104,7 @@ class MyPlugin(interface.Plugin):
 ### 2. Edit configuration file to tell MouseTrap about your plugin.
 
 ```yaml
-#!~/.mousetrap.yaml
+#~/.mousetrap.yaml
 
 assembly:
 - mousetrap.plugins.camera.CameraPlugin     # sets app.image

@@ -34,4 +34,4 @@ clean-local:
 	$(PYTHON) $(srcdir)/setup.py clean --all
 
 distclean-local:
-	rm -rf $(builddir)/mousetrap*
+	rm -rf $(builddir)/mousetrap.egg-info

@@ -1,95 +1,24 @@
-AC_INIT(ChangeLog)
+AC_PREREQ([2.69])
 
+AC_INIT([mousetrap],[1.0.0-a],[https://bugzilla.gnome.org/enter_bug.cgi?product=mousetrap])
+AM_INIT_AUTOMAKE([1.13.4 foreign])
+
+MOUSETRAP_VERSION=1.0.0-a
+AC_SUBST(MOUSETRAP_VERSION)
 
 CURRENT_DIR=$PWD
-MOUSETRAP_VERSION=0.4
-AM_INIT_AUTOMAKE(mousetrap, $MOUSETRAP_VERSION)
-AC_SUBST(MOUSETRAP_VERSION)
 AC_SUBST(CURRENT_DIR)
 
-# libtool versioning
-LT_CURRENT=0
-LT_REVISION=0
-LT_AGE=0
-LT_VERSION_INFO='-version-info ${LT_CURRENT}:${LT_REVISION}:${LT_AGE}'
-AC_SUBST(LT_VERSION_INFO)
-AC_SUBST(LT_RELEASE)
-AC_SUBST(LT_CURRENT)
-AC_SUBST(LT_REVISION)
-AC_SUBST(LT_AGE)
-
-dnl Specify a header configuration file
-AM_CONFIG_HEADER(config.h)
-
-dnl Initialize maintainer mode
-AM_MAINTAINER_MODE
-
-dnl Gettext stuff
-
-GETTEXT_PACKAGE=mousetrap
-AC_SUBST(GETTEXT_PACKAGE)
-AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [Gettext package])
-AM_GLIB_GNU_GETTEXT
-
-IT_PROG_INTLTOOL([0.40.0])
-
-dnl Checks for programs
-AC_PROG_CC
 AC_PROG_INSTALL
-AC_ISC_POSIX
 
-dnl Initialize libtool
-AM_DISABLE_STATIC
-AM_PROG_LIBTOOL
+AM_PATH_PYTHON([2.7])
 
-# Check for Python
-
-AM_PATH_PYTHON(2.6)
-
-# Find the headers needed to build extensions
-
-AM_CHECK_PYTHON_HEADERS(,[AC_MSG_ERROR(Could not find python headers needed to build Python extensions)])
-
-# Find the modules used by mousetrap
-
-AM_CHECK_PYMOD(gettext,,,[AC_MSG_ERROR(Could not find python module gettext)])
-AM_CHECK_PYMOD(getopt,,,[AC_MSG_ERROR(Could not find python module getopt)])
 AM_CHECK_PYMOD(cv2,,,[AC_MSG_ERROR(Could not find python module cv2)])
+AM_CHECK_PYMOD(gi.repository,,,[AC_MSG_ERROR(Could not find python module gi.repository)])
+AM_CHECK_PYMOD(Xlib,,,[AC_MSG_ERROR(Could not find python module Xlib)])
+AM_CHECK_PYMOD(yaml,,,[AC_MSG_ERROR(Could not find python module yaml)])
 
-AM_CONDITIONAL(WITH_LOUIS, test x$have_liblouis = "xyes")
-
-AC_SUBST(mousetrap_LIBS)
-AC_SUBST(mousetrap_CFLAGS)
-
-PYDOC_CHECK()
-DOXYGEN_CHECK()
-DOCBOOK_CHECK()
-
-#mousetrap.spec
-
-AC_OUTPUT([
+AC_CONFIG_FILES([
 Makefile
-mousetrap.desktop
-po/Makefile.in
-docs/Makefile
-docs/man/Makefile
-docs/pydoc/Makefile
-docs/docbook/Makefile
-docs/doxygen/Makefile
-docs/doxygen/Doxyfile
-images/Makefile
-src/Makefile
-src/mousetrap/Makefile
-],[])
-
-###############################################################################
-# Don't include src/mousetrap/app/mousetrap.in in AC_OUTPUT.  It will be
-# processed by make (see src/mousetrap/app/Makefile.am), not by autoconf or
-# automake. For more information read
-# http://www.gnu.org/software/autoconf/manual/autoconf.html#Installation-Directory-Variables
-#
-# Other files may require this same "fix" (e.g., i18n.py, environment.py,
-# mousetrap.desktop).
-#
-#   - Stoney Jackson, dr.stoney@gmail.com, 10/10/2013
-###############################################################################
+])
+AC_OUTPUT

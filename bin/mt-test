@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 source "$(dirname "$0")/mt-define-mousetrap-home"
-"$MOUSETRAP_HOME/src/run_python_tests.py"
+"$MOUSETRAP_HOME/src/mousetrap/tests/run_python_tests.py"

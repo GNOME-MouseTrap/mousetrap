@@ -1,9 +1,0 @@
-<page xmlns="http://projectmallard.org/1.0/" type="guide" id="toc">
-    <table frame="all" rules="rows colgroups">
-	<colgroup><col/></colgroup>
-	<colgroup><col/></colgroup>
-	<tr>
-	  <td><p>Glossary</p></td>
-	</tr>
-    </table>
-</page>

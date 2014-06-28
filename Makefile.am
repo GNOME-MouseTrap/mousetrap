@@ -116,7 +116,7 @@ MO_FILES := $(PO_FILES:.po=.mo)
 mofiles: $(PO_FILES) $(MO_FILES)
 
 %.mo: %.po
-	msgfmt.py "$<"
+	msgfmt "$<" --output-file "$@"
 
 
 ##############################################################################

@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-source "$(dirname "$0")/mt-define-mousetrap-home"
-
-pylint "$MOUSETRAP_HOME/src/mousetrap"

@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-set -e
-source "$(dirname "$0")/mt-define-mousetrap-home"
-
-(cd "$MOUSETRAP_HOME"
-    ./autogen.sh
-    make
-    sudo make install)

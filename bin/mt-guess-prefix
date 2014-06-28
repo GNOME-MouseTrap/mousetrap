@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+dirname $(dirname $(find /usr -type f -regex ".*/bin/python2.7" 2> /dev/null | head -1))

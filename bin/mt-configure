@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+source "$(dirname "$0")/mt-define-mousetrap-home"
+(
+    if [ -z "$PREFIX" ] ; then
+        PREFIX="$("$MOUSETRAP_HOME/bin/mt-guess-prefix")"
+    fi
+    cd "$MOUSETRAP_HOME"
+    ./autogen.sh --prefix="$PREFIX"
+)

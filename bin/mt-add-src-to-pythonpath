@@ -1,9 +1,0 @@
-# Source this file.
-PROJECT_DIRECTORY="$(git rev-parse --show-toplevel)"
-SOURCE_DIRECTORY="$PROJECT_DIRECTORY/src"
-if [ -z "$PYTHONPATH" ] ; then
-    PYTHONPATH="$SOURCE_DIRECTORY"
-else
-    PYTHONPATH="$PYTHONPATH:$SOURCE_DIRECTORY"
-fi
-export PYTHONPATH

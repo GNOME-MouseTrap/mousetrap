@@ -2,8 +2,6 @@ mousetrapdir=$(pkgpythondir)
 
 EXTRA_DIST= \
 	setup.py \
-	bin/mt-gen-ChangeLog \
-	bin/mt-gen-AUTHORS \
 	src/mousetrap
 
 

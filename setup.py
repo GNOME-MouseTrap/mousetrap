@@ -98,6 +98,13 @@ On yum-based systems:
 The installation not work as expected without this dependency.
 """)
 
+        if "build" in self.distribution.command_obj:
+            build_command = self.distribution.command_obj["build"]
+
+            self.egg_base = build_command.build_base
+
+            self.egg_info = os.path.join(self.egg_base, os.path.basename(self.egg_info))
+
         egg_info.run(self)
 
 
@@ -170,9 +177,4 @@ setup(
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.7",
     ],
-    options={
-        "egg_info": {
-            "egg_base": ".",
-        }
-    },
 )

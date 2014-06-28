@@ -2,6 +2,7 @@ mousetrapdir=$(pkgpythondir)
 
 EXTRA_DIST= \
 	setup.py \
+	MANIFEST.in \
 	src/mousetrap
 
 
@@ -9,9 +10,9 @@ EXTRA_DIST= \
 # TARGET: all
 
 all-local:
-	$(PYTHON) $(srcdir)/setup.py build \
-		--build-base $(builddir)/build \
-		--verbose
+	(cd $(srcdir); $(PYTHON) setup.py build \
+		--build-base $(shell readlink -f $(builddir))/build \
+		--verbose)
 
 
 ##############################################################################
@@ -48,7 +49,7 @@ install-exec-local:
 
 uninstall-local:
 	cat $(DESTDIR)$(pkgpythondir)/install_files.txt | xargs rm -rf
-	rm -r $(DESTDIR)$(pkgpythondir)
+	rm -rf $(DESTDIR)$(pkgpythondir)
 
 
 ##############################################################################
@@ -65,7 +66,7 @@ clean-local:
 # TARGET: distclean
 
 distclean-local:
-	rm -rf $(builddir)/mousetrap.egg-info
+	rm -rf $(builddir)/build/mousetrap.egg-info
 
 
 ##############################################################################
@@ -110,10 +111,12 @@ $(POTFILE): $(PYTHON_FILES)
 ##############################################################################
 # TARGET: check
 
+MT_BUILD_HOME = $(shell dirname $(shell find "$(builddir)/build" -mindepth 2 -maxdepth 2 -type d -name "mousetrap"))
+MT_BUILD_TESTS = $(shell find "$(MT_BUILD_HOME)/mousetrap" -name "run_python_tests.py")
 
 check-local:
-	PYTHONPATH=$(builddir)/build/lib ; \
-	$(PYTHON) `find "$(builddir)" -name "run_python_tests.py"`
+	PYTHONPATH=$(MT_BUILD_HOME) \
+	$(PYTHON) $(MT_BUILD_TESTS)
 
 
 ##############################################################################
@@ -127,5 +130,5 @@ lint:
 # TARGET: run
 
 run: all
-	PYTHONPATH=$(builddir)/build/lib ; \
-	$(PYTHON) $(builddir)/build/lib/mousetrap/main.py
+	PYTHONPATH=$(MT_BUILD_HOME) \
+	$(PYTHON) $(MT_BUILD_HOME)/mousetrap/main.py

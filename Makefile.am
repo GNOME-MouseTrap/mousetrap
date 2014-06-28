@@ -66,3 +66,11 @@ clean-local:
 
 distclean-local:
 	rm -rf $(builddir)/mousetrap.egg-info
+
+
+##############################################################################
+# TARGET: pristine
+
+pristine:
+	git clean -df	# deletes ignored
+	git clean -Xdf  # deletes untracked

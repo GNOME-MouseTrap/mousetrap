@@ -108,22 +108,12 @@ $(POTFILE): $(PYTHON_FILES)
 
 
 ##############################################################################
-# TARGET: mofiles
-
-PO_FILES := $(shell find src/mousetrap/locale -name "*.po" -print)
-MO_FILES := $(PO_FILES:.po=.mo)
-
-mofiles: $(PO_FILES) $(MO_FILES)
-
-%.mo: %.po
-	msgfmt.py "$<"
-
-
-##############################################################################
 # TARGET: check
 
+
 check-local:
-	$(PYTHON) $(distdir)/src/mousetrap/tests/run_python_tests.py
+	PYTHONPATH=$(builddir)/build/lib ; \
+	$(PYTHON) `find "$(builddir)" -name "run_python_tests.py"`
 
 
 ##############################################################################
@@ -136,5 +126,6 @@ lint:
 ##############################################################################
 # TARGET: run
 
-run:
-	$(PYTHON) $(srcdir)/src/mousetrap/main.py
+run: all
+	PYTHONPATH=$(builddir)/build/lib ; \
+	$(PYTHON) $(builddir)/build/lib/mousetrap/main.py

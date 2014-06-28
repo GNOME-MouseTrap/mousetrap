@@ -5,6 +5,18 @@ from os.path import dirname, abspath
 import sys
 
 
+
+from mousetrap.config import Config
+CONFIG = Config()
+
+
+import logging
+import logging.config
+logging.config.dictConfig(CONFIG['logging-test'])
+LOGGER = logging.getLogger('mousetrap.tests.run_python_tests')
+
+
+
 def main():
     initialize_import_path()
     tests = load_tests()

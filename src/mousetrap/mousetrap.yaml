@@ -56,4 +56,21 @@ logging:
     - console
     level: DEBUG
   version: 1
+logging-test:
+  formatters:
+    default:
+      format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+  handlers:
+    console:
+      class: logging.StreamHandler
+      formatter: default
+      level: DEBUG
+      stream: ext://sys.stdout
+  root:
+    formatters:
+    - default
+    handlers:
+    - console
+    level: DEBUG
+  version: 1
 loops_per_second: 10

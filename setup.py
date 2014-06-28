@@ -98,16 +98,6 @@ On yum-based systems:
 The installation not work as expected without this dependency.
 """)
 
-        if not "install" in self.distribution.script_args:
-            sys.stdout.write("Removing generated locale files...\n")
-
-            compiled_files = glob.glob(LOCALE_PATH + "/**/LC_MESSAGES/*.mo")
-
-            for file_name in compiled_files:
-                sys.stdout.write("Removing compiled locale %s\n" % file_name)
-
-                os.remove(file_name)
-
         egg_info.run(self)
 
 

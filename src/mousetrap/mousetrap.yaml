@@ -47,7 +47,7 @@ logging:
     console:
       class: logging.StreamHandler
       formatter: default
-      level: DEBUG
+      level: INFO
       stream: ext://sys.stdout
   root:
     formatters:

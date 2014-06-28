@@ -23,6 +23,7 @@ from mousetrap.vision import Camera
 
 class App(object):
     def __init__(self, config):
+        LOGGER.info("Initializing")
         self.config = config
         self.image = None
         self.loop = Loop(config, self)
@@ -42,7 +43,7 @@ class App(object):
 
     def _load_plugin(self, class_):
         try:
-            LOGGER.debug('loading %s', class_)
+            LOGGER.info('loading %s', class_)
             class_path = class_.split('.')
             module = __import__('.'.join(class_path[:-1]), {}, {}, class_path[-1])
             return getattr(module, class_path[-1])(self.config)

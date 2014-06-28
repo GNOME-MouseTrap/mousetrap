@@ -7,6 +7,8 @@ import cv
 from mousetrap.i18n import _
 from mousetrap.image import Image
 
+import logging
+LOGGER = logging.getLogger(__name__)
 
 class Camera(object):
     S_CAPTURE_OPEN_ERROR = _('Device #%d does not support video capture interface')
@@ -103,6 +105,7 @@ class FeatureDetector(object):
         self._cascade = HaarLoader(config).from_name(name)
         self._scale_factor = scale_factor
         self._min_neighbors = min_neighbors
+        self._last_attempt_successful = False
 
     def detect(self, image):
         self._image = image
@@ -122,7 +125,15 @@ class FeatureDetector(object):
 
     def _exit_if_none_detected(self):
         if len(self._plural) == 0:
-            raise FeatureNotFoundException(_('Feature not detected: %s') % (self._name))
+            message = _('Feature not detected: %s') % (self._name)
+            if self._last_attempt_successful:
+                self._last_attempt_successful = False
+                LOGGER.info(message)
+            raise FeatureNotFoundException(message)
+        else:
+            if not self._last_attempt_successful:
+                self._last_attempt_successful = True
+                LOGGER.info(_('Feature detected: %s') % (self._name))
 
     def _unpack_first(self):
         self._single = dict(zip(['x', 'y', 'width', 'height'], self._plural[0]))

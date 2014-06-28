@@ -25,7 +25,7 @@ class Config(dict):
     def _load(self):
         for name, path in self.SEARCH_PATH.items():
             if isfile(path):
-                print("loading %s" % (path))
+                print("Loading %s" % (path))
                 with open(path) as config_file:
                     config = safe_load(config_file)
                     _rmerge(self, config)

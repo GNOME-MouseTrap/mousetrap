@@ -76,6 +76,9 @@ pristine:
 	git clean -Xdf  # deletes untracked
 
 
+##############################################################################
+# TARGET: potfile
+
 PYTHON_FILES := $(shell find src -name "*.py" -print)
 POTFILE := src/mousetrap/locale/en/LC_MESSAGES/mousetrap.po
 

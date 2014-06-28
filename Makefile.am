@@ -123,7 +123,7 @@ mofiles: $(PO_FILES) $(MO_FILES)
 # TARGET: check
 
 check-local:
-	$(PYTHON) $(srcdir)/src/mousetrap/tests/run_python_tests.py
+	$(PYTHON) $(distdir)/src/mousetrap/tests/run_python_tests.py
 
 
 ##############################################################################
@@ -131,3 +131,10 @@ check-local:
 
 lint:
 	pylint $(srcdir)/src/mousetrap
+
+
+##############################################################################
+# TARGET: run
+
+run:
+	$(PYTHON) $(srcdir)/src/mousetrap/main.py

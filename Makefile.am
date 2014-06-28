@@ -117,3 +117,10 @@ mofiles: $(PO_FILES) $(MO_FILES)
 
 %.mo: %.po
 	msgfmt.py "$<"
+
+
+##############################################################################
+# TARGET: check
+
+check-local:
+	$(PYTHON) $(srcdir)/src/mousetrap/tests/run_python_tests.py

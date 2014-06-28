@@ -105,3 +105,15 @@ $(POTFILE): $(PYTHON_FILES)
 		-e '16c "Language: en\\n"' \
 		-e "18s/CHARSET/UTF-8/" \
 		$@
+
+
+##############################################################################
+# TARGET: mofiles
+
+PO_FILES := $(shell find src/mousetrap/locale -name "*.po" -print)
+MO_FILES := $(PO_FILES:.po=.mo)
+
+mofiles: $(PO_FILES) $(MO_FILES)
+
+%.mo: %.po
+	msgfmt.py "$<"

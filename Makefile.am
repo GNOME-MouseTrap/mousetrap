@@ -74,3 +74,31 @@ distclean-local:
 pristine:
 	git clean -df	# deletes ignored
 	git clean -Xdf  # deletes untracked
+
+
+PYTHON_FILES := $(shell find src -name "*.py" -print)
+POTFILE := src/mousetrap/locale/en/LC_MESSAGES/mousetrap.po
+
+potfile: $(POTFILE)
+
+$(POTFILE): $(PYTHON_FILES)
+	xgettext \
+		--language=Python \
+		--keyword=_ \
+		--output=src/mousetrap/locale/en/LC_MESSAGES/mousetrap.po \
+		--from-code=UTF-8 \
+		--sort-by-file \
+		--copyright-holder="REMOVE" \
+		--package-name="MouseTrap" \
+		--package-version="master" \
+		--msgid-bugs-address="http://bugzilla.gnome.org/enter_bug.cgi?product=mousetrap&keywords=I18N+L10N&component=i18n" \
+		`find src -name "*.py" | sort`
+	sed -i \
+		-e "1,2d" \
+		-e "3s/PACKAGE/MouseTrap/" \
+		-e '14c "Last-Translator: MouseTrap team\\n"' \
+		-e "15s/LANGUAGE/English/" \
+		-e "15s/LL/en/" \
+		-e '16c "Language: en\\n"' \
+		-e "18s/CHARSET/UTF-8/" \
+		$@

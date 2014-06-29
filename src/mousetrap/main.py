@@ -1,139 +1,77 @@
 '''
 Where it all begins.
 '''
-import argparse
+from argparse import ArgumentParser
 import logging
 import logging.config
 import sys
 import yaml
 
 from mousetrap.config import Config
+from mousetrap.core import App
 
 
-parser = argparse.ArgumentParser()
-parser.add_argument("--config",
-        metavar="FILE",
-        help="Loads configuration from FILE.")
-parser.add_argument("--dump-config",
-        help="Loads and dumps current configuration to standard out.",
-        action="store_true")
-parser.add_argument("--dump-annotated",
-        help="Dumps default configuration (with comments) to standard out.",
-        action="store_true")
-args = parser.parse_args()
+class Main(object):
 
-
-if args.dump_annotated:
-    with open(Config.get_config_path('default'), 'r') as annotated_file:
-        print annotated_file.read()
-    sys.exit(0)
-
-
-CONFIG = Config(args.config)
-if args.dump_config:
-    print yaml.dump(dict(CONFIG), default_flow_style=False)
-    sys.exit(0)
-
-
-logging.config.dictConfig(CONFIG['logging'])
-LOGGER = logging.getLogger('mousetrap.main')
-LOGGER.debug(yaml.dump(dict(CONFIG), default_flow_style=False))
-
-
-from mousetrap.i18n import _
-from gi.repository import GObject, Gdk, Gtk
-from mousetrap.gui import Gui, Pointer
-from mousetrap.vision import Camera
-
-
-class App(object):
-    def __init__(self, config):
-        LOGGER.info("Initializing")
-        self.config = config
-        self.image = None
-        self.loop = Loop(config, self)
-        self.gui = Gui(config)
-        self.camera = Camera(config)
-        self.pointer = Pointer(config)
-        self.plugins = []
-        self._assemble_plugins()
-
-    def _assemble_plugins(self):
-        self._load_plugins()
-        self._register_plugins_with_loop()
-
-    def _load_plugins(self):
-        for class_ in self.config['assembly']:
-            self.plugins.append(self._load_plugin(class_))
-
-    def _load_plugin(self, class_):
+    def __init__(self):
         try:
-            LOGGER.info('loading %s', class_)
-            class_path = class_.split('.')
-            module = __import__('.'.join(class_path[:-1]), {}, {}, class_path[-1])
-            return getattr(module, class_path[-1])(self.config)
-        except ImportError as error:
-            print("ERROR")
-            LOGGER.error(
-                _('Could not import plugin `%s`. Check config file and PYTHONPATH.'),
-                class_
-                )
-            raise
+            self._args = CommandLineArguments()
+            self._handle_dump_annotated()
+            self._config = Config(self._args.config)
+            self._handle_dump_config()
+            self._configure_logging()
+        except ExitException:
+            sys.exit(0)
 
-    def _register_plugins_with_loop(self):
-        for plugin in self.plugins:
-            self.loop.subscribe(plugin)
+    def _handle_dump_annotated(self):
+        if self._args.dump_annotated:
+            self._dump_annotated()
+            raise ExitException()
 
-    def run(self, app=None):
-        self.loop.start()
-        self.gui.start()
+    def _handle_dump_config(self):
+        if self._args.dump_config:
+            self._dump_config()
+            raise ExitException()
 
+    @staticmethod
+    def _dump_annotated():
+        with open(Config.get_config_path('default'), 'r') as annotated_file:
+            print annotated_file.read()
 
-class Observable(object):
-    def __init__(self, config):
-        self._config = config
-        self.__observers = []
-        self.__arguments = {}
+    def _dump_config(self):
+        print yaml.dump(dict(self._config), default_flow_style=False)
 
-    def subscribe(self, observer):
-        self.__observers.append(observer)
+    def _configure_logging(self):
+        logging.config.dictConfig(self._config['logging'])
+        logger = logging.getLogger('mousetrap.main')
+        logger.debug(yaml.dump(dict(self._config), default_flow_style=False))
 
-    def _add_argument(self, key, value):
-        self.__arguments[key] = value
-
-    def _fire(self, callback_name):
-        for observer in self.__observers:
-            callback = getattr(observer, callback_name)
-            callback(**self.__arguments)
+    def run(self):
+        App(self._config).run()
 
 
-class Loop(Observable):
-    MILLISECONDS_PER_SECOND = 1000.0
-    CALLBACK_RUN = 'run'
+class CommandLineArguments(object):
 
-    def __init__(self, config, app):
-        super(Loop, self).__init__(config)
-        self._set_loops_per_second(app.config['loops_per_second'])
-        self._timeout_id = None
-        self._add_argument('app', app)
+    def __init__(self):
+        parser = ArgumentParser()
+        parser.add_argument("--config",
+                metavar="FILE",
+                help="Loads configuration from FILE.")
+        parser.add_argument("--dump-config",
+                help="Loads and dumps current configuration to standard out.",
+                action="store_true")
+        parser.add_argument("--dump-annotated",
+                help="Dumps default configuration (with comments) to standard out.",
+                action="store_true")
+        parser.parse_args(namespace=self)
 
-    def _set_loops_per_second(self, loops_per_second):
-        self._loops_per_second = loops_per_second
-        self._interval = int(round(
-            self.MILLISECONDS_PER_SECOND / self._loops_per_second))
 
-    def start(self):
-        self.timeout_id = GObject.timeout_add(self._interval, self._run)
-
-    def _run(self):
-        CONTINUE = True
-        PAUSE = False
-        self._fire(self.CALLBACK_RUN)
-        return CONTINUE
+class ExitException(Exception):
+    pass
 
 
 def main():
-    App(CONFIG).run()
+    Main().run()
 
 
 if __name__ == '__main__':

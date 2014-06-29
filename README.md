@@ -50,19 +50,27 @@ close your left eye for about 1.5 seconds.
 
 ## Configuring
 
-MouseTrap loads its configuration from following in order:
+To customize MouseTrap's configuration, place a copy of the annotated built-in
+configuration in ~/.mousetrap.xml, and then edit it.
 
-* The built-in default configuration
-* ~/.mousetrap.yaml
-* $PWD/.mousetrap.yaml
-* $PWD/mousetrap.yaml
-* From the file specified using the `--config` option.
-For example: `mousetrap --config path/to/myconfig.yaml`
+    mousetrap --dump-annotated > ~/.mousetrap.yaml
 
-You can dump the current configuration as follows
+MouseTrap loads its configuration from the following locations in order. Later
+locations may override values of those that come before it.
+
+* Built-in: something like `/usr/local/lib/python2.7/mousetrap/mousetrap.yaml`
+* User: `~/.mousetrap.yaml`
+* Local hidden: `$PWD/.mousetrap.yaml`
+* Local: `$PWD/mousetrap.yaml`
+* Command-line: `mousetrap --config path/to/myconfig.yaml`
+
+Load and dump configuration:
 
     mousetrap --dump-config
 
+Dump built-in annotated configuration.
+
+    mouestrap --dump-annotated
 
 ## Translating
 

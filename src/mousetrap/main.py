@@ -1,33 +1,42 @@
 '''
 Where it all begins.
 '''
-
-
 import argparse
+import logging
+import logging.config
+import sys
+import yaml
+
+from mousetrap.config import Config
+
+
 parser = argparse.ArgumentParser()
-parser.add_argument("--dump-config",
-        help="Loads and dumps configuration to standard out.",
-        action="store_true")
 parser.add_argument("--config",
         metavar="FILE",
         help="Loads configuration from FILE.")
+parser.add_argument("--dump-config",
+        help="Loads and dumps current configuration to standard out.",
+        action="store_true")
+parser.add_argument("--dump-annotated",
+        help="Dumps default configuration (with comments) to standard out.",
+        action="store_true")
 args = parser.parse_args()
 
 
-from mousetrap.config import Config
+if args.dump_annotated:
+    with open(Config.get_config_path('default'), 'r') as annotated_file:
+        print annotated_file.read()
+    sys.exit(0)
+
+
 CONFIG = Config(args.config)
 if args.dump_config:
-    import sys
-    import yaml
     print yaml.dump(dict(CONFIG), default_flow_style=False)
     sys.exit(0)
 
 
-import logging
-import logging.config
 logging.config.dictConfig(CONFIG['logging'])
 LOGGER = logging.getLogger('mousetrap.main')
-import yaml
 LOGGER.debug(yaml.dump(dict(CONFIG), default_flow_style=False))
 
 

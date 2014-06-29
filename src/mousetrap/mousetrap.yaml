@@ -1,12 +1,28 @@
+# assembly - A list of puglin classes to load and run. Order matters.
+#            To enable a plugin, list it here.
 assembly:
 - mousetrap.plugins.camera.CameraPlugin
 - mousetrap.plugins.display.DisplayPlugin
 - mousetrap.plugins.nose.NoseJoystickPlugin
 - mousetrap.plugins.eyes.EyesPlugin
+
+
+# camera - Configuration for the built-in camera.
 camera:
+
+  # If you have more than one camera and you know the index of the one you
+  # want, set it here. Otherwise -1 will search for the first camera device.
   device_index: -1
+
+  # Dimensions of image produced by camera. These are hints. Actual image
+  # dimensions may be smaller and are device dependent.
   height: 300
   width: 400
+
+
+# classes - A mapping of class configurations indexed by class name.
+#           If you are installing a plugin, it may want you to add an
+#           entry here to configure it.
 classes:
   mousetrap.plugins.display.DisplayPlugin:
     window_title: MouseTrap
@@ -34,11 +50,19 @@ classes:
       scale_factor: 1.1
   mousetrap.plugins.nose.NoseJoystickPlugin:
     threshold: 5
+
+# haar_files - A mapping of haar cascade files. Relative paths are relative
+#              to the mousetrap package directory. Plugins, if they come with
+#              custome haar cascades, may ask you to add entries.
 haar_files:
   face: haars/haarcascade_frontalface_default.xml
   left_eye: haars/haarcascade_mcs_lefteye.xml
   nose: haars/haarcascade_mcs_nose.xml
   open_eye: haars/haarcascade_eye.xml
+
+# logging - Configuration controlling the logging mechanism used during normal
+# operation.  Its structure is defined by Python's built-in logging package.
+# For documentation, see https://docs.python.org/2/library/logging.html .
 logging:
   formatters:
     default:
@@ -56,6 +80,10 @@ logging:
     - console
     level: DEBUG
   version: 1
+
+# logging - Configuration controlling the logging mechanism used during
+# testing.  Its structure is defined by Python's built-in logging package.  For
+# documentation, see https://docs.python.org/2/library/logging.html .
 logging-test:
   formatters:
     default:

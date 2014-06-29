@@ -15,6 +15,10 @@ class Config(dict):
         ('user_specified_file', None),
         ])
 
+    @classmethod
+    def get_config_path(cls, key):
+        return cls.SEARCH_PATH[key]
+
     def __init__(self, user_specified_file=None):
         self.SEARCH_PATH['user_specified_file']=user_specified_file
         self._load()

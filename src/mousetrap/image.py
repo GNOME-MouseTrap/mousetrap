@@ -36,6 +36,12 @@ class Image(object):
     def get_height(self):
         return self._image_cv.shape[1]
 
+    def __hash__(self):
+        return id(self)
+
+    def __eq__(self, other):
+        return hash(self) == hash(other)
+
 
 def _cv_rgb_to_cv_grayscale(image):
     return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)

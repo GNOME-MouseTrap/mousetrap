@@ -6,6 +6,7 @@ import cv2
 import cv
 from mousetrap.i18n import _
 from mousetrap.image import Image
+import mousetrap.plugins.interface as interface
 
 import logging
 LOGGER = logging.getLogger(__name__)
@@ -87,6 +88,23 @@ class HaarNameError(Exception):
 
 
 class FeatureDetector(object):
+
+    _INSTANCES = {}
+
+    @classmethod
+    def get_detector(cls, config, name, scale_factor=1.1, min_neighbors=3):
+        if name in cls._INSTANCES:
+            LOGGER.info("Reusing %s detector." % name)
+            return cls._INSTANCES[name]
+        cls._INSTANCES[name] = FeatureDetector(
+                config, name, scale_factor, min_neighbors)
+        return cls._INSTANCES[name]
+
+    @classmethod
+    def clear_all_detection_caches(cls):
+        for name, instance in cls._INSTANCES.items():
+            instance.clear_cache()
+
     def __init__(self, config, name, scale_factor=1.1, min_neighbors=3):
         '''
         name - name of feature to detect
@@ -97,6 +115,7 @@ class FeatureDetector(object):
         min_neighbors - how many neighbors each candidate rectangle should have
                 to retain it. Default 3.
         '''
+        LOGGER.info("Building %s detector." % name)
         self._config = config
         self._name = name
         self._single = None
@@ -106,15 +125,28 @@ class FeatureDetector(object):
         self._scale_factor = scale_factor
         self._min_neighbors = min_neighbors
         self._last_attempt_successful = False
+        self._detect_cache = {}
 
     def detect(self, image):
-        self._image = image
-        self._detect_plural()
-        self._exit_if_none_detected()
-        self._unpack_first()
-        self._extract_image()
-        self._calculate_center()
-        return self._single
+        if image in self._detect_cache:
+            LOGGER.debug("Detection cache hit: %(image)d -> %(result)s" %
+                    {'image':id(image), 'result':self._detect_cache[image]}
+                    )
+            if isinstance(self._detect_cache[image], FeatureNotFoundException):
+                raise FeatureNotFoundException(str(self._detect_cache[image]))
+            return self._detect_cache[image]
+        try:
+            self._image = image
+            self._detect_plural()
+            self._exit_if_none_detected()
+            self._unpack_first()
+            self._extract_image()
+            self._calculate_center()
+            self._detect_cache[image] = self._single
+            return self._detect_cache[image]
+        except FeatureNotFoundException as exception:
+            self._detect_cache[image] = exception
+            raise
 
     def _detect_plural(self):
         self._plural = self._cascade.detectMultiScale(
@@ -156,6 +188,17 @@ class FeatureDetector(object):
             image_cv_grayscale[from_y:to_y, from_x:to_x],
             is_grayscale=True,
         )
+
+    def clear_cache(self):
+        self._detect_cache.clear()
+
+
+class FeatureDetectorClearCachePlugin(interface.Plugin):
+    def __init__(self, config):
+        self._config = config
+
+    def run(self, app):
+        FeatureDetector.clear_all_detection_caches()
 
 
 class FeatureNotFoundException(Exception):

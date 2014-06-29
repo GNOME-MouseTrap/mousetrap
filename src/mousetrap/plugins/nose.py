@@ -98,13 +98,13 @@ class NoseJoystickPlugin(interface.Plugin):
 class NoseLocator(object):
     def __init__(self, config):
         self._config = config
-        self._face_detector = FeatureDetector(
+        self._face_detector = FeatureDetector.get_detector(
             config,
             'face',
             scale_factor=config[self]['face_detector']['scale_factor'],
             min_neighbors=config[self]['face_detector']['min_neighbors'],
         )
-        self._nose_detector = FeatureDetector(
+        self._nose_detector = FeatureDetector.get_detector(
             config,
             'nose',
             scale_factor=config[self]['nose_detector']['scale_factor'],

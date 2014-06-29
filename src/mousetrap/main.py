@@ -3,8 +3,24 @@ Where it all begins.
 '''
 
 
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("--dump-config",
+        help="Loads and dumps configuration to standard out.",
+        action="store_true")
+parser.add_argument("--config",
+        metavar="FILE",
+        help="Loads configuration from FILE.")
+args = parser.parse_args()
+
+
 from mousetrap.config import Config
-CONFIG = Config()
+CONFIG = Config(args.config)
+if args.dump_config:
+    import sys
+    import yaml
+    print yaml.dump(dict(CONFIG), default_flow_style=False)
+    sys.exit(0)
 
 
 import logging

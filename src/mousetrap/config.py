@@ -3,32 +3,32 @@ from os.path import dirname, expanduser, isfile
 from os import getcwd
 from shutil import copy
 from copy import deepcopy
+from collections import OrderedDict
 
 
 class Config(dict):
-    SEARCH_PATH = {
-        'default': dirname(__file__) + '/mousetrap.yaml',
-        'user': expanduser('~/.mousetrap.yaml'),
-        'local_hidden': getcwd() + '/.mousetrap.yaml',
-        'local': getcwd() + '/mousetrap.yaml',
-    }
+    SEARCH_PATH = OrderedDict([
+        ('default', dirname(__file__) + '/mousetrap.yaml'),
+        ('user', expanduser('~/.mousetrap.yaml')),
+        ('local_hidden', getcwd() + '/.mousetrap.yaml'),
+        ('local', getcwd() + '/mousetrap.yaml'),
+        ('user_specified_file', None),
+        ])
 
-    def __init__(self):
-        self._install()
+    def __init__(self, user_specified_file=None):
+        self.SEARCH_PATH['user_specified_file']=user_specified_file
         self._load()
-
-    def _install(self):
-        if not isfile(self.SEARCH_PATH['user']):
-            print("Copying %s to %s" % (self.SEARCH_PATH['default'], self.SEARCH_PATH['user']))
-            copy(self.SEARCH_PATH['default'], self.SEARCH_PATH['user'])
 
     def _load(self):
         for name, path in self.SEARCH_PATH.items():
-            if isfile(path):
-                print("Loading %s" % (path))
+            if path is not None and isfile(path):
+                print "# Loading %s" % (path)
                 with open(path) as config_file:
                     config = safe_load(config_file)
-                    _rmerge(self, config)
+                    if config is not None:
+                        _rmerge(self, config)
+                    else:
+                        print "# Warning: config is empty."
 
     def __getitem__(self, key):
         '''

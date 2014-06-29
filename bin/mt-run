@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-source "$(dirname "$0")/mt-define-mousetrap-home"
-"$MOUSETRAP_HOME/bin/mt-ensure-makefile"
-
-(
-    cd "$MOUSETRAP_HOME"
-    make run
-)

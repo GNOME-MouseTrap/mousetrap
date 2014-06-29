@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-source "$(dirname "$0")/mt-define-mousetrap-home"
-
-(
-    cd "$MOUSETRAP_HOME"
-    if [ ! -f "Makefile" ] ; then
-        bin/mt-configure
-    fi
-)

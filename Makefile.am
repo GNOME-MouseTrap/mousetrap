@@ -57,17 +57,17 @@ uninstall-local:
 
 clean-local:
 	$(PYTHON) $(srcdir)/setup.py clean --all
-	find $(srcdir) -name '*.pyc' -delete
-	find $(srcdir) -name '*.pyo' -delete
-	find $(srcdir) -name '*.mo' -delete
-	rm -rf $(srcdir)/build
+	find $(builddir) -name '*.pyc' -delete
+	find $(builddir) -name '*.pyo' -delete
+	find $(builddir) -name '*.mo' -delete
+	rm -rf $(builddir)/build
 
 
 ##############################################################################
 # TARGET: distclean
 
-distclean-local:
-	rm -rf $(builddir)/build/mousetrap.egg-info
+#distclean-local:
+#	rm -rf $(builddir)/build/mousetrap.egg-info
 
 
 ##############################################################################

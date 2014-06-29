@@ -8,7 +8,6 @@ import sys
 import yaml
 
 from mousetrap.config import Config
-from mousetrap.core import App
 
 
 class Main(object):
@@ -47,6 +46,7 @@ class Main(object):
         logger.debug(yaml.dump(dict(self._config), default_flow_style=False))
 
     def run(self):
+        from mousetrap.core import App
         App(self._config).run()
 
 

@@ -60,6 +60,7 @@ clean-local:
 	find $(srcdir) -name '*.pyc' -delete
 	find $(srcdir) -name '*.pyo' -delete
 	find $(srcdir) -name '*.mo' -delete
+	rm -rf $(srcdir)/build
 
 
 ##############################################################################

@@ -10,8 +10,6 @@ class Config(dict):
     SEARCH_PATH = OrderedDict([
         ('default', dirname(__file__) + '/mousetrap.yaml'),
         ('user', expanduser('~/.mousetrap.yaml')),
-        ('local_hidden', getcwd() + '/.mousetrap.yaml'),
-        ('local', getcwd() + '/mousetrap.yaml'),
         ('user_specified_file', None),
         ])
 

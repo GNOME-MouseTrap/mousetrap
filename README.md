@@ -60,8 +60,6 @@ locations may override values of those that come before it.
 
 * Built-in: something like `/usr/local/lib/python2.7/mousetrap/mousetrap.yaml`
 * User: `~/.mousetrap.yaml`
-* Local hidden: `$PWD/.mousetrap.yaml`
-* Local: `$PWD/mousetrap.yaml`
 * Command-line: `mousetrap --config path/to/myconfig.yaml`
 
 Load and dump configuration:

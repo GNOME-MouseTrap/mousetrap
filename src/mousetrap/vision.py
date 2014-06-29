@@ -93,16 +93,17 @@ class FeatureDetector(object):
 
     @classmethod
     def get_detector(cls, config, name, scale_factor=1.1, min_neighbors=3):
-        if name in cls._INSTANCES:
-            LOGGER.info("Reusing %s detector." % name)
-            return cls._INSTANCES[name]
-        cls._INSTANCES[name] = FeatureDetector(
+        key = (name, scale_factor, min_neighbors)
+        if key in cls._INSTANCES:
+            LOGGER.info("Reusing %s detector.", key)
+            return cls._INSTANCES[key]
+        cls._INSTANCES[key] = FeatureDetector(
                 config, name, scale_factor, min_neighbors)
-        return cls._INSTANCES[name]
+        return cls._INSTANCES[key]
 
     @classmethod
     def clear_all_detection_caches(cls):
-        for name, instance in cls._INSTANCES.items():
+        for key, instance in cls._INSTANCES.items():
             instance.clear_cache()
 
     def __init__(self, config, name, scale_factor=1.1, min_neighbors=3):
@@ -115,7 +116,7 @@ class FeatureDetector(object):
         min_neighbors - how many neighbors each candidate rectangle should have
                 to retain it. Default 3.
         '''
-        LOGGER.info("Building %s detector." % name)
+        LOGGER.info("Building detector: %s", (name, scale_factor, min_neighbors))
         self._config = config
         self._name = name
         self._single = None

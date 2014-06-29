@@ -73,9 +73,16 @@ distclean-local:
 ##############################################################################
 # TARGET: pristine
 
-pristine:
-	git clean -df	# deletes ignored
-	git clean -Xdf  # deletes untracked
+pristine: devclean
+	git clean -df  # deletes untracked
+
+
+
+##############################################################################
+# TARGET: devclean
+
+devclean:
+	git clean -Xdf	# deletes ignored
 
 
 ##############################################################################

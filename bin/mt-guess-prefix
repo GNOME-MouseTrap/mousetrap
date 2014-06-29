@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-dirname $(dirname $(find /usr -type f -regex ".*/bin/python2.7" 2> /dev/null | head -1))
+python -c "import site; print '/'.join(site.getsitepackages()[0].split('/')[:2])"

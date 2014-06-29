@@ -1,19 +1,24 @@
 # MouseTrap
 
-License: GPL v2.0 (see LICENCSE)
+License: GPL v2.0 (see LICENSE)
 
 
 ## Software Requirements
 
-* Linux  (developed on Fedora 20 and Ubuntu)
+* Linux (developed on Fedora 20 and Ubuntu)
 * Python 2.7
-* PyYAML 3.11
+* PyYAML 3
 * OpenCV 2
+* Python-Xlib 0.12+
 
 
 ## Download
 
-(FIXME update URL on when preparing final release)
+### Stable
+
+    $ git clone git://git.gnome.org/mousetrap
+
+### Development
 
     $ git clone https://github.com/GNOME-MouseTrap/mousetrap.git
 
@@ -28,21 +33,21 @@ License: GPL v2.0 (see LICENCSE)
 ### Using `autotools`
 
     cd mousetrap
-    ./autogen.sh      # On Fedora, add --prefix=/usr
+    ./autogen.sh # On Fedora, add --prefix=/usr
     make
     sudo make install
 
 
 ## Running
 
-    mousetrap --help      # a list of command-line options
+    mousetrap --help # Print the list of possible command-line options
     mousetrap
 
 
 ## Using
 
-By default, MouseTrap tracks your face, allowing you to controll the
-mouse pointer using a joystick metaphore. When you look left,
+By default, MouseTrap tracks your face, allowing you to control the
+mouse pointer using a joystick metaphor. When you look left,
 the pointer moves left; look right, it moves right; look up, it moves up;
 look down, it moves down; look straight ahead, it stops moving. To click,
 close your left eye for about 1.5 seconds.
@@ -51,7 +56,7 @@ close your left eye for about 1.5 seconds.
 ## Configuring
 
 To customize MouseTrap's configuration, place a copy of the annotated built-in
-configuration in ~/.mousetrap.xml, and then edit it.
+configuration in ~/.mousetrap.yaml, and then edit it.
 
     mousetrap --dump-annotated > ~/.mousetrap.yaml
 
@@ -68,7 +73,7 @@ Load and dump configuration:
 
 Dump built-in annotated configuration.
 
-    mouestrap --dump-annotated
+    mousetrap --dump-annotated
 
 ## Translating
 
@@ -82,7 +87,6 @@ Use `src/mousetrap/locale/_language_/LC_MESSAGES/mousetrap.po` as your template 
 ```python
 # Import the interface for plugins.
 import mousetrap.plugins.interface as interface
-
 
 # Create a logger for logging.
 import logging
@@ -98,7 +102,7 @@ class MyPlugin(interface.Plugin):
         self._config = config
 
         # Access class configuration by using self as a key.
-        # Here we retreive 'x' from our class configuration.
+        # Here we retrieve 'x' from our class configuration.
         self._x = config[self]['x']
 
     # Define a run method that takes an instance of mousetrap.main.App as the
@@ -106,12 +110,12 @@ class MyPlugin(interface.Plugin):
     # loop.
     def run(self, app):
 
-        # App contians data shared between the system and plugins.
+        # App contains data shared between the system and plugins.
         # See mousetrap.main.App for attributes that are defined by mousetrap.
         # For example, we can access the pointer:
         app.pointer.set_position((0, 0))
 
-        # We can access attrbitues that are populated by other plugins.
+        # We can access attributes that are populated by other plugins.
         image = app.image
 
         # We can make attributes available to other plugins by adding them

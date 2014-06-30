@@ -134,7 +134,9 @@ class FeatureDetector(object):
                     {'image':id(image), 'result':self._detect_cache[image]}
                     )
             if isinstance(self._detect_cache[image], FeatureNotFoundException):
-                raise FeatureNotFoundException(str(self._detect_cache[image]))
+                message = str(self._detect_cache[image])
+                raise FeatureNotFoundException(message,
+                        cause=self._detect_cache[image])
             return self._detect_cache[image]
         try:
             self._image = image
@@ -203,4 +205,7 @@ class FeatureDetectorClearCachePlugin(interface.Plugin):
 
 
 class FeatureNotFoundException(Exception):
-    pass
+    def __init__(self, message, cause = None):
+        if cause is not None:
+            message = message + ', caused by ' + repr(cause)
+        self.cause = cause

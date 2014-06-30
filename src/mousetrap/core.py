@@ -75,7 +75,8 @@ class Loop(Observable):
 
     def __init__(self, config, app):
         super(Loop, self).__init__(config)
-        self._set_loops_per_second(app.config['loops_per_second'])
+        self._config = config
+        self._set_loops_per_second(config['loops_per_second'])
         self._timeout_id = None
         self._add_argument('app', app)
 

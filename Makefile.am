@@ -125,8 +125,10 @@ MT_BUILD_TESTS = $(shell find "$(MT_BUILD_HOME)/mousetrap" -name "run_python_tes
 check-local:
 	if command -v coverage >/dev/null 2>&1 ; then \
 		PYTHONPATH="$(MT_BUILD_HOME)" \
-			coverage run --include="*/mousetrap/*" \
-			--omit="*/__init__.py","*/test_*.py","*/run_python_tests.py" \
+			coverage run \
+				--branch \
+				--source="$(MT_BUILD_HOME)" \
+				--omit="*/__init__.py","*/test_*.py","*/run_python_tests.py" \
 				"$(MT_BUILD_TESTS)"; \
 		coverage report ; \
 	else \

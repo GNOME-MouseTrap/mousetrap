@@ -92,11 +92,3 @@ class Loop(Observable):
         PAUSE = False
         self._fire(self.CALLBACK_RUN)
         return CONTINUE
-
-
-def main():
-    App(CONFIG).run()
-
-
-if __name__ == '__main__':
-    main()

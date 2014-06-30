@@ -5,9 +5,9 @@ from os.path import dirname, abspath
 import sys
 
 
-
 from mousetrap.config import Config
-CONFIG = Config()
+CONFIG = Config().load_default()
+print CONFIG['camera']
 
 
 import logging

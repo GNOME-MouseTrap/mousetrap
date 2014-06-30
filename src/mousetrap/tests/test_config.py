@@ -1,5 +1,5 @@
 import unittest
-from mousetrap.config import _rmerge
+from mousetrap.config import _rmerge, Config
 
 
 class test__rmerge(unittest.TestCase):
@@ -8,21 +8,50 @@ class test__rmerge(unittest.TestCase):
         self.a = {
             'red': 1,
             'white': ['washington', [2, 3], {'lincoln': 4}],
-            'blue': {'alpha': 5, 'list': [6, 7], 'dict': {'charlie' : 8}},
-            }
+            'blue': {
+                'alpha': 5,
+                'list': [6, 7],
+                'dict': {
+                    'charlie' : 8}}}
 
         self.b = {
             'new': 9,
             'white': ['replacement'],
-            'blue': {'new': 10, 'dict': {'charlie': 11, 'new': 12, 'newdict': {'some':'dict'}}},
-            }
+            'blue': {
+                'new': 10,
+                'dict': {
+                    'charlie': 11,
+                    'new': 12,
+                    'newdict': {
+                        'some':'dict'}}}}
         self.ab = {
             'new': 9,
             'red': 1,
             'white': ['replacement'],
-            'blue': {'new': 10, 'alpha': 5, 'list': [6, 7], 'dict': {'charlie' : 11, 'new': 12, 'newdict': {'some':'dict'}}},
-            }
+            'blue': {
+                'new': 10,
+                'alpha': 5,
+                'list': [6, 7],
+                'dict': {
+                    'charlie' : 11,
+                    'new': 12,
+                    'newdict': {
+                        'some':'dict'}}}}
 
     def test__rmerge(self):
         _rmerge(self.a, self.b)
         self.assertEqual(self.ab, self.a)
+
+    def test__rmerge_None(self):
+        from copy import deepcopy
+        original = deepcopy(self.a)
+        _rmerge(self.a, None)
+        self.assertEqual(original, self.a)
+
+
+class test_Config(unittest.TestCase):
+    def setUp(self):
+        self.config = Config().load_default()
+
+    def test_load(self):
+        self.assertTrue(isinstance(self.config['assembly'], list))

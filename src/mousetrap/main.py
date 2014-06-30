@@ -6,6 +6,7 @@ import logging
 import logging.config
 import sys
 import yaml
+from os.path import dirname, expanduser, exists
 
 from mousetrap.config import Config
 
@@ -16,11 +17,21 @@ class Main(object):
         try:
             self._args = CommandLineArguments()
             self._handle_dump_annotated()
-            self._config = Config(self._args.config)
+            self._config = Config().load(self._get_config_paths())
             self._handle_dump_config()
             self._configure_logging()
         except ExitException:
             sys.exit(0)
+
+    def _get_config_paths(self):
+            paths = [dirname(__file__) + '/mousetrap.yaml']
+            user_config = expanduser('~/.mousetrap.yaml')
+            if exists(user_config):
+                paths.append(user_config)
+            if self._args.config is not None:
+                paths.append(self._args.config)
+            return paths
+
 
     def _handle_dump_annotated(self):
         if self._args.dump_annotated:
@@ -76,3 +87,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

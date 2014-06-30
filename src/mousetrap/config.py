@@ -3,34 +3,24 @@ from os.path import dirname, expanduser, isfile
 from os import getcwd
 from shutil import copy
 from copy import deepcopy
-from collections import OrderedDict
 
 
 class Config(dict):
-    SEARCH_PATH = OrderedDict([
-        ('default', dirname(__file__) + '/mousetrap.yaml'),
-        ('user', expanduser('~/.mousetrap.yaml')),
-        ('user_specified_file', None),
-        ])
 
-    @classmethod
-    def get_config_path(cls, key):
-        return cls.SEARCH_PATH[key]
+    def load(self, paths):
+        for path in paths:
+            self.load_path(path)
+        return self
 
-    def __init__(self, user_specified_file=None):
-        self.SEARCH_PATH['user_specified_file']=user_specified_file
-        self._load()
+    def load_default(self):
+        return self.load_path(dirname(__file__) + '/mousetrap.yaml')
 
-    def _load(self):
-        for name, path in self.SEARCH_PATH.items():
-            if path is not None and isfile(path):
-                print "# Loading %s" % (path)
-                with open(path) as config_file:
-                    config = safe_load(config_file)
-                    if config is not None:
-                        _rmerge(self, config)
-                    else:
-                        print "# Warning: config is empty."
+    def load_path(self, path):
+        print "# Loading %s" % (path)
+        with open(path) as config_file:
+            config = safe_load(config_file)
+            _rmerge(self, config)
+        return self
 
     def __getitem__(self, key):
         '''
@@ -54,6 +44,8 @@ def _rmerge(target, source):
     Recursively update values in target from source.
     Only dicts are updated, all other values are deepcopied.
     '''
+    if source is None:
+        return
     for key, value in source.items():
         if isinstance(value, dict):
             if key not in target:

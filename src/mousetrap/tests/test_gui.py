@@ -6,7 +6,7 @@ from mousetrap.main import Config
 class test_pointer(unittest.TestCase):
 
     def setUp(self):
-        self.pointer = Pointer(Config())
+        self.pointer = Pointer(Config().load_default())
 
     def test_get_position(self):
         pointer_x, pointer_y = self.pointer.get_position()

@@ -6,7 +6,7 @@ from mousetrap.main import Config
 class test_camera(unittest.TestCase):
 
     def setUp(self):
-        self.camera = Camera(Config())
+        self.camera = Camera(Config().load_default())
 
     def test_get_image_imageReturned(self):
         image = self.camera.read_image()

@@ -52,8 +52,7 @@ class App(object):
 
 
 class Observable(object):
-    def __init__(self, config):
-        self._config = config
+    def __init__(self):
         self.__observers = []
         self.__arguments = {}
 
@@ -74,7 +73,7 @@ class Loop(Observable):
     CALLBACK_RUN = 'run'
 
     def __init__(self, config, app):
-        super(Loop, self).__init__(config)
+        super(Loop, self).__init__()
         self._config = config
         self._set_loops_per_second(config['loops_per_second'])
         self._timeout_id = None

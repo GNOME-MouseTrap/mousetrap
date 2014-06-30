@@ -123,8 +123,15 @@ MT_BUILD_HOME = $(shell dirname $(shell find "$(builddir)/build" -mindepth 2 -ma
 MT_BUILD_TESTS = $(shell find "$(MT_BUILD_HOME)/mousetrap" -name "run_python_tests.py")
 
 check-local:
-	PYTHONPATH=$(MT_BUILD_HOME) \
-	$(PYTHON) $(MT_BUILD_TESTS)
+	if command -v nosetests >/dev/null 2>&1 ; then \
+		cd "$(MT_BUILD_HOME)" ; \
+		PYTHONPATH="$(MT_BUILD_HOME)" \
+			nosetests --with-coverage --cover-package=mousetrap \
+				--exclude=".*run_python_tests.py"; \
+	else \
+		PYTHONPATH="$(MT_BUILD_HOME)" \
+			"$(PYTHON)" "$(MT_BUILD_TESTS)"; \
+	fi
 
 
 ##############################################################################

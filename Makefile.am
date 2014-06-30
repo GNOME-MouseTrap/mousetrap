@@ -130,7 +130,7 @@ check-local:
 				--source="$(MT_BUILD_HOME)" \
 				--omit="*/__init__.py","*/test_*.py","*/run_python_tests.py" \
 				"$(MT_BUILD_TESTS)"; \
-		coverage report ; \
+		coverage report -m; \
 	else \
 		PYTHONPATH="$(MT_BUILD_HOME)" \
 			"$(PYTHON)" "$(MT_BUILD_TESTS)"; \

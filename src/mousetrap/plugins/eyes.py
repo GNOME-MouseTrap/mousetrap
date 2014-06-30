@@ -62,19 +62,19 @@ class LeftEyeLocator(object):
 
     def __init__(self, config):
         self._config = config
-        self._face_detector = FeatureDetector(
+        self._face_detector = FeatureDetector.get_detector(
             config,
             "face",
             scale_factor=config[self]['face_detector']['scale_factor'],
             min_neighbors=config[self]['face_detector']['min_neighbors'],
         )
-        self._open_eye_detector = FeatureDetector(
+        self._open_eye_detector = FeatureDetector.get_detector(
             config,
             "open_eye",
             scale_factor=config[self]['open_eye_detector']['scale_factor'],
             min_neighbors=config[self]['open_eye_detector']['min_neighbors'],
         )
-        self._left_eye_detector = FeatureDetector(
+        self._left_eye_detector = FeatureDetector.get_detector(
             config,
             "left_eye",
             scale_factor=config[self]['left_eye_detector']['scale_factor'],

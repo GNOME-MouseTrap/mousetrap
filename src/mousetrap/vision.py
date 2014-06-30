@@ -209,3 +209,4 @@ class FeatureNotFoundException(Exception):
         if cause is not None:
             message = message + ', caused by ' + repr(cause)
         self.cause = cause
+        super(FeatureNotFoundException, self).__init__(message)

@@ -5,7 +5,7 @@ class Plugin(object):
     def __init__(self, config):
         '''Override to initialize and configure yourself.
         (Do not call parent/this constructor.)'''
-        raise NotImplementedError(_('Must implement.'))
+        pass
 
     def run(self, app):
         '''Called each pass of the loop.'''

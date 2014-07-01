@@ -1,7 +1,7 @@
 import logging
 LOGGER = logging.getLogger(__name__)
 
-from gi.repository import GObject, Gdk, Gtk
+from gi.repository import GObject
 
 from mousetrap.i18n import _
 from mousetrap.gui import Gui, Pointer
@@ -32,12 +32,13 @@ class App(object):
         try:
             LOGGER.info('loading %s', class_)
             class_path = class_.split('.')
-            module = __import__('.'.join(class_path[:-1]), {}, {}, class_path[-1])
+            module = __import__(
+                    '.'.join(class_path[:-1]), {}, {}, class_path[-1])
             return getattr(module, class_path[-1])(self.config)
-        except ImportError as error:
-            print("ERROR")
+        except ImportError:
             LOGGER.error(
-                _('Could not import plugin `%s`. Check config file and PYTHONPATH.'),
+                _('Could not import plugin `%s`.' + \
+                        'Check config file and PYTHONPATH.'),
                 class_
                 )
             raise
@@ -46,7 +47,7 @@ class App(object):
         for plugin in self.plugins:
             self.loop.subscribe(plugin)
 
-    def run(self, app=None):
+    def run(self):
         self.loop.start()
         self.gui.start()
 
@@ -75,8 +76,10 @@ class Loop(Observable):
     def __init__(self, config, app):
         super(Loop, self).__init__()
         self._config = config
-        self._set_loops_per_second(config['loops_per_second'])
+        self._interval = None
+        self._loops_per_second = None
         self._timeout_id = None
+        self._set_loops_per_second(config['loops_per_second'])
         self._add_argument('app', app)
 
     def _set_loops_per_second(self, loops_per_second):
@@ -85,10 +88,9 @@ class Loop(Observable):
             self.MILLISECONDS_PER_SECOND / self._loops_per_second))
 
     def start(self):
-        self.timeout_id = GObject.timeout_add(self._interval, self._run)
+        self._timeout_id = GObject.timeout_add(self._interval, self._run)
 
     def _run(self):
-        CONTINUE = True
-        PAUSE = False
         self._fire(self.CALLBACK_RUN)
-        return CONTINUE
+        continue_ = True
+        return continue_

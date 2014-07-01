@@ -89,14 +89,15 @@ class Pointer(object):
         return self._moved
 
     def get_position(self):
-        X_INDEX = 1
-        Y_INDEX = 2
+        x_index = 1
+        y_index = 2
         position = self._pointer.get_position()
-        return (position[X_INDEX], position[Y_INDEX])
+        return (position[x_index], position[y_index])
 
     def click(self, button=BUTTON_LEFT):
         display = XlibDisplay()
-        for event, button in [(X.ButtonPress, button), (X.ButtonRelease, button)]:
+        for event, button in \
+                [(X.ButtonPress, button), (X.ButtonRelease, button)]:
             LOGGER.debug('%s %s', event, button)
             xtest.fake_input(display, event, button)
             display.sync()

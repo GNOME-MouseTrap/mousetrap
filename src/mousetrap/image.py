@@ -4,7 +4,6 @@ All things image manipulation.
 
 import cv2
 from gi.repository import GdkPixbuf
-from mousetrap.i18n import _
 
 
 _GDK_PIXBUF_BIT_PER_SAMPLE = 8
@@ -60,7 +59,7 @@ def _cvimage_to_pixbuf(cvimage):
 
     return GdkPixbuf.Pixbuf.new_from_data(
         data,
-        colorspace, # FIXME: Need to handle grayscale.
+        colorspace,
         has_alpha_channel,
         _GDK_PIXBUF_BIT_PER_SAMPLE,
         width,

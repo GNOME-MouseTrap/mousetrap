@@ -61,6 +61,7 @@ clean-local:
 	find $(builddir) -name '*.pyo' -delete
 	find $(builddir) -name '*.mo' -delete
 	rm -rf $(builddir)/build
+	rm -f $(builddir)/.coverage
 
 
 ##############################################################################

@@ -12,6 +12,8 @@ from mousetrap.config import Config
 
 
 class Main(object):
+    DEFAULT_CONFIG_PATH = dirname(__file__) + '/mousetrap.yaml'
+    USER_CONFIG_PATH = expanduser('~/.mousetrap.yaml')
 
     def __init__(self):
         try:
@@ -24,14 +26,12 @@ class Main(object):
             sys.exit(0)
 
     def _get_config_paths(self):
-            paths = [dirname(__file__) + '/mousetrap.yaml']
-            user_config = expanduser('~/.mousetrap.yaml')
-            if exists(user_config):
-                paths.append(user_config)
-            if self._args.config is not None:
-                paths.append(self._args.config)
-            return paths
-
+        paths = [self.DEFAULT_CONFIG_PATH]
+        if exists(self.USER_CONFIG_PATH):
+            paths.append(self.USER_CONFIG_PATH)
+        if self._args.config is not None:
+            paths.append(self._args.config)
+        return paths
 
     def _handle_dump_annotated(self):
         if self._args.dump_annotated:
@@ -43,9 +43,9 @@ class Main(object):
             self._dump_config()
             raise ExitException()
 
-    @staticmethod
-    def _dump_annotated():
-        with open(Config.get_config_path('default'), 'r') as annotated_file:
+    @classmethod
+    def _dump_annotated(cls):
+        with open(cls.DEFAULT_CONFIG_PATH, 'r') as annotated_file:
             print annotated_file.read()
 
     def _dump_config(self):
@@ -72,7 +72,8 @@ class CommandLineArguments(object):
                 help="Loads and dumps current configuration to standard out.",
                 action="store_true")
         parser.add_argument("--dump-annotated",
-                help="Dumps default configuration (with comments) to standard out.",
+                help="Dumps default configuration" + \
+                    " (with comments) to standard out.",
                 action="store_true")
         parser.parse_args(namespace=self)
 
@@ -87,4 +88,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

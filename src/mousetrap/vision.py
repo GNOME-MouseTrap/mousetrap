@@ -12,12 +12,14 @@ import logging
 LOGGER = logging.getLogger(__name__)
 
 class Camera(object):
-    S_CAPTURE_OPEN_ERROR = _('Device #%d does not support video capture interface')
+    S_CAPTURE_OPEN_ERROR = _(
+            'Device #%d does not support video capture interface')
     S_CAPTURE_READ_ERROR = _('Error while capturing. Camera disconnected?')
 
     def __init__(self, config):
         self._config = config
-        self._device = self._new_capture_device(config['camera']['device_index'])
+        self._device = \
+                self._new_capture_device(config['camera']['device_index'])
         self.set_dimensions(
             config['camera']['width'],
             config['camera']['height'],
@@ -103,7 +105,7 @@ class FeatureDetector(object):
 
     @classmethod
     def clear_all_detection_caches(cls):
-        for key, instance in cls._INSTANCES.items():
+        for instance in cls._INSTANCES.values():
             instance.clear_cache()
 
     def __init__(self, config, name, scale_factor=1.1, min_neighbors=3):
@@ -116,7 +118,8 @@ class FeatureDetector(object):
         min_neighbors - how many neighbors each candidate rectangle should have
                 to retain it. Default 3.
         '''
-        LOGGER.info("Building detector: %s", (name, scale_factor, min_neighbors))
+        LOGGER.info("Building detector: %s",
+                (name, scale_factor, min_neighbors))
         self._config = config
         self._name = name
         self._single = None
@@ -130,9 +133,9 @@ class FeatureDetector(object):
 
     def detect(self, image):
         if image in self._detect_cache:
-            LOGGER.debug("Detection cache hit: %(image)d -> %(result)s" %
+            message = "Detection cache hit: %(image)d -> %(result)s" % \
                     {'image':id(image), 'result':self._detect_cache[image]}
-                    )
+            LOGGER.debug(message)
             if isinstance(self._detect_cache[image], FeatureNotFoundException):
                 message = str(self._detect_cache[image])
                 raise FeatureNotFoundException(message,
@@ -168,10 +171,13 @@ class FeatureDetector(object):
         else:
             if not self._last_attempt_successful:
                 self._last_attempt_successful = True
-                LOGGER.info(_('Feature detected: %s') % (self._name))
+                message = _('Feature detected: %s') % (self._name)
+                LOGGER.info(message)
 
     def _unpack_first(self):
-        self._single = dict(zip(['x', 'y', 'width', 'height'], self._plural[0]))
+        self._single = dict(
+                zip(['x', 'y', 'width', 'height'],
+                self._plural[0]))
 
     def _calculate_center(self):
         self._single["center"] = {
@@ -198,6 +204,7 @@ class FeatureDetector(object):
 
 class FeatureDetectorClearCachePlugin(interface.Plugin):
     def __init__(self, config):
+        super(FeatureDetectorClearCachePlugin, self).__init__(config)
         self._config = config
 
     def run(self, app):
@@ -205,7 +212,7 @@ class FeatureDetectorClearCachePlugin(interface.Plugin):
 
 
 class FeatureNotFoundException(Exception):
-    def __init__(self, message, cause = None):
+    def __init__(self, message, cause=None):
         if cause is not None:
             message = message + ', caused by ' + repr(cause)
         self.cause = cause

@@ -1,2 +1,0 @@
-# Source this file.
-export MOUSETRAP_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"

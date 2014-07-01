@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-python -c "import site; print '/'.join(site.getsitepackages()[0].split('/')[:2])"

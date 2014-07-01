@@ -1,7 +1,7 @@
 import logging
 LOGGER = logging.getLogger(__name__)
 
-from gi.repository import GObject
+from gi.repository import GLib
 
 from mousetrap.i18n import _
 from mousetrap.gui import Gui, Pointer
@@ -88,7 +88,7 @@ class Loop(Observable):
             self.MILLISECONDS_PER_SECOND / self._loops_per_second))
 
     def start(self):
-        self._timeout_id = GObject.timeout_add(self._interval, self._run)
+        self._timeout_id = GLib.timeout_add(self._interval, self._run)
 
     def _run(self):
         self._fire(self.CALLBACK_RUN)

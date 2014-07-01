@@ -2,7 +2,7 @@ import unittest
 from mousetrap.core import Loop, Observable
 
 
-class test_observable(unittest.TestCase):
+class test_Observable(unittest.TestCase):
 
     def setUp(self):
         self.observable = Observable()

@@ -22,6 +22,9 @@ class Config(dict):
             _rmerge(self, config)
         return self
 
+    def load_dict(self, dictionary):
+        _rmerge(self, dictionary)
+
     def __getitem__(self, key):
         '''
         Allow access to class configuration by passing instance of class as

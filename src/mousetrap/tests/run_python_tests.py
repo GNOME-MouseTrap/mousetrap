@@ -1,4 +1,7 @@
-#!/usr/bin/env python
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 from unittest import TestLoader
 from unittest.runner import TextTestRunner
 from os.path import dirname, abspath
@@ -7,7 +10,7 @@ import sys
 
 from mousetrap.config import Config
 CONFIG = Config().load_default()
-print CONFIG['camera']
+print(CONFIG['camera'])
 
 
 import logging
@@ -27,7 +30,7 @@ def initialize_import_path():
     paths = [
         get_source_directory()
     ]
-    print "appending " + str(paths)
+    print("appending " + str(paths))
     append_to_path(paths)
 
 

@@ -1,8 +1,13 @@
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 from yaml import safe_load
 from os.path import dirname, expanduser, isfile
 from os import getcwd
 from shutil import copy
 from copy import deepcopy
+from io import open
 
 
 class Config(dict):
@@ -16,7 +21,7 @@ class Config(dict):
         return self.load_path(dirname(__file__) + '/mousetrap.yaml')
 
     def load_path(self, path):
-        print "# Loading %s" % (path)
+        print("# Loading %s" % (path))
         with open(path) as config_file:
             config = safe_load(config_file)
             _rmerge(self, config)

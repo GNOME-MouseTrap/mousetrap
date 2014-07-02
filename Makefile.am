@@ -150,4 +150,4 @@ lint:
 
 run: all
 	PYTHONPATH=$(MT_BUILD_HOME) \
-	$(PYTHON) $(MT_BUILD_HOME)/mousetrap/main.py
+	$(PYTHON) -3 $(MT_BUILD_HOME)/mousetrap/main.py

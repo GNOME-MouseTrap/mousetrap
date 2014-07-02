@@ -1,3 +1,7 @@
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 '''
 Where it all begins.
 '''
@@ -7,6 +11,7 @@ import logging.config
 import sys
 import yaml
 from os.path import dirname, expanduser, exists
+from io import open
 
 from mousetrap.config import Config
 
@@ -46,10 +51,10 @@ class Main(object):
     @classmethod
     def _dump_annotated(cls):
         with open(cls.DEFAULT_CONFIG_PATH, 'r') as annotated_file:
-            print annotated_file.read()
+            print(annotated_file.read())
 
     def _dump_config(self):
-        print yaml.dump(dict(self._config), default_flow_style=False)
+        print(yaml.dump(dict(self._config), default_flow_style=False))
 
     def _configure_logging(self):
         logging.config.dictConfig(self._config['logging'])

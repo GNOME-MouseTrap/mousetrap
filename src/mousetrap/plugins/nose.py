@@ -1,3 +1,7 @@
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 from mousetrap.i18n import _
 import mousetrap.plugins.interface as interface
 from mousetrap.vision import FeatureDetector, FeatureNotFoundException
@@ -24,11 +28,11 @@ class NosePlugin(interface.Plugin):
     def _convert_image_to_screen_point(self, image_x, image_y):
         image_width = self._image.get_width()
         image_height = self._image.get_height()
-        percent_x = 1.0 * image_x / image_width
-        percent_y = 1.0 * image_y / image_height
+        percent_x = 1.0 * image_x // image_width
+        percent_y = 1.0 * image_y // image_height
         screen_x = percent_x * self._gui.get_screen_width()
         screen_y = percent_y * self._gui.get_screen_height()
-        half_width = self._gui.get_screen_width() / 2
+        half_width = self._gui.get_screen_width() // 2
         screen_x = (-1 * (screen_x - half_width)) + half_width
         return (screen_x, screen_y)
 

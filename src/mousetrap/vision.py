@@ -1,3 +1,7 @@
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 '''
 All things computer vision.
 '''
@@ -181,8 +185,8 @@ class FeatureDetector(object):
 
     def _calculate_center(self):
         self._single["center"] = {
-            "x": (self._single["x"] + self._single["width"]) / 2,
-            "y": (self._single["y"] + self._single["height"]) / 2,
+            "x": (self._single["x"] + self._single["width"]) // 2,
+            "y": (self._single["y"] + self._single["height"]) // 2,
         }
 
     def _extract_image(self):

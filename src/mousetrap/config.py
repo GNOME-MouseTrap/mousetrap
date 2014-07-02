@@ -10,13 +10,6 @@ from copy import deepcopy
 from io import open
 
 
-try:
-    unicode
-except NameError:
-    # Python 3
-    basestring = unicode = str
-
-
 class Config(dict):
 
     def load(self, paths):
@@ -48,7 +41,9 @@ class Config(dict):
 
             x = config['classes'][self.__class__.__module__+'.'+self.__class__.__name__]['x']
         '''
-        if isinstance(key, basestring):
+        from mousetrap.compat import string_types
+
+        if isinstance(key, string_types):
             return super(Config, self).__getitem__(key)
         class_ = key.__class__
         return self['classes'][class_.__module__ + '.' + class_.__name__]

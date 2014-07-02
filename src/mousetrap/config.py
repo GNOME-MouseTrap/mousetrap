@@ -10,6 +10,13 @@ from copy import deepcopy
 from io import open
 
 
+try:
+    unicode
+except NameError:
+    # Python 3
+    basestring = unicode = str
+
+
 class Config(dict):
 
     def load(self, paths):

@@ -7,7 +7,6 @@ All things computer vision.
 '''
 
 import cv2
-import cv
 from mousetrap.i18n import _
 from mousetrap.image import Image
 import mousetrap.plugins.interface as interface
@@ -41,8 +40,10 @@ class Camera(object):
         return capture
 
     def set_dimensions(self, width, height):
-        self._device.set(cv.CV_CAP_PROP_FRAME_WIDTH, width)
-        self._device.set(cv.CV_CAP_PROP_FRAME_HEIGHT, height)
+        # 3 = cv.CV_CAP_PROP_FRAME_WIDTH
+        self._device.set(3, width)
+        # 4 = cv.CV_CAP_PROP_FRAME_HEIGHT
+        self._device.set(4, height)
 
     def read_image(self):
         ret, image = self._device.read()

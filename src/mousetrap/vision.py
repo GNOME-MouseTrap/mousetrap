@@ -14,6 +14,11 @@ import mousetrap.plugins.interface as interface
 import logging
 LOGGER = logging.getLogger(__name__)
 
+
+FRAME_WIDTH = 3
+FRAME_HEIGHT = 4
+
+
 class Camera(object):
     S_CAPTURE_OPEN_ERROR = _(
             'Device #%d does not support video capture interface')
@@ -40,10 +45,8 @@ class Camera(object):
         return capture
 
     def set_dimensions(self, width, height):
-        # 3 = cv.CV_CAP_PROP_FRAME_WIDTH
-        self._device.set(3, width)
-        # 4 = cv.CV_CAP_PROP_FRAME_HEIGHT
-        self._device.set(4, height)
+        self._device.set(FRAME_WIDTH, width)
+        self._device.set(FRAME_HEIGHT, height)
 
     def read_image(self):
         ret, image = self._device.read()

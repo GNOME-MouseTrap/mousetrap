@@ -12,8 +12,8 @@ assembly:
 camera:
 
   # If you have more than one camera and you know the index of the one you
-  # want, set it here. Otherwise -1 will search for the first camera device.
-  device_index: -1
+  # want, set it here. Otherwise 0 will use the default camera device.
+  device_index: 0
 
   # Dimensions of image produced by camera. These are hints. Actual image
   # dimensions may be smaller and are device dependent.

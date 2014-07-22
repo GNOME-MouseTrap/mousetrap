@@ -1,7 +1,7 @@
-AC_PREREQ([2.69])
+AC_PREREQ([2.68])
 
 AC_INIT([mousetrap],[1.0.0-a],[https://bugzilla.gnome.org/enter_bug.cgi?product=mousetrap])
-AM_INIT_AUTOMAKE([1.13.4 foreign])
+AM_INIT_AUTOMAKE([1.11.1 foreign])
 
 MOUSETRAP_VERSION=1.0.0-a
 AC_SUBST(MOUSETRAP_VERSION)

@@ -8,6 +8,7 @@ from os import getcwd
 from shutil import copy
 from copy import deepcopy
 from io import open
+import os.path
 
 
 class Config(dict):
@@ -18,7 +19,9 @@ class Config(dict):
         return self
 
     def load_default(self):
-        return self.load_path(dirname(__file__) + '/mousetrap.yaml')
+        default_path = os.path.join(dirname(__file__), 'mousetrap.yaml')
+
+        return self.load_path(default_path)
 
     def load_path(self, path):
         print("# Loading %s" % (path))

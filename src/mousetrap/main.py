@@ -12,12 +12,13 @@ import sys
 import yaml
 from os.path import dirname, expanduser, exists
 from io import open
+import os.path
 
 from mousetrap.config import Config
 
 
 class Main(object):
-    DEFAULT_CONFIG_PATH = dirname(__file__) + '/mousetrap.yaml'
+    DEFAULT_CONFIG_PATH = os.path.join(dirname(__file__), 'mousetrap.yaml')
     USER_CONFIG_PATH = expanduser('~/.mousetrap.yaml')
 
     def __init__(self):

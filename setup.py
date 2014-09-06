@@ -117,8 +117,8 @@ class BuildCommand(build):
 
         program = "msgfmt"
 
-        LOCALE_PATH = "%s/mousetrap/locale" % SRC_PATH
-        DEST_PATH = "%s/mousetrap/locale" % self.build_lib
+        LOCALE_PATH = os.path.join(SRC_PATH,"mousetrap", "locale")
+        DEST_PATH = os.path.join(self.build_lib, "mousetrap", "locale")
 
         root, directories, files = os.walk(LOCALE_PATH).next()
 
